@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aplestore.dao.LoginMapper">
+
+  <select id="selectByCredentials" parameterType="com.aplestore.dto.LoginDTO" resultType="com.aplestore.dto.LoginDTO">
+    SELECT
+        user_id   AS userId
+        , user_pwd  AS userPwd
+    FROM
+        Users
+    WHERE
+        user_id  = #{userId}
+      AND
+        user_pwd = #{userPwd}
+  </select>
+
+</mapper>

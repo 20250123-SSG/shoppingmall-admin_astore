@@ -1,0 +1,70 @@
+.inquiry-detail {
+    padding: 20px;
+}
+
+.inquiry-header {
+    margin-bottom: 20px;
+}
+
+.inquiry-header h4 {
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.inquiry-info {
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.inquiry-content {
+    min-height: 200px;
+    white-space: pre-wrap;
+    margin: 20px 0;
+}
+
+.model-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.model-info h6 {
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+/* 테이블 스타일 */
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* 호버 효과 */
+.table-hover tbody tr:hover {
+    background-color: rgba(0,0,0,.075);
+    transition: background-color 0.2s ease;
+}
+
+/* 배지 스타일 */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+}
+
+/* 반응형 조정 */
+@media (max-width: 768px) {
+    .inquiry-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+} 
