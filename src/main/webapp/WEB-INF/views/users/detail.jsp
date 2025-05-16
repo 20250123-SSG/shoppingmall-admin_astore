@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../common/header.jsp" %>
+<%@ include file="../common/sidebar.jsp" %>
 
 <div class="content-wrapper">
   <div class="container mt-4">
@@ -66,6 +67,8 @@
     </div>
   </div>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 
 <script>
 function editUser() {

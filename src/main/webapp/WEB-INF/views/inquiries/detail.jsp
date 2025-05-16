@@ -1,7 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../common/header.jsp" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="../common/sidebar.jsp" %>
 
 <div class="content-wrapper">
     <div class="container-fluid mt-4">
@@ -47,6 +46,8 @@
         </div>
     </div>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/inquiries.css">
 <script src="${pageContext.request.contextPath}/resources/js/inquiries.js"></script>

@@ -3,4 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+  <typeAliases>
+    <!-- Login -->
+    <typeAlias type="com.aplestore.dto.LoginDTO" alias="LoginDTO"/>
+    <!-- Store -->
+    <typeAlias type="com.aplestore.dto.StoreDTO" alias="StoreDTO"/>
+    <!-- Order -->
+    <typeAlias type="com.aplestore.dto.OrderDTO" alias="OrderDTO"/>
+    <typeAlias type="com.aplestore.dto.OrderDetailDTO" alias="OrderDetailDTO"/>
+    <!-- User -->
+    <typeAlias type="com.aplestore.dto.UserDTO" alias="UserDTO"/>
+    <!-- Inquiry -->
+    <typeAlias type="com.aplestore.dto.BoardDTO" alias="BoardDTO"/>
+    <typeAlias type="com.aplestore.dto.PostDTO" alias="PostDTO"/>
+    <typeAlias type="com.aplestore.dto.CommentDTO" alias="CommentDTO"/>
+    <!-- Product -->
+    <typeAlias type="com.aplestore.dto.ProductDTO" alias="ProductDTO"/>
+    <typeAlias type="com.aplestore.dto.ProductModelDTO" alias="ProductModelDTO"/>
+    <typeAlias type="com.aplestore.dto.ProductModelOptionDTO" alias="ProductModelOptionDTO"/>
+
+  </typeAliases>
 </configuration>

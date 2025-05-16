@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
+<%@ include file="../common/sidebar.jsp" %>
 
 <div class="content-wrapper">
   <h2 class="mb-4">문의 내역</h2>
@@ -47,6 +48,8 @@
     </div>
   </div>
 </div>
+<%@ include file="../common/footer.jsp" %>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -59,7 +62,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/inquiries.css">
-<script src="${pageContext.request.contextPath}/resources/js/inquiries.js"></script>
-
-</body>
-</html> 
+<script src="${pageContext.request.contextPath}/resources/js/inquiries.js"></script> 

@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 오늘 날짜를 기본값으로 설정
     const today = new Date();
     endDate.value = today.toISOString().split('T')[0];
-    
+
     // 시작일을 7일 전으로 설정
     const sevenDaysAgo = new Date(today);
     sevenDaysAgo.setDate(today.getDate() - 6);
@@ -67,11 +67,11 @@ document.addEventListener("DOMContentLoaded", function () {
             customDateRange.style.display = 'block';
         } else {
             customDateRange.style.display = 'none';
-            
+
             const today = new Date();
             const end = today.toISOString().split('T')[0];
             let start;
-            
+
             switch(this.value) {
                 case 'daily':
                     start = new Date(today);
@@ -86,10 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     start.setMonth(today.getMonth() - 6);
                     break;
             }
-            
+
             startDate.value = start.toISOString().split('T')[0];
             endDate.value = end;
-            
+
             updateChart();
         }
     });
@@ -101,14 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const end = endDate.value;
 
         fetch(`/admin/api/sales?period=${period}&startDate=${start}&endDate=${end}`)
-            .then(response => response.json())
-            .then(data => {
-                initChart(data.labels, data.data);
-            })
-            .catch(error => {
-                console.error('Error fetching sales data:', error);
-                alert('매출 데이터를 불러오는 중 오류가 발생했습니다.');
-            });
+          .then(response => response.json())
+          .then(data => {
+              initChart(data.labels, data.data);
+          })
+          .catch(error => {
+              console.error('Error fetching sales data:', error);
+              alert('매출 데이터를 불러오는 중 오류가 발생했습니다.');
+          });
     }
 
     // 업데이트 버튼 클릭 이벤트
@@ -117,10 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // 모델별 판매 현황 데이터 로드
     function loadModelSales() {
         fetch('/admin/api/model-sales')
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector('#modelSalesTable tbody');
-                tbody.innerHTML = data.map(sale => `
+          .then(response => response.json())
+          .then(data => {
+              const tbody = document.querySelector('#modelSalesTable tbody');
+              tbody.innerHTML = data.map(sale => `
                     <tr>
                         <td>${sale.modelName}</td>
                         <td>${sale.quantity.toLocaleString()}</td>
@@ -128,10 +128,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td>${sale.stock.toLocaleString()}</td>
                     </tr>
                 `).join('');
-            })
-            .catch(error => {
-                console.error('Error fetching model sales:', error);
-            });
+          })
+          .catch(error => {
+              console.error('Error fetching model sales:', error);
+          });
     }
 
     // 문의사항 데이터 로드
