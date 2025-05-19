@@ -1,0 +1,92 @@
+.product-header {
+  margin-bottom: 20px;
+  padding: 20px 0 10px 0;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.product-header h2 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+.product-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.product-filters input[type=text],
+.product-filters select {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.product-filters button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  border: none;
+  background-color: #0d6efd;
+  color: white;
+  border-radius: 4px;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+.table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pagination a {
+  padding: 6px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #343a40;
+}
+
+.pagination .active {
+  background-color: #0d6efd;
+  color: white;
+}
+.autocomplete-box {
+  position: absolute;
+  top: 100%; /* input box 아래로 */
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: none;
+}
+
+.suggest-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggest-item:hover {
+  background-color: #f0f0f0;
+}
+
+
