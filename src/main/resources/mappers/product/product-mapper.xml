@@ -5,6 +5,66 @@
 
 <mapper namespace="com.aplestore.dao.ProductMapper">
 
+  <select id="getAllModels" resultType="ProductModelDTO">
+    SELECT
+    p.product_name AS productName,
+    m.model_name AS modelName,
+    m.model_price AS modelPrice,
+    mo.created_at AS createdAt,
+    mo.modified_at AS modifiedAt
+    FROM models m
+    INNER JOIN products p ON m.product_id = p.id
+    INNER JOIN model_options mo ON m.id = mo.model_id
+
+  <where>
+      <if test="keyword != null and keyword != ''">
+        (
+        product_name LIKE CONCAT('%', #{keyword}, '%')
+        OR model_name LIKE CONCAT('%', #{keyword}, '%')
+        )
+      </if>
+    </where>
+
+    <choose>
+      <when test="sort == 'model'">
+        ORDER BY model_name ASC
+      </when>
+      <when test="sort == 'price_asc'">
+        ORDER BY model_price ASC
+      </when>
+      <when test="sort == 'price_desc'">
+        ORDER BY model_price DESC
+      </when>
+      <otherwise>
+        ORDER BY mo.created_at DESC
+      </otherwise>
+    </choose>
+
+    LIMIT #{limit} OFFSET #{offset}
+  </select>
+
+  <select id="countAllModels" resultType="int">
+    SELECT COUNT(*)
+    FROM models m
+    INNER JOIN products p ON m.id = p.id
+    INNER JOIN model_options mo ON m.id = mo.model_id
+
+    <where>
+      <if test="keyword != null and keyword != ''">
+        (product_name LIKE CONCAT('%', #{keyword}, '%')
+        OR model_name LIKE CONCAT('%', #{keyword}, '%'))
+      </if>
+    </where>
+  </select>
+
+  <select id="findMatchingModelNames" resultType="string">
+    SELECT DISTINCT model_name
+    FROM models
+    WHERE model_name LIKE #{keyword}
+    ORDER BY model_name DESC
+    LIMIT 5;
+  </select>
+
 </mapper>
 
 
