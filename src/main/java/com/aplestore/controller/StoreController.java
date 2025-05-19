@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.aplestore.dto.StoreDTO;
 import com.aplestore.service.StoreService;
 
-
 @Controller
 @RequiredArgsConstructor
 public class StoreController {

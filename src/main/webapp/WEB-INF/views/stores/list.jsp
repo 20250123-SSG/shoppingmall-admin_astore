@@ -1,11 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
-<!-- CSS -->
 <link rel="stylesheet" href="${contextPath}/resources/css/store/list.css">
 
-<!-- 컨텍스트 경로를 JavaScript에서 사용하기 위한 메타 태그 -->
 <meta name="context-path" content="${contextPath}">
 
 <div class="content-wrapper">
@@ -83,6 +82,5 @@
 </div>
 
 <!-- Scripts -->
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=01f42a2f5518af601feb0078ce5c94b4&libraries=services"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<spring:eval expression="@jskey['appkey']" />&libraries=services"></script>
 <script src="${contextPath}/resources/js/store/list.js"></script>
-

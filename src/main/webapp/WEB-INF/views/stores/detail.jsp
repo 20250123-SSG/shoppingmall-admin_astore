@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="content-wrapper">
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -40,9 +41,9 @@
           <p><strong>매장번호:</strong> <c:out value="${store.storeNumber}"/></p>
           <p><strong>주소:</strong> <c:out value="${store.storeAddress}"/></p>
           <p><strong>우편번호:</strong> <c:out value="${store.storeZipCode}"/></p>
-          <p><strong>위도/경도:</strong>
-            <c:out value="${store.storeLat}"/> , <c:out value="${store.storeLon}"/>
-          </p>
+<%--          <p><strong>위도/경도:</strong>--%>
+<%--            <c:out value="${store.storeLat}"/> , <c:out value="${store.storeLon}"/>--%>
+<%--          </p>--%>
         </div>
         <div class="card-footer text-end">
           <a href="${pageContext.request.contextPath}/stores/${store.id}/edit"
@@ -62,17 +63,13 @@
 
 <%@ include file="../common/footer.jsp" %>
 
-<!-- Kakao 지도 SDK: application.properties 에서 가져온 kakaoApiKey 를 Model 로 전달해야 합니다 -->
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=01f42a2f5518af601feb0078ce5c94b4&libraries=services"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<spring:eval expression="@jskey['appkey']" />&libraries=services"></script>
 
 <script>
-  // 사진 클릭 시 맵 마커 옮기기(선택적 기능)
   function selectPhoto(url) {
-    // 예: modal로 크게 보여주거나, 배경 이미지 변경 등
     window.open(url, '_blank');
   }
 
-  // 지도 초기화
   document.addEventListener('DOMContentLoaded', function() {
     const lat = parseFloat('${store.storeLat}');
     const lon = parseFloat('${store.storeLon}');
