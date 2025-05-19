@@ -6,7 +6,7 @@
 <div class="content-wrapper">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>매장 상세 정보</h2>
-    <a href="${pageContext.request.contextPath}/stores/list.page" class="btn btn-secondary">목록으로</a>
+    <a href="${contextPath}/stores/list.page" class="btn btn-secondary">목록으로</a>
   </div>
 
   <div class="row">
@@ -22,9 +22,7 @@
     <!-- 우측: 매장 정보 + 버튼 -->
     <div class="col-md-4">
       <div class="card">
-        <div class="card-header bg-primary text-white">
-          매장 정보
-        </div>
+        <div class="card-header bg-primary text-white">매장 정보</div>
         <div class="card-body">
           <p><strong>매장명:</strong> <c:out value="${store.storeName}"/></p>
           <p><strong>매장번호:</strong> <c:out value="${store.storeNumber}"/></p>
@@ -32,12 +30,9 @@
           <p><strong>우편번호:</strong> <c:out value="${store.storeZipCode}"/></p>
         </div>
         <div class="card-footer text-end">
-          <a href="${pageContext.request.contextPath}/stores/${store.id}/edit"
-             class="btn btn-sm btn-primary me-2">수정</a>
-          <form action="${pageContext.request.contextPath}/stores/${store.id}/delete"
-                method="post" style="display:inline;">
-            <button type="submit" class="btn btn-sm btn-danger"
-                    onclick="return confirm('정말 삭제하시겠습니까?')">
+          <a href="${contextPath}/stores/${store.id}/edit" class="btn btn-sm btn-primary me-2">수정</a>
+          <form action="${contextPath}/stores/${store.id}/delete" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">
               삭제
             </button>
           </form>

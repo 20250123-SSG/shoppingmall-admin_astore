@@ -24,7 +24,7 @@ public class StoreServiceImpl implements StoreService {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
         int totalCount = storeMapper.selectStoreListCount();
         Map<String, Object> map = pageUtil.getPageInfo(totalCount, page, 5, 5);
-        List<StoreDTO> list = storeMapper.selectAll();
+        List<StoreDTO> list = storeMapper.selectAll(map);
         map.put("list", list);
         return map;
     }
@@ -43,13 +43,15 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public void registStore(StoreDTO storeDTO) {
-        System.out.println("#####################");
-        System.out.println("#####################");
-        System.out.println("#####################");
-        System.out.println("#####################");
-        System.out.println("#####################");
-        System.out.println(storeDTO.getStoreOffDay());
-        System.out.println("#####################");
         storeMapper.registStore(storeDTO);
+    }
+
+    @Override
+    public void updateStore(StoreDTO dto) {
+        storeMapper.updateStore(dto);
+    }
+    @Override
+    public void softDeleteStore(int id) {
+        storeMapper.changeStatus(id, "INACTIVE");
     }
 }

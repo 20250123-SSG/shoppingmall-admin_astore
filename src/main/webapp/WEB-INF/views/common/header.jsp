@@ -13,20 +13,11 @@
   header a { color: white; }
   header .profile-img { width: 30px; }
 
-  /* 네비바용 로고 스타일 */
   .navbar-brand img {
     height: 30px;      /* 로고 높이를 30px로 고정 */
     width: auto;       /* 너비는 비율에 맞춰 자동 */
   }
 </style>
-
-<%--<header class="row m-3">--%>
-<%--  <div class="col-4 d-flex justify-content-center align-items-center">--%>
-<%--    <a href="${contextPath}/dashboard">--%>
-<%--      <img src="${contextPath}/resources/images/main_logo.png" width="170px" alt="Main Logo">--%>
-<%--    </a>--%>
-<%--  </div>--%>
-<%--</header>--%>
 
 <nav class="navbar m-3 navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="${contextPath}/dashboard">
@@ -37,9 +28,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <!-- justify-content-center 추가 -->
   <div class="collapse navbar-collapse justify-content-center" id="mainNav">
-    <!-- 또는 <ul class="navbar-nav mx-auto"> 로도 가능 -->
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/testusers">유저관리</a>

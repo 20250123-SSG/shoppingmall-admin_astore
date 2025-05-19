@@ -22,6 +22,7 @@ public class StoreDTO {
     private String storeZipCode;
     private BigDecimal storeLat;
     private BigDecimal storeLon;
+    private Character storeStatus;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -38,14 +39,12 @@ public class StoreDTO {
         return dayMap.getOrDefault(storeOffDay, "알 수 없음");
     }
 
-    // 현재 영업 상태 확인
     public String getBusinessStatus() {
         int today = LocalDate.now().getDayOfWeek().getValue();
         return (storeOffDay == today) ? "휴무일" : "영업 중";
     }
 
-    // 기존 getter는 숫자값 그대로 반환
-    public int getStoreOffDay() {
-        return storeOffDay;
-    }
+//    public int getStoreOffDay() {
+//        return storeOffDay;
+//    }
 }

@@ -28,6 +28,7 @@
     FROM stores
     ORDER BY id
     DESC
+    LIMIT #{offset}, #{display}
   </select>
 
   <insert id="insert" parameterType="StoreDTO">
@@ -74,4 +75,25 @@
         , #{storeLon}
       )
   </insert>
+
+  <update id="updateStore" parameterType="com.aplestore.dto.StoreDTO">
+    UPDATE stores
+    SET store_name    = #{storeName},
+        store_number  = #{storeNumber},
+        store_address = #{storeAddress},
+        store_offday = #{storeOffDay},
+        store_zipcode= #{storeZipCode},
+        store_lat     = #{storeLat},
+        store_lon     = #{storeLon},
+        modified_at   = NOW()
+    WHERE id = #{id}
+  </update>
+
+  <update id="changeStatus">
+    UPDATE stores
+    SET store_status = '2',
+        modified_at  = NOW()
+    WHERE id = #{id}
+  </update>
+
 </mapper>

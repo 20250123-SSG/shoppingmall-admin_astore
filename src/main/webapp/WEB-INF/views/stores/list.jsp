@@ -11,9 +11,7 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>매장 목록</h2>
     <div>
-      <a href="${contextPath}/stores/regist.page" class="btn btn-primary">
-        매장 등록
-      </a>
+      <a href="${contextPath}/stores/regist.page" class="btn btn-primary">매장 등록</a>
     </div>
   </div>
 
@@ -38,12 +36,13 @@
             <td>${store.storeNumber}</td>
             <td>${store.storeAddress}</td>
             <td>${store.businessStatus}</td>
-            <td><button type="button" class="btn btn-info btn-sm show-map"
-                                data-lat="${store.storeLat}"
-                                data-lon="${store.storeLon}"
-                                data-name="${store.storeName}">
-                                위치보기
-                              </button>
+            <td>
+              <button type="button" class="btn btn-info btn-sm show-map"
+                      data-lat="${store.storeLat}"
+                      data-lon="${store.storeLon}"
+                      data-name="${store.storeName}">
+                위치보기
+              </button>
             </td>
           </tr>
         </c:forEach>
@@ -54,12 +53,10 @@
         </c:if>
         </tbody>
       </table>
-
       <ul id="paging_area" class="pagination d-flex justify-content-center">
         <li class="page-item ${page == 1 ? 'disabled' : ''}">
           <a class="page-link" href="${contextPath}/stores/list.page?page=${page - 1}">Previous</a>
         </li>
-
         <c:forEach var="p" begin="${beginPage}" end="${endPage}">
           <li class="page-item ${p == page ? 'active' : ''}">
             <a class="page-link" href="${contextPath}/stores/list.page?page=${p}">${p}</a>
@@ -68,7 +65,6 @@
         <li class="page-item ${page == totalPage ? 'disabled' : ''}">
           <a class="page-link" href="${contextPath}/stores/list.page?page=${page + 1}">Next</a>
       </ul>
-
     </div>
   </div>
 </div>
@@ -92,4 +88,4 @@
 
 <!-- Scripts -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<spring:eval expression="@jskey['appkey']" />&libraries=services"></script>
-<script src="${contextPath}/resources/js/store/list.js"></script>
+<script src="${contextPath}/resources/js/store/list.js"/>

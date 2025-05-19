@@ -50,36 +50,6 @@
 
 <%@ include file="../common/footer.jsp" %>
 
-<script
-  src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<spring:eval expression="@jskey['appkey']" />&libraries=services"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="${contextPath}/resources/js/store/regist.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('btnPostcode').addEventListener('click', openPostcode);
-    document.getElementById('storeAddress').addEventListener('click', openPostcode);
-
-  });
-
-  function openPostcode() {
-    new daum.Postcode({
-      oncomplete: function (data) {
-        document.getElementById('storeAddress').value = data.address;
-        document.getElementById('storeZipCode').value = data.zonecode;
-        console.log('도로명주소 : ' + data.roadAddress);
-        console.log('지번주소   : ' + data.jibunAddress);
-        console.log('우편번호   : ' + data.zonecode);
-
-        const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(data.roadAddress, (result, status) => {
-          if (status === kakao.maps.services.Status.OK) {
-            console.log('위도 : ' + result[0].y);
-            console.log('경도 : ' + result[0].x);
-            document.getElementById('storeLat').value = result[0].y;
-            document.getElementById('storeLon').value = result[0].x;
-          }
-        });
-      }
-    }).open();
-  }
-</script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<spring:eval expression="@jskey['appkey']" />&libraries=services"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"/>
+<script src="${contextPath}/resources/js/store/regist.js"/>
