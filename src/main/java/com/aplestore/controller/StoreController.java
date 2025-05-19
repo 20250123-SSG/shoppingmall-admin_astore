@@ -2,12 +2,12 @@ package com.aplestore.controller;
 
 import java.util.Map;
 
+import com.aplestore.dto.StoreDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.aplestore.dto.StoreDTO;
 import com.aplestore.service.StoreService;
 
 @Controller
@@ -25,7 +25,6 @@ public class StoreController {
         model.addAttribute("totalPage", map.get("totalPage"));
         model.addAttribute("beginPage", map.get("beginPage"));
         model.addAttribute("endPage", map.get("endPage"));
-
     }
 
     @GetMapping("/detail.page")
@@ -35,14 +34,15 @@ public class StoreController {
         model.addAttribute("store", map.get("store"));
     }
 
-    @GetMapping("/stores/new")
-    public String showCreateForm() {
-        return "stores/new";
+    @GetMapping("/regist.page")
+    public void registPage(){}
+
+    @PostMapping("/new")
+    public String storeRegist(@ModelAttribute StoreDTO storeDTO){
+
+        storeService.registStore(storeDTO);
+
+        return "redirect:/stores/list.page";
     }
 
-    @PostMapping("/stores")
-    public String createStore(StoreDTO dto) {
-        storeService.createStore(dto);
-        return "redirect:/stores";
-    }
 }

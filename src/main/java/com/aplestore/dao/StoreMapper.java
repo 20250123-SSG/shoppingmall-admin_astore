@@ -8,7 +8,7 @@ public interface StoreMapper {
 
     List<StoreDTO> selectAll();
 
-    void insert(StoreDTO dto);
+    void registStore(StoreDTO dto);
 
     StoreDTO selectStoreById(int no);
 }

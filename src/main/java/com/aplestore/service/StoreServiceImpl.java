@@ -19,7 +19,6 @@ public class StoreServiceImpl implements StoreService {
     private final StoreMapper storeMapper;
     private final PageUtil pageUtil;
 
-
     @Override
     public Map<String, Object> getStoreList(int page) {
         StoreMapper storeMapper = sqlSession.getMapper(StoreMapper.class);
@@ -28,11 +27,6 @@ public class StoreServiceImpl implements StoreService {
         List<StoreDTO> list = storeMapper.selectAll();
         map.put("list", list);
         return map;
-    }
-
-    @Override
-    public void createStore(StoreDTO dto) {
-        storeMapper.insert(dto);
     }
 
     @Override
@@ -47,4 +41,15 @@ public class StoreServiceImpl implements StoreService {
         return map;
     }
 
+    @Override
+    public void registStore(StoreDTO storeDTO) {
+        System.out.println("#####################");
+        System.out.println("#####################");
+        System.out.println("#####################");
+        System.out.println("#####################");
+        System.out.println("#####################");
+        System.out.println(storeDTO.getStoreOffDay());
+        System.out.println("#####################");
+        storeMapper.registStore(storeDTO);
+    }
 }

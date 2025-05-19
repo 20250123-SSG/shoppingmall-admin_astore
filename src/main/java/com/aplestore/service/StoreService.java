@@ -7,7 +7,7 @@ import com.aplestore.dto.StoreDTO;
 public interface StoreService {
     Map<String, Object> getStoreList(int page);
 
-    void createStore(StoreDTO dto);
+    void registStore(StoreDTO storeDTO);
 
     Map<String, Object> getStoreDetail(int id);
 }

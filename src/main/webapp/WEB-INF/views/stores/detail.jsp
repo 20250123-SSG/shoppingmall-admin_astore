@@ -6,7 +6,7 @@
 <div class="content-wrapper">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>매장 상세 정보</h2>
-    <a href="${pageContext.request.contextPath}/stores" class="btn btn-secondary">목록으로</a>
+    <a href="${pageContext.request.contextPath}/stores/list.page" class="btn btn-secondary">목록으로</a>
   </div>
 
   <div class="row">

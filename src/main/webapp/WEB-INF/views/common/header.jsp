@@ -54,7 +54,7 @@
         <a class="nav-link" href="${contextPath}/testinquiries">문의관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/stores">매장관리</a>
+        <a class="nav-link" href="${contextPath}/stores/list.page">매장관리</a>
       </li>
     </ul>
   </div>

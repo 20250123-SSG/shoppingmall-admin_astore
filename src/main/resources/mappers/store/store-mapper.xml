@@ -50,4 +50,28 @@
     FROM stores
     WHERE id = #{id}
   </select>
+
+  <insert id="registStore" parameterType="StoreDTO" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO
+        stores
+        (
+         store_name
+        , store_number
+        , store_address
+        , store_offday
+        , store_zipcode
+        , store_lat
+        , store_lon
+        )
+    VALUES
+      (
+       #{storeName}
+        , #{storeNumber}
+        , #{storeAddress}
+        , #{storeOffDay}
+        , #{storeZipCode}
+        , #{storeLat}
+        , #{storeLon}
+      )
+  </insert>
 </mapper>

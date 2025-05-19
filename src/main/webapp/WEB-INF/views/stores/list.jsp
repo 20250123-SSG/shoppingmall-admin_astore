@@ -11,7 +11,7 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>매장 목록</h2>
     <div>
-      <a href="${contextPath}/stores/new" class="btn btn-primary">
+      <a href="${contextPath}/stores/regist.page" class="btn btn-primary">
         매장 등록
       </a>
     </div>
@@ -37,7 +37,7 @@
             <td>${store.storeName}</td>
             <td>${store.storeNumber}</td>
             <td>${store.storeAddress}</td>
-            <td>${store.storeOffDay}</td>
+            <td>${store.businessStatus}</td>
             <td><button type="button" class="btn btn-info btn-sm show-map"
                                 data-lat="${store.storeLat}"
                                 data-lon="${store.storeLon}"
