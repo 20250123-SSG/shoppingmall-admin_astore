@@ -56,10 +56,18 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-chart-bar me-1"></i>
-                        월별 매출
+                        <h3>매출 조회</h3>
+                        <form method="get" action="${pageContext.request.contextPath}/sales">
+                            <label for="yearSelect">연도 선택:</label>
+                            <select id="yearSelect" name="year" onchange="this.form.submit()">
+                                <c:forEach var="y" items="${years}">
+                                    <option value="${y}" <c:if test="${y == selectedYear}">selected</c:if>>${y}</option>
+                                </c:forEach>
+                            </select>
+                        </form>
                     </div>
                     <div class="card-body">
-                        <canvas id="monthlySalesChart"></canvas>
+                        <canvas id="salesChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -172,44 +180,56 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
-// 월별 매출 차트
-const monthlySalesCtx = document.getElementById('monthlySalesChart');
-new Chart(monthlySalesCtx, {
-    type: 'bar',
-    data: {
-        labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-        datasets: [{
-            label: '매출(백만원)',
-            data: [150, 190, 210, 180, 230, 250, 270, 240, 280, 260, 290, 310],
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
-            borderColor: 'rgb(54, 162, 235)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
+    const ctx = document.getElementById('salesChart').getContext('2d');
+    let salesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [], // 월
+            datasets: [{
+                label: '월별 매출',
+                data: [], // 금액
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
             }
         }
+    });
+
+    function loadChartData(year) {
+        fetch(`${contextPath}/sales/data?year=` + year)
+          .then(response => response.json())
+          .then(data => {
+              salesChart.data.labels = data.labels;
+              salesChart.data.datasets[0].data = data.values;
+              salesChart.update();
+          });
     }
-});
+
+    document.getElementById('yearSelect').addEventListener('change', function () {
+        loadChartData(this.value);
+    });
+
+    // 초기 로딩
+    loadChartData(document.getElementById('yearSelect').value);
 
 // 제품 카테고리별 판매 비율 차트
 const productCategoryCtx = document.getElementById('productCategoryChart');
 new Chart(productCategoryCtx, {
     type: 'doughnut',
     data: {
-        labels: ['iPhone', 'iPad', 'Mac', 'Watch', 'AirPods'],
+        labels: ['iPhone', 'iPad', 'Mac'],
         datasets: [{
-            data: [45, 20, 15, 12, 8],
+            data: [45, 35, 20],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.8)',
                 'rgba(54, 162, 235, 0.8)',
-                'rgba(255, 206, 86, 0.8)',
-                'rgba(75, 192, 192, 0.8)',
-                'rgba(153, 102, 255, 0.8)'
+                'rgba(255, 206, 86, 0.8)'
             ]
         }]
     },
