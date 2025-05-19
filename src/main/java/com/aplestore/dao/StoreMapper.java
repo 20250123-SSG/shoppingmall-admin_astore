@@ -4,9 +4,11 @@ import com.aplestore.dto.StoreDTO;
 import java.util.List;
 
 public interface StoreMapper {
+    int selectStoreListCount();
+
     List<StoreDTO> selectAll();
 
     void insert(StoreDTO dto);
 
-    StoreDTO selectById(int id);
+    StoreDTO selectStoreById(int no);
 }

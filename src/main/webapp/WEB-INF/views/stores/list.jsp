@@ -31,35 +31,44 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="store" items="${stores}">
-          <tr class="store-row" 
-              data-id="${store.id}" 
-              data-lat="${store.storeLat}" 
-              data-lon="${store.storeLon}" 
-              data-name="${store.storeName}" 
-              data-address="${store.storeAddress}">
-            <td><c:out value="${store.id}" /></td>
-            <td><c:out value="${store.storeName}" /></td>
-            <td><c:out value="${store.storeNumber}" /></td>
-            <td><c:out value="${store.storeAddress}" /></td>
-            <td><c:out value="${store.storeOffDay}" /></td>
-            <td>
-              <button type="button" class="btn btn-info btn-sm show-map" 
-                data-lat="${store.storeLat}" 
-                data-lon="${store.storeLon}"
-                data-name="${store.storeName}">
-                위치보기
-              </button>
+        <c:forEach var="store" items="${list}">
+          <tr onclick="location.href='${contextPath}/stores/detail.page?id=${store.id}';">
+            <td>${store.id}</td>
+            <td>${store.storeName}</td>
+            <td>${store.storeNumber}</td>
+            <td>${store.storeAddress}</td>
+            <td>${store.storeOffDay}</td>
+            <td><button type="button" class="btn btn-info btn-sm show-map"
+                                data-lat="${store.storeLat}"
+                                data-lon="${store.storeLon}"
+                                data-name="${store.storeName}">
+                                위치보기
+                              </button>
             </td>
           </tr>
         </c:forEach>
-        <c:if test="${empty stores}">
+        <c:if test="${empty list}">
           <tr>
             <td colspan="6" class="text-center">등록된 매장이 없습니다.</td>
           </tr>
         </c:if>
         </tbody>
       </table>
+
+      <ul id="paging_area" class="pagination d-flex justify-content-center">
+        <li class="page-item ${page == 1 ? 'disabled' : ''}">
+          <a class="page-link" href="${contextPath}/stores/list.page?page=${page - 1}">Previous</a>
+        </li>
+
+        <c:forEach var="p" begin="${beginPage}" end="${endPage}">
+          <li class="page-item ${p == page ? 'active' : ''}">
+            <a class="page-link" href="${contextPath}/stores/list.page?page=${p}">${p}</a>
+          </li>
+        </c:forEach>
+        <li class="page-item ${page == totalPage ? 'disabled' : ''}">
+          <a class="page-link" href="${contextPath}/stores/list.page?page=${page + 1}">Next</a>
+      </ul>
+
     </div>
   </div>
 </div>

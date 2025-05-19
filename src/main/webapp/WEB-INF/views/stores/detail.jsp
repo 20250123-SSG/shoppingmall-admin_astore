@@ -10,24 +10,13 @@
   </div>
 
   <div class="row">
-<%--    <!-- 좌측: 사진 리스트 -->--%>
     <div class="col-md-2">
       <div class="list-group">
-<%--        <c:forEach var="img" items="${store.photos}">--%>
-<%--          <img src="${img.url}"--%>
-<%--               class="img-fluid mb-2"--%>
-<%--               style="border:1px solid #dee2e6; cursor:pointer;"--%>
-<%--               onclick="selectPhoto('${img.url}')"/>--%>
-<%--        </c:forEach>--%>
-<%--        <c:if test="${empty store.photos}">--%>
-<%--          <div class="text-center text-muted">등록된 사진이 없습니다.</div>--%>
-<%--        </c:if>--%>
       </div>
     </div>
 
-    <!-- 가운데: 지도 -->
     <div class="col-md-6">
-      <div id="map" style="width:100%; height:400px; border:1px solid #dee2e6;"></div>
+      <div id="map" style="width:700px; height:500px; border:1px solid #dee2e6;"></div>
     </div>
 
     <!-- 우측: 매장 정보 + 버튼 -->
@@ -41,9 +30,6 @@
           <p><strong>매장번호:</strong> <c:out value="${store.storeNumber}"/></p>
           <p><strong>주소:</strong> <c:out value="${store.storeAddress}"/></p>
           <p><strong>우편번호:</strong> <c:out value="${store.storeZipCode}"/></p>
-<%--          <p><strong>위도/경도:</strong>--%>
-<%--            <c:out value="${store.storeLat}"/> , <c:out value="${store.storeLon}"/>--%>
-<%--          </p>--%>
         </div>
         <div class="card-footer text-end">
           <a href="${pageContext.request.contextPath}/stores/${store.id}/edit"
