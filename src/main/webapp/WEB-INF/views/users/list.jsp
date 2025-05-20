@@ -29,6 +29,55 @@
   </form>
 
   <!-- 테이블 가운데 정렬 -->
+  <style>
+      .user-link {
+          color: var(--user-color, #333);
+          text-decoration: none;
+          font-weight: 500;
+          position: relative;
+          transition: all 0.2s ease;
+      }
+
+      .user-link::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -2px;
+          width: 0%;
+          height: 2px;
+          background-color: var(--user-color, #007bff);
+          transition: width 0.3s ease;
+      }
+
+      .user-link:hover {
+          color: var(--user-color, #007bff);
+      }
+
+      .user-link:hover::after {
+          width: 100%;
+      }
+
+
+      .status-label {
+          color: var(--status-color);
+          font-weight: 500;
+          font-size: 0.95rem;
+          display: inline-block;
+      }
+
+  </style>
+
+  <!-- 상태 색상 설명 박스 -->
+  <div class="mb-3" style="width: 90%; margin: 0 auto;">
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <div class="status-label" style="--status-color: #28a745;">● 정상</div>
+      <div class="status-label" style="--status-color: #6c757d;">● 휴면</div>
+      <div class="status-label" style="--status-color: #dc3545;">● 정지</div>
+      <div class="status-label" style="--status-color: #6f42c1;">● 탈퇴</div>
+    </div>
+  </div>
+
+
   <div style="display: flex; justify-content: center;">
     <div class="card" style="width: 90%;">
       <div class="card-body">
@@ -49,19 +98,68 @@
           </c:if>
           <c:forEach var="user" items="${users}">
             <tr>
+              <!-- 회원ID -->
               <td>
-                <a href="/main/users/detail?id=${user.id}">${user.userId}</a>
-              </td>
-              <td>${user.userName}</td>
-              <td class="user-status">
                 <c:choose>
-                  <c:when test="${user.userStatus == 1}">정상</c:when>
-                  <c:when test="${user.userStatus == 2}">휴면</c:when>
-                  <c:when test="${user.userStatus == 3}">정지</c:when>
-                  <c:when test="${user.userStatus == 4}">탈퇴</c:when>
-                  <c:otherwise>알 수 없음</c:otherwise>
+                  <c:when test="${user.userStatus == 1}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #28a745;">${user.userId}</a>
+                  </c:when>
+                  <c:when test="${user.userStatus == 2}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6c757d;">${user.userId}</a>
+                  </c:when>
+                  <c:when test="${user.userStatus == 3}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #dc3545;">${user.userId}</a>
+                  </c:when>
+                  <c:when test="${user.userStatus == 4}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6f42c1;">${user.userId}</a>
+                  </c:when>
+                  <c:otherwise>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #000;">${user.userId}</a>
+                  </c:otherwise>
                 </c:choose>
               </td>
+
+              <!-- 유저이름 -->
+              <td>
+                <c:choose>
+                  <c:when test="${user.userStatus == 1}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #28a745;">${user.userName}</a>
+                  </c:when>
+                  <c:when test="${user.userStatus == 2}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6c757d;">${user.userName}</a>
+                  </c:when>
+                  <c:when test="${user.userStatus == 3}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #dc3545;">${user.userName}</a>
+                  </c:when>
+                  <c:when test="${user.userStatus == 4}">
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6f42c1;">${user.userName}</a>
+                  </c:when>
+                  <c:otherwise>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #000;">${user.userName}</a>
+                  </c:otherwise>
+                </c:choose>
+              </td>
+
+              <td>
+                <c:choose>
+                  <c:when test="${user.userStatus == 1}">
+                    <span style="color: #28a745; font-weight: 500;">정상</span>
+                  </c:when>
+                  <c:when test="${user.userStatus == 2}">
+                    <span style="color: #6c757d; font-weight: 500;">휴면</span>
+                  </c:when>
+                  <c:when test="${user.userStatus == 3}">
+                    <span style="color: #dc3545; font-weight: 500;">정지</span>
+                  </c:when>
+                  <c:when test="${user.userStatus == 4}">
+                    <span style="color: #6f42c1; font-weight: 500;">탈퇴</span>
+                  </c:when>
+                  <c:otherwise>
+                    <span style="color: #000;">알 수 없음</span>
+                  </c:otherwise>
+                </c:choose>
+              </td>
+
               <td>${user.createdAt}</td>
             </tr>
           </c:forEach>
