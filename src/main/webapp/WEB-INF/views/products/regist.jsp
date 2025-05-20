@@ -89,8 +89,8 @@
           <br>
           <label for="uploadFile" class="btn btn-primary">이미지 첨부</label>
           <input type="file" name="uploadFile" id="uploadFile" style="display: none;"> <!--DTO바꿔야하나....-->
-            <!--첨부파일클릭시, 업로드한 이미지 출력(미리보기)-->
-            <input type="hidden" id="imagePath" name="imagePath" value=""> <!--추가작성필요-->
+            <!--첨부파일선택시, 업로드한 이미지 출력(미리보기)-->
+
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@
     <br>
     <div align="center">
       <button type="submit" class="btn btn-success">등록하기</button>
-      <!--등록하기 클릭시, input데이터 넘어가고, 첨부파일은 resource경로에 저장되도록-->
+      <!--등록하기 클릭시, form 데이터 넘어가고, 첨부파일은 resource경로에 저장되도록-->
     </div>
   </form>
 
@@ -108,10 +108,11 @@
   document.getElementById('uploadFile').addEventListener('change', evt => {
     const file = evt.target.files[0];
 
-    if (file){ // 첨부파일에 뭔가가 들어오면
+    if (file){
       const previewImg = new FileReader();
       previewImg.onload = function(e) {
         document.getElementById('previewImg').src = e.target.result; // 비동기 방식으로 preview image src에 뿌려준다.
+        console.log("경로일까",e.target.result);
       };
       previewImg.readAsDataURL(file);
     }
