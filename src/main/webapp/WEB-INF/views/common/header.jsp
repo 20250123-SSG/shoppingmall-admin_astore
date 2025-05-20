@@ -51,7 +51,7 @@
         <a class="nav-link" href="${contextPath}/testorders">주문관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testinquiries">문의관리</a>
+        <a class="nav-link" href="${contextPath}/post/list.page?page=1">문의관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/stores">매장관리</a>
