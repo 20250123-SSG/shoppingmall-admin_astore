@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @ToString
 public class ProductModelOptionDTO {
+    private Integer id;
     private String productName;
     private String modelName;
     private String modelDescription;
