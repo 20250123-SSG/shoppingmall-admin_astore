@@ -18,9 +18,18 @@ public class UserController {
 
     // 사용자 목록
     @GetMapping("/list")
-    public String listUsers(Model model) {
-        List<UserDTO> users = userService.getAllUsers();
+    public String listUsers(@RequestParam(required = false) String keyword,
+                            @RequestParam(required = false) String status,
+                            Model model) {
+        List<UserDTO> users;
+        if ((keyword != null && !keyword.isEmpty()) || (status != null && !status.isEmpty())) {
+            users = userService.searchUsers(keyword, status);
+        } else {
+            users = userService.getAllUsers();
+        }
         model.addAttribute("users", users);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("status", status);
         return "users/list";
     }
 
@@ -47,25 +56,25 @@ public class UserController {
     }
 
     // 사용자 수정 폼
-    @GetMapping("/update")
-    public String showUpdateForm(@RequestParam("id") int id, Model model) {
+    @GetMapping("/edit")
+    public String editUserForm(@RequestParam("id") int id, Model model) {
         UserDTO user = userService.getUserById(id);
         model.addAttribute("user", user);
-        return "users/update";
+        return "users/edit";
     }
 
     // 사용자 수정 처리
     @PostMapping("/update")
     public String updateUser(@ModelAttribute UserDTO user) {
         userService.updateUser(user);
-        return "redirect:/users/list";
+        return "redirect:/users/detail?id=" + user.getId() + "&updated=true";
     }
 
     // 사용자 삭제 처리
     @GetMapping("/delete")
     public String deleteUser(@RequestParam("id") int id) {
         userService.deleteUser(id);
-        return "redirect:/users/list";
+        return "redirect:/users/list?deleted=true";
     }
 
     // 사용자 검색
