@@ -27,4 +27,14 @@
 
   <mvc:resources mapping="/resources/**" location="/resources/"/>
 
+  <!-- 로그인 인터셉터 설정 -->
+  <mvc:interceptors>
+    <mvc:interceptor>
+      <mvc:mapping path="/**"/>
+      <mvc:exclude-mapping path="/login"/>
+      <mvc:exclude-mapping path="/resources/**"/>
+      <bean class="com.aplestore.interceptor.AuthInterceptor"/>
+    </mvc:interceptor>
+  </mvc:interceptors>
+
 </beans>
