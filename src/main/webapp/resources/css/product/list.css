@@ -1,23 +1,20 @@
+/* 상단 헤더 영역 */
 .product-header {
   margin-bottom: 20px;
   padding: 20px 0 10px 0;
   border-bottom: 2px solid #dee2e6;
 }
 
-.product-header h2 {
-  margin: 0;
-  font-weight: bold;
-  font-size: 1.6rem;
-}
-
+/* 상품 필터 영역 */
 .product-filters {
   display: flex;
+  justify-content: space-between; /* ✅ 좌우 정렬 핵심 */
   align-items: center;
-  gap: 10px;
   margin-top: 10px;
 }
 
-.product-filters input[type=text],
+/* 검색 input, 정렬 select 공통 스타일 */
+.product-filters input[type="text"],
 .product-filters select {
   padding: 6px 10px;
   font-size: 0.9rem;
@@ -25,6 +22,7 @@
   border-radius: 4px;
 }
 
+/* 검색 버튼 */
 .product-filters button {
   padding: 6px 12px;
   font-size: 0.9rem;
@@ -34,20 +32,23 @@
   border-radius: 4px;
 }
 
-.table th {
-  background-color: #f8f9fa;
-  text-align: center;
-}
-
+/* 테이블 헤더/바디 정렬 */
+.table th,
 .table td {
   text-align: center;
   vertical-align: middle;
 }
 
+.table th {
+  background-color: #f8f9fa;
+}
+
+/* hover 효과 */
 .table-hover tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+/* 페이지네이션 */
 .pagination {
   margin-top: 20px;
   display: flex;
@@ -67,16 +68,44 @@
   background-color: #0d6efd;
   color: white;
 }
+
+/* 자동완성 박스 기준 부모 */
+.search-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  flex-grow: 1; /* ✅ 왼쪽이 너비 최대 차지 */
+}
+
+.search-left input[type="text"] {
+  flex-grow: 1;
+  padding: 6px;
+}
+
+/* 오른쪽 정렬 셀렉트 */
+.search-right {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
+  min-width: 150px;
+}
+
+.search-right select {
+  padding: 6px;
+  width: 150px;
+}
+
+/* 자동완성 박스 */
 .autocomplete-box {
   position: absolute;
-  top: 100%; /* input box 아래로 */
+  top: 100%;
   left: 0;
   width: 100%;
   z-index: 1000;
   background-color: white;
   border: 1px solid #ccc;
   border-top: none;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   display: none;
 }
 
@@ -88,5 +117,27 @@
 .suggest-item:hover {
   background-color: #f0f0f0;
 }
+/* 표 전체 너비 맞추기 */
+.table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+}
 
+
+.card {
+  width: 100%;
+  border: none;
+}
+
+.card-body {
+  padding: 0;
+}
+
+
+.content-wrapper {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
 
