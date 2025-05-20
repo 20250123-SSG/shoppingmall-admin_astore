@@ -2,30 +2,29 @@ package com.aplestore.controller;
 
 import com.aplestore.common.PageUtil;
 import com.aplestore.dto.ProductModelDTO;
+import com.aplestore.dto.ProductModelOptionDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import com.aplestore.dto.ProductModelOptionDTO;
-import com.aplestore.dto.StoreDTO;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aplestore.service.ProductService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,10 +72,59 @@ public class ProductController {
         return productService.suggestKeyword(keyword);
     }
 
+    @GetMapping("/{model-id}")
+    public String getProductDetail(@PathVariable("model-id") Long id, Model model) {
+        List<ProductModelOptionDTO> options = productService.getProductDetail(id);
+
+        if (options.isEmpty()) {
+            // 예외 처리 또는 기본 페이지로 리다이렉트 등
+            return "redirect:/products";
+        }
+
+
+        ProductModelOptionDTO firstOption = options.get(0);
+        model.addAttribute("productName", firstOption.getProductName());
+        model.addAttribute("modelName", firstOption.getModelName());
+        model.addAttribute("modelDescription", firstOption.getModelDescription());
+
+        // options를 JSON 문자열로 변환
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        String optionsJson = "";
+        try {
+            optionsJson = mapper.writeValueAsString(options);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("optionsJson", optionsJson);
+        return "products/detail";
+    }
+
+    @PostMapping("/options/remove")
+    public String removeModelOption(ProductModelOptionDTO dto, RedirectAttributes redirectAttributes) {
+        int result = productService.removeModelOption(dto);
+
+        if (result > 0) {
+            redirectAttributes.addFlashAttribute("message", "옵션이 삭제되었습니다.");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "옵션 삭제에 실패했습니다.");
+        }
+
+        return "redirect:/products/list.page"; // 목록 페이지로
+
+    }
     @GetMapping("/regist")
     public String registPage() {
         return "products/regist";  // 승주님 상품목록 페이지
     }
+
+
+
+
+
 
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
@@ -107,5 +155,6 @@ public class ProductController {
         log.debug("상품등록성공하였습니다. 이미지는 upload폴더를 확인해주세요.");
         return "redirect:/products"; // 중복등록방지를 위해 redirect
     }
+
 
 }
