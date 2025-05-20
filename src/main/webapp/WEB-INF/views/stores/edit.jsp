@@ -60,7 +60,7 @@
             </div>
             <div class="card-footer text-end bg-white border-0">
               <button type="submit" class="btn btn-sm btn-primary me-2">저장</button>
-              <a href="${contextPath}/stores/${store.id}/detail.page" class="btn btn-sm btn-secondary">취소</a>
+              <a href="${contextPath}/stores/detail.page?id=${store.id}" class="btn btn-sm btn-secondary">취소</a>
             </div>
             <input type="hidden" id="storeLat" name="storeLat" value="${store.storeLat}">
             <input type="hidden" id="storeLon" name="storeLon" value="${store.storeLon}">

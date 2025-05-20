@@ -30,8 +30,8 @@ public class StoreController {
     @GetMapping("/detail.page")
     public void storeDetailPage(int id, Model model){
 
-        Map<String, Object> map = storeService.getStoreDetail(id);
-        model.addAttribute("store", map.get("store"));
+        StoreDTO store = (StoreDTO) storeService.getStoreDetail(id).get("store");
+        model.addAttribute("store", store);
     }
 
     @GetMapping("/regist.page")
@@ -45,11 +45,10 @@ public class StoreController {
         return "redirect:/stores/list.page";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable int id, Model model) {
+    @GetMapping("/edit.page")
+    public void editForm(int id, Model model) {
         StoreDTO store = (StoreDTO) storeService.getStoreDetail(id).get("store");
         model.addAttribute("store", store);
-        return "stores/edit";
     }
 
     @PostMapping("/{id}/edit")
@@ -59,7 +58,6 @@ public class StoreController {
         return "redirect:/stores/detail.page?id=" + id;
     }
 
-    // 7) 삭제 처리 (Soft Delete)
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable int id) {
         storeService.softDeleteStore(id);

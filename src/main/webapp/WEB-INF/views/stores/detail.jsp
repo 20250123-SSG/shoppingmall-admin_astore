@@ -30,7 +30,7 @@
           <p><strong>우편번호:</strong> <c:out value="${store.storeZipCode}"/></p>
         </div>
         <div class="card-footer text-end">
-          <a href="${contextPath}/stores/${store.id}/edit" class="btn btn-sm btn-primary me-2">수정</a>
+          <a href="${contextPath}/stores/edit.page?id=${store.id}" class="btn btn-sm btn-primary me-2">수정</a>
           <form action="${contextPath}/stores/${store.id}/delete" method="post" style="display:inline;">
             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">
               삭제
