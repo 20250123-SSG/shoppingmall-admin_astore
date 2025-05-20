@@ -30,4 +30,18 @@
     ORDER BY MONTH(o.created_at)
   </select>
 
+  <select id="getSalesByDateRange" resultType="OrderDTO">
+    SELECT
+      o.id,
+      o.user_id,
+      o.order_amount,
+      o.created_at,
+      MONTH(o.created_at) AS month,
+      o.order_amount AS total_sales
+    FROM orders o
+    WHERE o.created_at BETWEEN #{startDate} AND #{endDate}
+    ORDER BY o.created_at DESC
+  </select>
+
+
 </mapper>

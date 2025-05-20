@@ -4,11 +4,16 @@ import com.aplestore.dto.OrderDTO;
 import com.aplestore.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -19,13 +24,6 @@ import java.util.Map;
 public class OrderController {
 
     private final OrderService orderService;
-
-    @GetMapping("/dashboard")
-    public String showDashboard(Model model) {
-        int currentYear = java.time.LocalDate.now().getYear();
-        model.addAttribute("currentYear", currentYear);
-        return "main/dashboard";
-    }
 
     @GetMapping("/years")
     @ResponseBody
@@ -43,5 +41,23 @@ public class OrderController {
                 "values", monthlyData.stream().map(OrderDTO::getTotalSales).toList()
         );
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/order")
+    public String Order(){
+        return "/orders/order";
+    }
+
+    @GetMapping(value="/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<OrderDTO>> getSalesByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+
+        List<OrderDTO> sales = orderService.getSalesByDateRange(startDateTime, endDateTime);
+        return ResponseEntity.ok(sales);
     }
 }
