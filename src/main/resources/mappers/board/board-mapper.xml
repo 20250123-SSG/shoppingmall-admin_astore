@@ -2,31 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.aplestore.dao.BoardMapper">
-
-  <resultMap id="boardResultMap" type="OrderDto">
-    <id column="id" property="id"/>
-    <result column="user_id" property="userId"/>
-    <result column="order_amount" property="orderAmount"/>
-    <result column="created_at" property="createdAt"/>
-  </resultMap>
-
-
-  <select id="selectAvailableYears" resultType="int">
-    SELECT DISTINCT YEAR(created_at)
-    FROM orders
-    ORDER BY YEAR(created_at) DESC
-  </select>
-
-  <select id="selectMonthlySales" resultType="OrderDto">
-    SELECT
-      MONTH(created_at) AS month,
-      SUM(od.price * od.quantity) AS totalSales
-    FROM orders o
-      JOIN orderdetails od ON o.id = od.order_id
-    WHERE YEAR(o.created_at) = #{year}
-    GROUP BY MONTH(created_at)
-    ORDER BY MONTH(created_at)
-  </select>
 
 </mapper>
