@@ -30,7 +30,7 @@
     ORDER BY MONTH(o.created_at)
   </select>
 
-  <select id="getSalesByDateRange" resultType="OrderDTO">
+  <select id="getSalesByDateRange" resultMap="orderResultMap">
     SELECT
       o.id,
       o.user_id,

@@ -13,7 +13,7 @@ public class OrderDTO {
     private int id;
     private int userId;
     private int orderAmount;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private int month;
     private int totalSales;
 }

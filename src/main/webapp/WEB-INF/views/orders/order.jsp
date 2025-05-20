@@ -51,9 +51,7 @@
 
   function searchSales() {
     const startDate = document.getElementById('startDate').value;
-    console.log(startDate)
     const endDate = document.getElementById('endDate').value;
-    console.log(endDate)
 
     if (!startDate || !endDate) {
       alert("시작일과 종료일을 입력해주세요.");
@@ -81,12 +79,12 @@
 
     data.forEach(order => {
       const dateTime = new Date(order.createdAt).toLocaleString(); // 날짜시간 표시
-      const row = `
+      const row =`
             <tr>
-                <td>${order.id}</td>
-                <td>${order.userId}</td>
-                <td>${order.orderAmount.toLocaleString()}원</td>
-                <td>${dateTime}</td>
+                <td>\${order.id}</td>
+                <td>\${order.userId}</td>
+                <td>\${order.orderAmount.toLocaleString()}원</td>
+                <td>\${dateTime}</td>
             </tr>`;
       tbody.innerHTML += row;
     });
