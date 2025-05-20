@@ -52,4 +52,4 @@
 
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<spring:eval expression="@jskey['appkey']" />&libraries=services"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="${contextPath}/resources/js/store/regist.js"/>
+<script src="${contextPath}/resources/js/store/regist.js"></script>

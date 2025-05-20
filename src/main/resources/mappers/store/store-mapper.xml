@@ -23,9 +23,11 @@
         ,store_zipcode    AS storeZipCode
         ,store_lat    AS storeLat
         ,store_lon    AS storeLon
+        ,store_status AS storeStatus
         ,created_at   AS createdAt
         ,modified_at   AS modifiedAt
     FROM stores
+    WHERE store_status = 1
     ORDER BY id
     DESC
     LIMIT #{offset}, #{display}
