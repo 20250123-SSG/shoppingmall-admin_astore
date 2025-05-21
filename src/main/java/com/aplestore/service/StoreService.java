@@ -1,13 +1,18 @@
 package com.aplestore.service;
 
-import java.util.List;
+import java.util.Map;
 
 import com.aplestore.dto.StoreDTO;
 
 public interface StoreService {
-    List<StoreDTO> getStoreList();
+    Map<String, Object> getStoreList(int page);
 
-    void createStore(StoreDTO dto);
+    Map<String, Object> getStoreDetail(int id);
 
-    StoreDTO getById(int id);
+    void registStore(StoreDTO storeDTO);
+
+    void updateStore(StoreDTO dto);
+
+    void softDeleteStore(int id);
+
 }

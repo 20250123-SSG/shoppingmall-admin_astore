@@ -1,48 +1,67 @@
 package com.aplestore.controller;
 
-import java.util.List;
+import java.util.Map;
+
+import com.aplestore.dto.StoreDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import com.aplestore.dto.StoreDTO;
 import com.aplestore.service.StoreService;
-
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/stores")
 public class StoreController {
 
     private final StoreService storeService;
 
-    @GetMapping("/stores")
-    public String listStores(Model model) {
-        List<StoreDTO> stores = storeService.getStoreList();
-        model.addAttribute("stores", stores);
-        return "stores/list";
+    @GetMapping("/list.page")
+    public void listStores(@RequestParam(value="page", defaultValue = "1") int page, Model model) {
+        Map<String, Object> map = storeService.getStoreList(page);
+        model.addAttribute("list", map.get("list"));
+        model.addAttribute("page", map.get("page"));
+        model.addAttribute("totalPage", map.get("totalPage"));
+        model.addAttribute("beginPage", map.get("beginPage"));
+        model.addAttribute("endPage", map.get("endPage"));
     }
 
-    @GetMapping("/stores/new")
-    public String showCreateForm() {
-        return "stores/new";
-    }
+    @GetMapping("/detail.page")
+    public void storeDetailPage(int id, Model model){
 
-    @PostMapping("/stores")
-    public String createStore(StoreDTO dto) {
-        storeService.createStore(dto);
-        return "redirect:/stores";
-    }
-
-    @GetMapping("/stores/{id}")
-    public String detailStore(@PathVariable int id, Model model) {
-        StoreDTO store = storeService.getById(id);
+        StoreDTO store = (StoreDTO) storeService.getStoreDetail(id).get("store");
         model.addAttribute("store", store);
-        // photos: List<PhotoDTO> 형태로 서비스에서 함께 가져온다고 가정
-//        model.addAttribute("store.photos", storeService.getPhotos(id));
-        // kakaoApiKey: 앞서 설명한 @Value or @ControllerAdvice 로 자동 추가
-        return "stores/detail";
     }
+
+    @GetMapping("/regist.page")
+    public void registPage(){}
+
+    @PostMapping("/new")
+    public String storeRegist(@ModelAttribute StoreDTO storeDTO){
+
+        storeService.registStore(storeDTO);
+
+        return "redirect:/stores/list.page";
+    }
+
+    @GetMapping("/edit.page")
+    public void editForm(int id, Model model) {
+        StoreDTO store = (StoreDTO) storeService.getStoreDetail(id).get("store");
+        model.addAttribute("store", store);
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editSubmit(@PathVariable int id, StoreDTO dto) {
+        dto.setId(id);
+        storeService.updateStore(dto);
+        return "redirect:/stores/detail.page?id=" + id;
+    }
+
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable int id) {
+        storeService.softDeleteStore(id);
+        return "redirect:/stores/list.page";
+    }
+
 }

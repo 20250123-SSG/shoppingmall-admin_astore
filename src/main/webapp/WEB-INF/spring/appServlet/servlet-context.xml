@@ -2,13 +2,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/mvc
        https://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/context
-       https://www.springframework.org/schema/context/spring-context.xsd">
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util
+       https://www.springframework.org/schema/util/spring-util.xsd">
 
   <mvc:annotation-driven/>
 
@@ -23,8 +25,24 @@
     <property name="basePackage" value="com.aplestore.dao"/>
   </bean>
 
+  <bean class="org.springframework.web.multipart.support.StandardServletMultipartResolver" id="multipartResolver"/>
+
   <context:component-scan base-package="com.aplestore" />
+  <context:property-placeholder location="classpath:application.properties"/>
 
   <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+  <!-- 로그인 인터셉터 설정 -->
+  <mvc:interceptors>
+    <mvc:interceptor>
+      <mvc:mapping path="/**"/>
+      <mvc:exclude-mapping path="/login"/>
+      <mvc:exclude-mapping path="/resources/**"/>
+      <bean class="com.aplestore.interceptor.AuthInterceptor"/>
+    </mvc:interceptor>
+  </mvc:interceptors>
+
+  <util:properties id="jskey" location="classpath:/application.properties"/>
+
 
 </beans>
