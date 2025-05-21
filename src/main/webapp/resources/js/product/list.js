@@ -15,10 +15,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const metaTag = document.querySelector("meta[name='context-path']");
   const contextPath = metaTag ? metaTag.content : "";
 
-  //  정렬 선택 시 sortHidden 갱신 후 폼 제출
+
   sortSelect.addEventListener("change", () => {
-    sortHidden.value = sortSelect.value;
-    form.submit();
+    const selectedSort = sortSelect.value;
+    const keyword = keywordInput.value.trim();
+    const baseUrl = window.location.pathname;
+
+    const params = new URLSearchParams();
+    if (keyword) params.set("keyword", keyword);
+    if (selectedSort) params.set("sort", selectedSort);
+
+    window.location.href = `${baseUrl}?${params.toString()}`;
   });
 
   // 자동완성 요청
@@ -49,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 3️⃣ 자동완성 클릭 시 값 입력 후 닫기
+  //  자동완성 클릭 시 값 입력 후 닫기
   autocompleteBox.addEventListener("click", (e) => {
     if (e.target.classList.contains("suggest-item")) {
       keywordInput.value = e.target.textContent;
@@ -60,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 4️⃣ Enter 입력 시 폼 제출
+  //  Enter 입력 시 폼 제출
   keywordInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -68,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 5️⃣ input 외 클릭 시 자동완성 닫기
+  // input 외 클릭 시 자동완성 닫기
   document.addEventListener("click", (e) => {
     if (!autocompleteBox.contains(e.target) && e.target !== keywordInput) {
       autocompleteBox.innerHTML = "";

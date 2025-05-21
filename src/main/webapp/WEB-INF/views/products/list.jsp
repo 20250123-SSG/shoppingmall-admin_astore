@@ -9,38 +9,38 @@
   <div class="product-header">
     <h1 style="text-align: center;">상품목록</h1>
 
-    <div class="product-filters">
+    <div class="product-header-controls">
       <form id="searchForm" method="get" action="" class="search-form">
-        <div class="search-left">
-          <input type="text" name="keyword" id="keywordInput"
-                 placeholder="제품명, 모델명 검색" value="${keyword}" autocomplete="off" />
-          <div id="autocomplete-box" class="autocomplete-box"></div>
+        <input type="text" name="keyword" id="keywordInput"
+               placeholder="제품명, 모델명 검색" value="${keyword}" autocomplete="off" />
+        <div id="autocomplete-box" class="autocomplete-box"></div>
 
-          <button type="submit">검색</button>
+        <button type="submit">검색</button>
 
-          <select id="sortSelect">
-            <option value="created" ${sort == 'created' ? 'selected' : ''}>생성순</option>
-            <option value="price_asc" ${sort == 'price_asc' ? 'selected' : ''}>가격 낮은순</option>
-            <option value="price_desc" ${sort == 'price_desc' ? 'selected' : ''}>가격 높은순</option>
-            <option value="model" ${sort == 'model' ? 'selected' : ''}>모델명순</option>
-          </select>
+        <select id="sortSelect">
+          <option value="created" ${sort == 'created' ? 'selected' : ''}>생성순</option>
+          <option value="price_asc" ${sort == 'price_asc' ? 'selected' : ''}>가격 낮은순</option>
+          <option value="price_desc" ${sort == 'price_desc' ? 'selected' : ''}>가격 높은순</option>
+          <option value="model" ${sort == 'model' ? 'selected' : ''}>모델명순</option>
+        </select>
 
-          <input type="hidden" name="sort" id="sortHidden" value="${sort}" />
-        </div>
+        <input type="hidden" name="sort" id="sortHidden" value="${sort}" />
       </form>
 
-    </div>
 
-
-
+      <button type="button" onclick="location.href='${pageContext.request.contextPath}/products/regist'" class="register-button">
+        상품 등록하기
+      </button>
     </div>
   </div>
+
+</div>
 
 
 
   <div class="card">
     <div class="card-body p-0">
-      <table class="table table-hover">
+      <table class="table fixed-table-layout table-hover">
         <thead>
         <tr>
           <th>제품명</th>
