@@ -27,16 +27,6 @@
     SELECT * FROM users WHERE id = #{id}
   </select>
 
-  <insert id="insertUser" parameterType="com.aplestore.dto.UserDTO">
-    INSERT INTO users (
-      user_id, user_pwd, user_name, user_phone, user_address,
-      user_mail, user_point, user_status, created_at, modified_at
-    ) VALUES (
-               #{userId}, #{userPwd}, #{userName}, #{userPhone}, #{userAddress},
-               #{userMail}, #{userPoint}, #{userStatus}, NOW(), NOW()
-             )
-  </insert>
-
   <update id="updateUser" parameterType="com.aplestore.dto.UserDTO">
     UPDATE users
     SET user_pwd = #{userPwd},
