@@ -98,7 +98,6 @@
       </li>
     </ul>
   </nav>
-
 </div>
 
 <script>
@@ -124,7 +123,5 @@
     document.getElementById('deleteForm').submit();
   });
 </script>
-
-
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
