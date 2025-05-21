@@ -10,7 +10,6 @@ import java.util.List;
 public interface UserMapper {
     List<UserDTO> getAllUsers();
     UserDTO getUserById(int id);
-    void insertUser(UserDTO user);
     void updateUser(UserDTO user);
     void deleteUser(int id);
 
