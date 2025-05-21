@@ -55,9 +55,6 @@ public class ProductController {
         List<ProductModelDTO> products = productService.getAllModels(
                 (int) pageInfo.get("offset"), display, keyword, sort
         );
-        System.out.println(products);
-
-
 
         model.addAttribute("list", products);
         model.addAttribute("pageInfo", pageInfo);
@@ -82,10 +79,16 @@ public class ProductController {
         }
 
 
-        ProductModelOptionDTO firstOption = options.get(0);
-        model.addAttribute("productName", firstOption.getProductName());
-        model.addAttribute("modelName", firstOption.getModelName());
-        model.addAttribute("modelDescription", firstOption.getModelDescription());
+        ProductModelOptionDTO selectedOption = options.stream()
+                .findFirst()
+                .orElse(options.get(0));
+
+
+
+        model.addAttribute("productName", selectedOption.getProductName());
+        model.addAttribute("modelName", selectedOption.getModelName());
+        model.addAttribute("modelDescription", selectedOption.getModelDescription());
+        model.addAttribute("modelPrice", selectedOption.getModelPrice());
 
         // options를 JSON 문자열로 변환
         ObjectMapper mapper = new ObjectMapper();
