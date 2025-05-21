@@ -54,6 +54,7 @@
       <button onclick="setPeriod(7)">1주일</button>
       <button onclick="setPeriod(30)">1개월</button>
       <button onclick="setPeriod(365)">1년</button>
+      <button onclick="setPeriod(1095)">3년</button>
     </div>
 
     <!-- 주문 리스트 테이블 -->
