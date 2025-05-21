@@ -7,14 +7,16 @@
 
 <div class="container py-4">
     <div class="d-flex justify-content-between mb-4">
-        <h2>${post.postSubject}</h2>
+        <h2>제목 : ${post.postSubject}</h2>
         <a href="${ctx}/post/list.page?boardId=${selectedBoardId}&page=${page}"
            class="btn btn-secondary">목록</a>
     </div>
 
     <dl class="row">
+
+
         <dt class="col-sm-2">작성자</dt>
-        <dd class="col-sm-10">${post.userId}</dd>
+        <dd class="col-sm-10">${post.userName}</dd>
 
         <dt class="col-sm-2">작성일</dt>
         <dd class="col-sm-10">

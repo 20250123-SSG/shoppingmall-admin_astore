@@ -5,7 +5,15 @@
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
+
 <div class="container py-4">
+  <!-- 선택된 보드 이름 찾기 -->
+  <c:forEach var="b" items="${boards}">
+    <c:if test="${b.id == selectedBoardId}">
+      <h2 class="mb-3">감사합니다${b.boardName}</h2>
+    </c:if>
+  </c:forEach>
+
   <!-- 게시판 탭 -->
   <ul class="nav nav-tabs mb-3">
     <c:forEach var="b" items="${boards}">
@@ -17,7 +25,20 @@
       </li>
     </c:forEach>
   </ul>
-
+  <!-- 검색 폼 -->
+  <form class="row g-2 mb-3" method="get" action="${ctx}/post/list.page">
+    <input type="hidden" name="boardId"  value="${selectedBoardId}"/>
+    <input type="hidden" name="page"     value="1"/>
+    <div class="col-auto">
+      <input type="text" name="keyword"
+             class="form-control"
+             value="${keyword}"
+             placeholder="제목 검색"/>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-secondary">검색</button>
+    </div>
+  </form>
   <!-- 글쓰기, 선택 삭제 -->
   <div class="d-flex justify-content-end mb-2">
     <a href="${ctx}/post/regist.page?boardId=${selectedBoardId}"
@@ -50,7 +71,7 @@
                 ${post.postSubject}
             </a>
           </td>
-          <td>${post.userId}</td>
+          <td>${post.userName}</td>
           <td>${post.createdAt}</td>
         </tr>
       </c:forEach>
@@ -77,17 +98,33 @@
       </li>
     </ul>
   </nav>
+
 </div>
 
 <script>
-    document.getElementById('selectAll').addEventListener('change', function(){
-        document.querySelectorAll('input[name="postIds"]')
-            .forEach(cb => cb.checked = this.checked);
-    });
-    document.getElementById('deleteBtn').addEventListener('click', function(){
-        if (!confirm('선택된 글을 삭제하시겠습니까?')) return;
-        document.getElementById('deleteForm').submit();
-    });
+  // 전체 선택/해제
+  document.getElementById('selectAll').addEventListener('change', function(){
+    document.querySelectorAll('input[name="postIds"]')
+      .forEach(cb => cb.checked = this.checked);
+  });
+
+  // 선택 삭제
+  document.getElementById('deleteBtn').addEventListener('click', function(){
+    // ① 체크된 박스 수 세기
+    const checked = document.querySelectorAll('input[name="postIds"]:checked').length;
+    if (checked === 0) {
+      alert('삭제할 글을 하나 이상 선택해주세요.');
+      return;
+    }
+    // ② 사용자 확인
+    if (!confirm('선택된 글을 삭제하시겠습니까?')) {
+      return;
+    }
+    // ③ 제출
+    document.getElementById('deleteForm').submit();
+  });
 </script>
+
+
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -17,4 +17,5 @@ public class PostDTO {
     private String postStatus;
     private String createdAt;
     private String modifiedAt;
+    private String userName;
 }

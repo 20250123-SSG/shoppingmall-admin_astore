@@ -1,12 +1,11 @@
 package com.aplestore.service;
 
+import java.util.List;
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import com.aplestore.dao.BoardMapper;
 import com.aplestore.dto.BoardDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,5 +22,4 @@ public class BoardServiceImpl implements BoardService {
     public BoardDTO findById(Integer id) {
         return boardMapper.selectById(id);
     }
-
 }

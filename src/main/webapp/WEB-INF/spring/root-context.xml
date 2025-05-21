@@ -9,10 +9,10 @@
   </bean>
 
   <bean class="com.zaxxer.hikari.HikariDataSource" id="hikariDataSource">
-    <property name="driverClassName" value="${db.driverClassName}" />
-    <property name="jdbcUrl" value="${db.url}" />
-    <property name="username" value="${db.username}" />
-    <property name="password" value="${db.password}" />
+    <property name="driverClassName" value="${driver}" />
+    <property name="jdbcUrl" value="${url}" />
+    <property name="username" value="${username}" />
+    <property name="password" value="${password}" />
   </bean>
 
   <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
