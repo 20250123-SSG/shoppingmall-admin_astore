@@ -20,9 +20,7 @@
 
   <!-- 글쓰기, 선택 삭제 -->
   <div class="d-flex justify-content-end mb-2">
-    <c:if test="${not empty user}">
-      <a href="${ctx}/post/regist.page?boardId=${selectedBoardId}" class="btn btn-primary me-2">글쓰기</a>
-    </c:if>
+    <a href="${ctx}/post/regist.page?boardId=${selectedBoardId}"
        class="btn btn-primary me-2">글쓰기</a>
     <button id="deleteBtn" class="btn btn-danger">선택 삭제</button>
   </div>

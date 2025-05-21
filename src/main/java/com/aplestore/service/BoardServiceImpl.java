@@ -4,7 +4,6 @@ import com.aplestore.dao.BoardMapper;
 import com.aplestore.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

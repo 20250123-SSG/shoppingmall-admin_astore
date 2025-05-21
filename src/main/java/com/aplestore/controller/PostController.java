@@ -20,23 +20,28 @@ public class PostController {
     private final PostService  postService;
     private final BoardService boardService;
 
-    /** 게시판별 페이징된 목록 */
+
     @GetMapping("/list.page")
     public String listByBoard(
-            @RequestParam(value="boardId",   required=false) Integer boardId,
-            @RequestParam(value="page",      defaultValue="1")  int page,
+            @RequestParam(value="boardId", required=false) Integer boardId,
+            @RequestParam(value="page",    defaultValue="1") int page,
+            @RequestParam(value="keyword", required=false) String keyword,
             Model model
     ) {
+        // 게시판 목록과 selectedBoardId 셋업 (기존 코드)
         List<BoardDTO> boards = boardService.findAll();
         if (boardId == null && !boards.isEmpty()) {
             boardId = boards.get(0).getId();
         }
-        Map<String,Object> map = postService.getPostsAndPagingByBoard(boardId, page);
 
+        // 검색 + 페이징 처리
+        Map<String,Object> map = postService
+                .getPostsAndPagingByBoard(boardId, page, keyword);
+
+        // 뷰에 필요한 값 일괄 추가
         model.addAttribute("boards",          boards);
         model.addAttribute("selectedBoardId", boardId);
         model.addAllAttributes(map);
-        // map 안에: list, page, totalPage, beginPage, endPage, display, boardId 등
         return "post/list";
     }
 
@@ -117,13 +122,19 @@ public class PostController {
     /** 선택 삭제 */
     @PostMapping("/delete")
     public String delete(
-            @RequestParam("postIds") List<Integer> ids,
-            @RequestParam(value="boardId", required=false) Integer boardId,  // required=false 추가
+            @RequestParam(value="postIds", required=false) List<Integer> ids,
+            @RequestParam("boardId")           Integer boardId,
             RedirectAttributes ra
     ) {
+        if (ids == null || ids.isEmpty()) {
+            ra.addAttribute("boardId", boardId);
+            ra.addFlashAttribute("msg", "삭제할 글을 하나 이상 선택해주세요.");
+            return "redirect:/post/list.page";
+        }
         postService.deletePosts(ids);
         ra.addAttribute("boardId", boardId);
         ra.addFlashAttribute("msg", "선택된 글이 삭제되었습니다.");
         return "redirect:/post/list.page";
     }
+
 }
