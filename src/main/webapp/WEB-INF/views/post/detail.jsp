@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+
 <html>
 <head>
     <title>Title</title>
@@ -57,25 +59,18 @@
                     <th style="vertical-align: middle"><button class="btn btn-secondary" id="reply_submit">등록하기</button></th>
                 </tr>
                 <tr>
-                    <td colspan="3">댓글 (<span id="rcount">3</span>) </td>
+                    <span id="rcount">${fn:length(replyList)}</span>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th>user02</th>
-                    <td>댓글입니다.너무웃기다앙</td>
-                    <td>2020-04-10</td>
-                </tr>
-                <tr>
-                    <th>user01</th>
-                    <td>많이봐주세용</td>
-                    <td>2020-04-08</td>
-                </tr>
-                <tr>
-                    <th>admin</th>
-                    <td>댓글입니다ㅋㅋㅋ</td>
-                    <td>2020-04-02</td>
-                </tr>
+                <c:forEach var="reply" items="${replyList}">
+                    <tr>
+                        <th>${reply.userId}</th>
+                        <td>${reply.content}</td>
+                        <td>${reply.createdAt}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
 
