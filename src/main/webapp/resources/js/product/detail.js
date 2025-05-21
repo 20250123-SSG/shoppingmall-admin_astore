@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const colorSelect = document.getElementById("colorSelect");
   const ramSelect = document.getElementById("ramSelect");
   const sizeSelect = document.getElementById("sizeSelect");
-  const priceArea = document.getElementById("priceArea");
+  const priceArea = document.getElementById("priceDisplay");
 
 
   const colors = new Set();
@@ -126,6 +126,7 @@ function editOption() {
     { name: "color", value: matched.color },
     { name: "ram", value: matched.ram },
     { name: "size", value: matched.size },
+    { name: "modelPrice", value: matched.modelPrice},
     { name: "modelDescription", value: matched.modelDescription },
     { name: "createdAt", value: matched.createdAt },
     { name: "modifiedAt", value: matched.modifiedAt }

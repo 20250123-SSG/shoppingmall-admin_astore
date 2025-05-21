@@ -5,17 +5,29 @@
   border-bottom: 2px solid #dee2e6;
 }
 
-/* 상품 필터 영역 */
-.product-filters {
+
+.product-header-controls {
   display: flex;
-  justify-content: space-between; /* ✅ 좌우 정렬 핵심 */
+  justify-content: space-between;
   align-items: center;
   margin-top: 10px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* 검색 영역 전체 */
+.search-form {
+  /*display: flex;*/
+  /*gap: 8px;*/
+  /*align-items: center;*/
+  /*flex-grow: 1;*/
+  /*flex-wrap: wrap;*/
+  position: relative;
 }
 
 /* 검색 input, 정렬 select 공통 스타일 */
-.product-filters input[type="text"],
-.product-filters select {
+.search-form input[type="text"],
+.search-form select {
   padding: 6px 10px;
   font-size: 0.9rem;
   border: 1px solid #ccc;
@@ -23,27 +35,35 @@
 }
 
 /* 검색 버튼 */
-.product-filters button {
+.search-form button {
   padding: 6px 12px;
   font-size: 0.9rem;
   border: none;
   background-color: #0d6efd;
   color: white;
   border-radius: 4px;
+  cursor: pointer;
 }
 
-/* 테이블 헤더/바디 정렬 */
-.table th,
-.table td {
-  text-align: center;
-  vertical-align: middle;
+/* 상품 등록 버튼 */
+.register-button {
+  padding: 8px 16px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  height: 38px; /* 검색창 높이와 일치 */
+  white-space: nowrap;
+  cursor: pointer;
 }
 
+/* 테이블 헤더 */
 .table th {
   background-color: #f8f9fa;
 }
 
-/* hover 효과 */
+/* 테이블 hover 효과 */
 .table-hover tbody tr:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
@@ -69,38 +89,14 @@
   color: white;
 }
 
-/* 자동완성 박스 기준 부모 */
-.search-left {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  position: relative;
-  flex-grow: 1; /* ✅ 왼쪽이 너비 최대 차지 */
-}
-
-.search-left input[type="text"] {
-  flex-grow: 1;
-  padding: 6px;
-}
-
-/* 오른쪽 정렬 셀렉트 */
-.search-right {
-  display: flex;
-  justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
-  min-width: 150px;
-}
-
-.search-right select {
-  padding: 6px;
-  width: 150px;
-}
-
 /* 자동완성 박스 */
 .autocomplete-box {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);
   left: 0;
-  width: 100%;
+  width: auto;
+  min-width: 200px;
+  max-width: 100%;
   z-index: 1000;
   background-color: white;
   border: 1px solid #ccc;
@@ -117,14 +113,40 @@
 .suggest-item:hover {
   background-color: #f0f0f0;
 }
-/* 표 전체 너비 맞추기 */
-.table {
+
+/* 고정 테이블 레이아웃 */
+.fixed-table-layout {
+  table-layout: fixed !important;
   width: 100%;
-  table-layout: auto;
   border-collapse: collapse;
 }
 
+.fixed-table-layout th:nth-child(1), .fixed-table-layout td:nth-child(1) {
+  min-width: 120px;
+  max-width: 200px;
+  text-align: center;
+}
 
+.fixed-table-layout th:nth-child(2), .fixed-table-layout td:nth-child(2) {
+  min-width: 120px;
+  max-width: 200px;
+  text-align: center;
+}
+
+.fixed-table-layout th:nth-child(3), .fixed-table-layout td:nth-child(3) {
+  min-width: 100px;
+  max-width: 150px;
+  text-align: center;
+}
+
+.fixed-table-layout th:nth-child(4), .fixed-table-layout td:nth-child(4),
+.fixed-table-layout th:nth-child(5), .fixed-table-layout td:nth-child(5) {
+  min-width: 120px;
+  max-width: 150px;
+  text-align: center;
+}
+
+/* 카드 컨테이너 */
 .card {
   width: 100%;
   border: none;
@@ -134,10 +156,9 @@
   padding: 0;
 }
 
-
+/* 컨텐츠 wrapper */
 .content-wrapper {
   width: 100%;
   padding: 0 20px;
   box-sizing: border-box;
 }
-
