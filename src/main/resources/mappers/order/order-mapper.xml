@@ -5,4 +5,43 @@
 
 <mapper namespace="com.aplestore.dao.OrderMapper">
 
+  <resultMap id="orderResultMap" type="OrderDTO">
+    <id column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="order_amount" property="orderAmount"/>
+    <result column="created_at" property="createdAt"/>
+  </resultMap>
+
+
+  <select id="selectAvailableYears" resultType="int">
+    SELECT DISTINCT YEAR (created_at)
+    FROM orders
+    ORDER BY YEAR (created_at) DESC
+  </select>
+
+  <select id="selectMonthlySales" resultType="OrderDTO">
+    SELECT
+      MONTH(o.created_at) AS month,
+      COALESCE(SUM(od.order_price * od.order_quantity), 0) AS totalSales
+    FROM orders o
+      LEFT JOIN orderdetails od ON o.id = od.order_id
+    WHERE YEAR(o.created_at) = #{year}
+    GROUP BY MONTH(o.created_at)
+    ORDER BY MONTH(o.created_at)
+  </select>
+
+  <select id="getSalesByDateRange" resultMap="orderResultMap">
+    SELECT
+      o.id,
+      o.user_id,
+      o.order_amount,
+      o.created_at,
+      MONTH(o.created_at) AS month,
+      o.order_amount AS total_sales
+    FROM orders o
+    WHERE o.created_at BETWEEN #{startDate} AND #{endDate}
+    ORDER BY o.created_at DESC
+  </select>
+
+
 </mapper>
