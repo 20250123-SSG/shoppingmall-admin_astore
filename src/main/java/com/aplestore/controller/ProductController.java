@@ -80,7 +80,6 @@ public class ProductController {
 
 
         ProductModelOptionDTO selectedOption = options.get(0);
-        System.out.println(selectedOption.getModelPrice());
 
 
 
@@ -123,18 +122,26 @@ public class ProductController {
         return "products/regist";
     }
 
+
+
+
+
+
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
+        // DB등록
         int result = productService.registProduct(product);
         if (result == 0) {
+            // 등록실패메시지 출력
             log.debug("다시 입력해주십시오. 등록페이지로 돌아갑니다.");
-            return "products/regist";
+            return "products/regist"; // 등록 페이지로 포워딩
         }
 
+        // 이미지 저장
         String imgPath = "C:/upload/";
         File dir = new File(imgPath);
         if (!dir.exists()) {
-            dir.mkdirs();
+            dir.mkdirs();  // 폴더가 없으면 생성
         }
 
         String newFilename = product.getModelName() + "_" + product.getId().toString() + ".png";
@@ -153,25 +160,20 @@ public class ProductController {
 
 
     @PostMapping("/edit")
-    public String editPage(ProductModelOptionDTO product, Model model){
+    public String editPage(ProductModelOptionDTO product, Model model) {
         log.debug("디티오가 으로 잘 들어오고 있는지. post {}", product);
-        int id = productService.getModelId(product);
-        product.setId(id);
-        model.addAttribute("model", product);
-        return "products/edit";
-    }
-
-    @PostMapping("/edit/save")
-    public String saveProduct(ProductModelOptionDTO product){
 
         int result = productService.saveChangeInfo(product);
-        if (result == 1){
-            log.debug("수정성공하였습니다.");
+
+        if (result == 1) {
+            log.debug("수정 성공");
+        } else {
+            log.warn("수정 실패");
         }
+
         return "redirect:/products/" + product.getId();
+
+
     }
-
-
-
 
 }

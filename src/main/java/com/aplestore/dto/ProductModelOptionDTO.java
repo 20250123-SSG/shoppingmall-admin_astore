@@ -11,6 +11,7 @@ import lombok.*;
 @ToString
 public class ProductModelOptionDTO {
     private Integer id;
+    private int modelId;
     private String productName;
     private String modelName;
     private int modelPrice;

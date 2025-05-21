@@ -52,11 +52,6 @@ public class ProductServiceImpl implements ProductService {
         return sqlSession.getMapper(ProductMapper.class).findMatchingModelNames(keyword);
     }
 
-    @Override
-    public int getModelId(ProductModelOptionDTO product) {
-        int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
-        return id;
-    }
 
     @Override
     public int saveChangeInfo(ProductModelOptionDTO product) {

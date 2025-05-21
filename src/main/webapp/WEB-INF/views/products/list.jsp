@@ -27,57 +27,49 @@
         <input type="hidden" name="sort" id="sortHidden" value="${sort}" />
       </form>
 
-
       <button type="button" onclick="location.href='${pageContext.request.contextPath}/products/regist'" class="register-button">
         상품 등록하기
       </button>
     </div>
   </div>
 
-</div>
-
-
-
-  <div class="card">
-    <div class="card-body p-0">
-      <table class="table fixed-table-layout table-hover">
-        <thead>
-        <tr>
-          <th>제품명</th>
-          <th>모델명</th>
-          <th>모델가격</th>
-          <th>생성일</th>
-          <th>수정일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="product" items="${list}">
-          <tr class="product-row"
-              onclick="location.href='${pageContext.request.contextPath}/products/${product.modelId}'"
-              style="cursor: pointer;">
-          <td>${product.productName}</td>
-            <td>${product.modelName}</td>
-            <td><fmt:formatNumber value="${product.modelPrice}" type="number" groupingUsed="true" /></td>
-            <td>${product.createdAt.toLocalDate()}</td>
-            <td>${product.modifiedAt.toLocalDate()}</td>
+  <c:if test="${not empty list}">
+    <div class="card">
+      <div class="card-body p-0">
+        <table class="table fixed-table-layout table-hover">
+          <thead>
+          <tr>
+            <th>제품명</th>
+            <th>모델명</th>
+            <th>모델가격</th>
+            <th>생성일</th>
+            <th>수정일</th>
           </tr>
-        </c:forEach>
-        <c:if test="${empty list}">
-          <tr><td colspan="5">등록된 상품이 없습니다.</td></tr>
-        </c:if>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+          <c:forEach var="product" items="${list}">
+            <tr class="product-row"
+                onclick="location.href='${pageContext.request.contextPath}/products/${product.modelId}'"
+                style="cursor: pointer;">
+              <td>${product.productName}</td>
+              <td>${product.modelName}</td>
+              <td><fmt:formatNumber value="${product.modelPrice}" type="number" groupingUsed="true" /></td>
+              <td>${product.createdAt.toLocalDate()}</td>
+              <td>${product.modifiedAt.toLocalDate()}</td>
+            </tr>
+          </c:forEach>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <div class="pagination">
-    <c:forEach var="i" begin="${pageInfo.beginPage}" end="${pageInfo.endPage}">
-      <a href="?page=${i}&keyword=${keyword}&sort=${sort}" class="${i == pageInfo.page ? 'active' : ''} pagination-link">${i}</a>
-    </c:forEach>
-  </div>
+    <div class="pagination">
+      <c:forEach var="i" begin="${pageInfo.beginPage}" end="${pageInfo.endPage}">
+        <a href="?page=${i}&keyword=${keyword}&sort=${sort}" class="${i == pageInfo.page ? 'active' : ''} pagination-link">${i}</a>
+      </c:forEach>
+    </div>
+  </c:if>
 </div>
 
 <script src="${contextPath}/resources/js/product/list.js"></script>
-
-
 <%@ include file="../common/footer.jsp" %>

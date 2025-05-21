@@ -27,7 +27,6 @@ public interface ProductMapper {
     int insertProduct(ProductModelOptionDTO product);
 
     // 상품수정
-    int selectModelId(ProductModelOptionDTO product);
     int updateProduct(ProductModelOptionDTO product);
 
 
