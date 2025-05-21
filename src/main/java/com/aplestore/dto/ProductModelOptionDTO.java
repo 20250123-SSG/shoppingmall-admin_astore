@@ -15,7 +15,6 @@ public class ProductModelOptionDTO {
     private String modelName;
     private int modelPrice;
     private String modelDescription;
-    private String modelPrice;
     private int optionalModelPrice;
     private String color;
     private String ram;

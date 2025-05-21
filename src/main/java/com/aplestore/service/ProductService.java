@@ -18,6 +18,6 @@ public interface ProductService {
 
     int removeModelOption(ProductModelOptionDTO dto);
 
-//    ProductModelOptionDTO getAllModelOption(ProductModelOptionDTO product);
+    int getModelId(ProductModelOptionDTO product);
     int saveChangeInfo(ProductModelOptionDTO product);
 }

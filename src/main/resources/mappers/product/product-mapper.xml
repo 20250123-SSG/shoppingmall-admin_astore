@@ -67,30 +67,40 @@
             )
     </insert>
 
-<!--    <select id="selectModelByOption" parameterType="ProductModelOptionDTO" resultType="ProductModelOptionDTO">-->
-<!--        SELECT-->
-<!--            -->
-<!--        FROM-->
-<!--            -->
-<!--    </select>-->
+    <select id="selectModelId" parameterType="ProductModelOptionDTO" resultType="int">
+        SELECT
+            m.id
+        FROM
+            model_options o
+        JOIN models m ON m.id = o.model_id
+        WHERE
+            m.model_name = #{modelName}
+        AND o.color = #{color}
+        AND o.ram = #{ram}
+        AND o.size = #{size}
+    </select>
 
     <!-- 상품수정 -->
     <update id="updateProduct">
         UPDATE
-            model_options
+            model_options mo
+            JOIN models m ON m.id = mo.model_id
         SET
-            (
-                model_id = (SELECT id FROM models WHERE name = #{modelName}
-                    , color = #{color}
-                    , ram = #{ram}
-                    , size = #{size}
-                    , optional_model_price = #{optionalModelPrice}
-                    , modify_date = NOW()
-                    )
+            m.model_name = #{modelName}
+            , m.model_price = #{modelPrice}
+            , m.model_description = #{modelDescription}
+            , mo.model_id = (SELECT id FROM models WHERE model_name = #{modelName})
+            , mo.color = #{color}
+            , mo.ram = #{ram}
+            , mo.size = #{size}
+            , mo.optional_model_price = #{optionalModelPrice}
+            , mo.modified_at = NOW()
+        WHERE
+            m.id = #{id}
     </update>
 
   <select id="getAllModels" resultType="ProductModelDTO">
-    SELECT
+    SELECT distinct
     m.id AS modelId,
     p.product_name AS productName,
     m.model_name AS modelName,
@@ -131,7 +141,7 @@
   <select id="countAllModels" resultType="int">
     SELECT COUNT(*)
     FROM models m
-    INNER JOIN products p ON m.id = p.id
+    INNER JOIN products p ON m.product_id = p.id
     INNER JOIN model_options mo ON m.id = mo.model_id
 
     <where>
@@ -152,23 +162,24 @@
   </select>
 
 
-  <select id="getProductDetail" resultType="ProductModelOptionDTO">
-    SELECT
-      mo.id AS id,
-      p.product_name AS productName,
-      m.model_name AS modelName,
-      m.model_description AS modelDescription,
-      mo.optional_model_price AS optionalModelPrice,
-      mo.color AS color,
-      mo.ram AS ram,
-      mo.size AS size,
-      mo.created_at AS createdAt,
-      mo.modified_at AS modifiedAt
-    FROM models m
-    INNER JOIN products p ON m.product_id = p.id
-    INNER JOIN model_options mo ON m.id = mo.model_id
-    WHERE m.id = #{id}
-  </select>
+    <select id="getProductDetail" resultType="ProductModelOptionDTO">
+        SELECT
+            mo.id AS id,
+            p.product_name AS productName,
+            m.model_name AS modelName,
+            m.model_description AS modelDescription,
+            mo.optional_model_price AS optionalModelPrice,
+            m.model_price AS modelPrice,
+            mo.color AS color,
+            mo.ram AS ram,
+            mo.size AS size,
+    mo.created_at AS createdAt,
+    mo.modified_at AS modifiedAt
+        FROM model_options mo
+            INNER JOIN models m ON m.id = mo.model_id
+            INNER JOIN products p ON m.product_id = p.id
+        WHERE m.id = #{id}
+    </select>
 
   <delete id="removeModelOption" parameterType="ProductModelOptionDTO">
     DELETE FROM model_options

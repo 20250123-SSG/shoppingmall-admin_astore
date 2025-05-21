@@ -20,14 +20,14 @@ public interface ProductMapper {
     int removeModelOption(ProductModelOptionDTO productModelOptionDTO);
 
     // 상품등록
-    int selectModelIdIfExists(String modelName);
+    Integer selectModelIdIfExists(String modelName);
     int insertModel(ProductModelOptionDTO product);
 
     int countExistsModel(ProductModelOptionDTO product);
     int insertProduct(ProductModelOptionDTO product);
 
     // 상품수정
-//    ProductModelOptionDTO selectModelByOption(ProductModelOptionDTO product);
+    int selectModelId(ProductModelOptionDTO product);
     int updateProduct(ProductModelOptionDTO product);
 
 

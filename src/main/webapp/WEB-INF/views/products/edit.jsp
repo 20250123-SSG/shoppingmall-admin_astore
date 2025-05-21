@@ -37,7 +37,7 @@
 
 <div class="content-wrapper">
   <h2 class="mb-4">상품 수정</h2>
-  <form id="product-enroll-form" method="post" action="${pageContext.request.contextPath}/products/edit" enctype="multipart/form-data">
+  <form id="product-enroll-form" method="post" action="${pageContext.request.contextPath}/products/edit/save" enctype="multipart/form-data">
     <div class="flex-container">
       <div class="form-box">
         <div class="product-info">
@@ -56,7 +56,7 @@
           </div>
           <div class="mb-3">
             <label for="modelPrice" class="form-label">기본 가격</label>
-            <input type="text" class="form-control" id="modelPrice" name="modelPrice" oninput="formatPrice(this)" required>
+            <input type="text" class="form-control" id="modelPrice" name="modelPrice" value="${model.modelPrice}" oninput="formatPrice(this)" required>
           </div>
           <br>
           <div class="mb-3">
@@ -73,12 +73,13 @@
           </div>
           <div class="mb-3">
             <label for="optionalModelPrice" class="form-label">옵션비용</label>
-            <input type="text" class="form-control" id="optionalModelPrice" name="optionalModelPrice" value="${model.optionalModelPrice}" oninput="formatPriceOption(this)" required>
+            <c:set var="resultPrice" value="${model.optionalModelPrice - model.modelPrice} " />
+            <input type="text" class="form-control" id="optionalModelPrice" name="optionalModelPrice"  value="${resultPrice}" oninput="formatPriceOption(this)" required>
           </div>
           <br>
           <div class="mb-3">
             <label for="description" class="form-label">제품 설명</label>
-            <textarea class="form-control" id="description" name="modelDescription" rows="4" required></textarea>
+            <textarea class="form-control" id="description" name="modelDescription" rows="4" required>${model.modelDescription}</textarea>
           </div>
         </div>
       </div>
@@ -95,12 +96,17 @@
     <br>
     <br>
     <div align="center">
-      <button type="submit" class="btn btn-success">등록하기</button>
+      <button type="submit" class="btn btn-success">수정하기</button>
     </div>
   </form>
 </div>
 
 <script>
+  window.addEventListener("DOMContentLoaded", () => {
+    formatPrice(document.getElementById("optionalModelPrice"));
+    formatPrice(document.getElementById("modelPrice"));
+  });
+
   function formatPrice(input) {
     let value = input.value.replace(/[^0-9]/g, '');
     input.value = Number(value).toLocaleString();

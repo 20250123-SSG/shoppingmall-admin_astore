@@ -79,9 +79,8 @@ public class ProductController {
         }
 
 
-        ProductModelOptionDTO selectedOption = options.stream()
-                .findFirst()
-                .orElse(options.get(0));
+        ProductModelOptionDTO selectedOption = options.get(0);
+        System.out.println(selectedOption.getModelPrice());
 
 
 
@@ -124,12 +123,6 @@ public class ProductController {
         return "products/regist";
     }
 
-
-
-
-
-
-
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
         int result = productService.registProduct(product);
@@ -157,19 +150,25 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @GetMapping("/edit")
+
+
+    @PostMapping("/edit")
     public String editPage(ProductModelOptionDTO product, Model model){
-        // 조회가 필요하다면 여기서 진행
-        // ProductModelOptionDTO productDetail = productService.getAllModelOption(product);
+        log.debug("디티오가 으로 잘 들어오고 있는지. post {}", product);
+        int id = productService.getModelId(product);
+        product.setId(id);
         model.addAttribute("model", product);
         return "products/edit";
     }
 
-    @PostMapping("/edit")
-    public String savechangeInfo(ProductModelOptionDTO product){
-        int result = productService.saveChangeInfo(product);
+    @PostMapping("/edit/save")
+    public String saveProduct(ProductModelOptionDTO product){
 
-        return "redirect:products/edit"; // TODO: 상품상세페이지로 변경
+        int result = productService.saveChangeInfo(product);
+        if (result == 1){
+            log.debug("수정성공하였습니다.");
+        }
+        return "redirect:/products/" + product.getId();
     }
 
 
