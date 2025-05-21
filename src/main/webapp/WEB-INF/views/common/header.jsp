@@ -45,7 +45,7 @@
         <a class="nav-link" href="${contextPath}/users/list">유저관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testproducts">상품관리</a>
+        <a class="nav-link" href="${contextPath}/products">상품관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/testorders">주문관리</a>

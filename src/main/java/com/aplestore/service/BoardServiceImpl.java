@@ -1,5 +1,6 @@
 package com.aplestore.service;
 
+
 import com.aplestore.dao.BoardMapper;
 import com.aplestore.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
@@ -22,4 +23,5 @@ public class BoardServiceImpl implements BoardService {
     public BoardDTO findById(Integer id) {
         return boardMapper.selectById(id);
     }
+
 }
