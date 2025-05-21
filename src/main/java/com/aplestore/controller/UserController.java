@@ -41,20 +41,6 @@ public class UserController {
         return "users/detail";
     }
 
-    // 사용자 등록 폼
-    @GetMapping("/insert")
-    public String showInsertForm(Model model) {
-        model.addAttribute("user", new UserDTO());
-        return "users/insert";
-    }
-
-    // 사용자 등록 처리
-    @PostMapping("/insert")
-    public String insertUser(@ModelAttribute UserDTO user) {
-        userService.insertUser(user);
-        return "redirect:/users/list";
-    }
-
     // 사용자 수정 폼
     @GetMapping("/edit")
     public String editUserForm(@RequestParam("id") int id, Model model) {
