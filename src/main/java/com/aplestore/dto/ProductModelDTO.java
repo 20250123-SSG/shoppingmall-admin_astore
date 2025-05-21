@@ -13,6 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProductModelDTO {
+    private Long modelId;
     private String productName;
     private String modelName;
     private int modelPrice;

@@ -2,17 +2,14 @@ package com.aplestore.service;
 
 import com.aplestore.dao.ProductMapper;
 import com.aplestore.dto.ProductModelDTO;
-import java.util.List;
-
 import com.aplestore.dto.ProductModelOptionDTO;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -57,7 +54,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<String> suggestKeyword(String keyword) {
-        return sqlSession.getMapper(ProductMapper.class).findMatchingModelNames("%" + keyword + "%");
+        return sqlSession.getMapper(ProductMapper.class).findMatchingModelNames(keyword);
     }
-}
 
+    @Override
+    public List<ProductModelOptionDTO> getProductDetail(Long id){
+        return sqlSession.getMapper(ProductMapper.class).getProductDetail(id);
+    }
+
+    @Override
+    public int removeModelOption(ProductModelOptionDTO dto){
+        return sqlSession.getMapper(ProductMapper.class).removeModelOption(dto);
+    }
+
+    }
