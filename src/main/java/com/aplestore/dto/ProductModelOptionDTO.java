@@ -14,10 +14,11 @@ public class ProductModelOptionDTO {
     private String productName;
     private String modelName;
     private String modelDescription;
+    private String modelPrice;
     private int optionalModelPrice;
     private String color;
     private String ram;
-    private BigDecimal size;
+    private String size;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

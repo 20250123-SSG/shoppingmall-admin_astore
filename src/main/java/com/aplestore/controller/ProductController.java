@@ -75,24 +75,21 @@ public class ProductController {
 
     @GetMapping("/regist")
     public String registPage() {
-        return "products/regist";  // 승주님 상품목록 페이지
+        return "products/regist";
     }
 
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
-        // DB등록
         int result = productService.registProduct(product);
         if (result == 0) {
-            // 등록실패메시지 출력
             log.debug("다시 입력해주십시오. 등록페이지로 돌아갑니다.");
-            return "products/regist"; // 등록 페이지로 포워딩
+            return "products/regist";
         }
 
-        // 이미지 저장
         String imgPath = "C:/upload/";
         File dir = new File(imgPath);
         if (!dir.exists()) {
-            dir.mkdirs();  // 폴더가 없으면 생성
+            dir.mkdirs();
         }
 
         String newFilename = product.getModelName() + "_" + product.getId().toString() + ".png";
@@ -105,7 +102,7 @@ public class ProductController {
             e.printStackTrace();
         }
         log.debug("상품등록성공하였습니다. 이미지는 upload폴더를 확인해주세요.");
-        return "redirect:/products"; // 중복등록방지를 위해 redirect
+        return "redirect:/products";
     }
 
 }

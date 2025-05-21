@@ -5,7 +5,6 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 
-<!-- 컨텍스트 경로를 JavaScript에서 사용하기 위한 메타 태그 -->
 <meta name="context-path" content="${contextPath}">
 
 <style>
@@ -38,12 +37,10 @@
 
 <div class="content-wrapper">
   <h2 class="mb-4">상품 등록</h2>
-
-  <form id="product-enroll-form" method="post" action="${pageContext.request.contextPath}/products/regist" enctype="multipart/form-data">
+    <form id="product-enroll-form" method="post" action="${pageContext.request.contextPath}/products/regist" enctype="multipart/form-data">
     <div class="flex-container">
       <div class="form-box">
         <div class="product-info">
-
           <div class="mb-3">
             <label for="productName" class="form-label">제품명</label>
             <select id="productName" name="productName" class="form-control" required>
@@ -58,8 +55,8 @@
             <input type="text" class="form-control" id="modelName" name="modelName" required>
           </div>
           <div class="mb-3">
-            <label for="price" class="form-label">가격</label>
-            <input type="text" class="form-control" id="price" name="optionalModelPrice" required>
+            <label for="modelPrice" class="form-label">기본 가격</label>
+            <input type="text" class="form-control" id="modelPrice" name="modelPrice" oninput="formatPrice(this)" required>
           </div>
           <br>
           <div class="mb-3">
@@ -74,12 +71,15 @@
             <label for="size" class="form-label">사이즈</label>
             <input type="text" class="form-control" id="size" name="size" required>
           </div>
+          <div class="mb-3">
+            <label for="optionalModelPrice" class="form-label">옵션비용</label>
+            <input type="text" class="form-control" id="optionalModelPrice" name="optionalModelPrice" oninput="formatPriceOption(this)" required>
+          </div>
           <br>
           <div class="mb-3">
             <label for="description" class="form-label">제품 설명</label>
             <textarea class="form-control" id="description" name="modelDescription" rows="4" required></textarea>
           </div>
-
         </div>
       </div>
       <div class="image-box">
@@ -88,9 +88,7 @@
           <br>
           <br>
           <label for="uploadFile" class="btn btn-primary">이미지 첨부</label>
-          <input type="file" name="uploadFile" id="uploadFile" style="display: none;"> <!--DTO바꿔야하나....-->
-            <!--첨부파일선택시, 업로드한 이미지 출력(미리보기)-->
-
+          <input type="file" name="uploadFile" id="uploadFile" style="display: none;">
         </div>
       </div>
     </div>
@@ -98,25 +96,38 @@
     <br>
     <div align="center">
       <button type="submit" class="btn btn-success">등록하기</button>
-      <!--등록하기 클릭시, form 데이터 넘어가고, 첨부파일은 resource경로에 저장되도록-->
     </div>
   </form>
-
 </div>
 
 <script>
+  function formatPrice(input) {
+    let value = input.value.replace(/[^0-9]/g, '');
+    input.value = Number(value).toLocaleString();
+  }
+  function formatPriceOption(input) {
+    let value = input.value.replace(/[^0-9]/g, '');
+    input.value = Number(value).toLocaleString();
+  }
+
   document.getElementById('uploadFile').addEventListener('change', evt => {
     const file = evt.target.files[0];
 
     if (file){
       const previewImg = new FileReader();
       previewImg.onload = function(e) {
-        document.getElementById('previewImg').src = e.target.result; // 비동기 방식으로 preview image src에 뿌려준다.
-        console.log("경로일까",e.target.result);
+        document.getElementById('previewImg').src = e.target.result;
       };
       previewImg.readAsDataURL(file);
     }
   })
+
+  document.querySelector("form").addEventListener("submit", function() {
+    const modelPrice = document.getElementById("modelPrice");
+    const optionPrice = document.getElementById("optionalModelPrice");
+    modelPrice.value= modelPrice.value.replace(/,/g, "");
+    optionPrice.value = parseInt(modelPrice.value) + parseInt(optionPrice.value.replace(/,/g, ""));
+  });
 </script>
 
 <%@ include file="../common/footer.jsp" %>

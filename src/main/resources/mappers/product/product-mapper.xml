@@ -20,11 +20,13 @@
              product_id
            , model_name
            , model_description
+           , model_price
         )
         values(
              (Select id FROM products WHERE product_name = #{productName})
             , #{modelName}
             , #{modelDescription}
+            , #{modelPrice}
         )
     </insert>
 
