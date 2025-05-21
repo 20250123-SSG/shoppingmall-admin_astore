@@ -50,8 +50,27 @@
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/testorders">주문관리</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/post/list.page?page=1">문의관리</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           id="inquiryDropdown"
+           role="button"
+           data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false">
+          문의관리
+        </a>
+        <div class="dropdown-menu" aria-labelledby="inquiryDropdown">
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=1&page=1">
+            공지사항
+          </a>
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=2&page=1">
+            1대1문의
+          </a>
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=3&page=1">
+            상품문의
+          </a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/stores">매장관리</a>

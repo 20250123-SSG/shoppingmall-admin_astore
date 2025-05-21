@@ -1,119 +1,130 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
-<html>
-<head>
-  <title>공지사항</title>
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"/>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const selectAll = document.getElementById('selectAll');
-      const deleteBtn = document.getElementById('deleteBtn');
-      const form = document.getElementById('deleteForm');
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
-      // 전체 선택/해제
-      selectAll.addEventListener('change', function() {
-        document.querySelectorAll('input[name="postIds"]').forEach(cb => {
-          cb.checked = selectAll.checked;
-        });
-      });
 
-      // 삭제 버튼 클릭
-      deleteBtn.addEventListener('click', function() {
-        const checked = Array.from(document.querySelectorAll('input[name="postIds"]:checked'));
-        if (!checked.length) {
-          alert('삭제할 항목을 하나 이상 선택해주세요.');
-          return;
-        }
-        if (confirm('선택된 항목을 정말 삭제하시겠습니까?')) {
-          form.submit();
-        }
-      });
-    });
-  </script>
-</head>
-<body>
 <div class="container py-4">
+  <!-- 선택된 보드 이름 찾기 -->
+  <c:forEach var="b" items="${boards}">
+    <c:if test="${b.id == selectedBoardId}">
+      <h2 class="mb-3">감사합니다${b.boardName}</h2>
+    </c:if>
+  </c:forEach>
 
-  <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-
-  <div class="d-flex justify-content-between align-items-end my-4">
-    <div>
-      <h2>공지사항</h2>
-      <small class="text-muted">공지사항입니다.</small>
+  <!-- 게시판 탭 -->
+  <ul class="nav nav-tabs mb-3">
+    <c:forEach var="b" items="${boards}">
+      <li class="nav-item">
+        <a class="nav-link ${b.id == selectedBoardId ? 'active':''}"
+           href="${ctx}/post/list.page?boardId=${b.id}&page=1">
+            ${b.boardName}
+        </a>
+      </li>
+    </c:forEach>
+  </ul>
+  <!-- 검색 폼 -->
+  <form class="row g-2 mb-3" method="get" action="${ctx}/post/list.page">
+    <input type="hidden" name="boardId"  value="${selectedBoardId}"/>
+    <input type="hidden" name="page"     value="1"/>
+    <div class="col-auto">
+      <input type="text" name="keyword"
+             class="form-control"
+             value="${keyword}"
+             placeholder="제목 검색"/>
     </div>
-    <a href="${ctx}/post/regist.page" class="btn btn-primary">등록</a>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-secondary">검색</button>
+    </div>
+  </form>
+  <!-- 글쓰기, 선택 삭제 -->
+  <div class="d-flex justify-content-end mb-2">
+    <a href="${ctx}/post/regist.page?boardId=${selectedBoardId}"
+       class="btn btn-primary me-2">글쓰기</a>
+    <button id="deleteBtn" class="btn btn-danger">선택 삭제</button>
   </div>
 
-  <!-- 삭제 폼 시작: id 추가 -->
   <form id="deleteForm" action="${ctx}/post/delete" method="post">
-    <div class="mb-2">
-      <!-- 선택 삭제 버튼 -->
-      <button type="button" id="deleteBtn" class="btn btn-danger">선택 삭제</button>
-    </div>
-
-    <table id="postList" class="table table-hover">
+    <input type="hidden" name="boardId" value="${selectedBoardId}"/>
+    <table class="table table-hover align-middle">
       <thead>
       <tr>
-        <!-- 전체선택 체크박스 추가 -->
-        <th style="width: 40px;">
-          <input type="checkbox" id="selectAll"/>
-        </th>
-        <th width="100px">번호</th>
-        <th width="400px">제목</th>
-        <th width="120px">작성자</th>
-        <th>작성일</th>
+        <th><input type="checkbox" id="selectAll"/></th>
+        <th>번호</th><th>제목</th><th>작성자</th><th>작성일</th>
       </tr>
       </thead>
       <tbody>
+      <c:if test="${empty list}">
+        <tr><td colspan="5" class="text-center text-muted">
+          게시글이 없습니다.
+        </td></tr>
+      </c:if>
       <c:forEach var="post" items="${list}">
         <tr>
-          <!-- 삭제용 체크박스 name="deleteIds" 유지 -->
+          <td><input type="checkbox" name="postIds" value="${post.id}"/></td>
+          <td>${post.id}</td>
           <td>
-            <input type="checkbox" name="postIds" value="${post.id}"/>
+            <a href="${ctx}/post/detail.page?no=${post.id}&boardId=${boardId}&page=${page}"
+               class="text-decoration-none">
+                ${post.postSubject}
+            </a>
           </td>
-          <td onclick="location.href='${ctx}/post/detail.page?no=${post.id}';">${post.id}</td>
-          <td onclick="location.href='${ctx}/post/detail.page?no=${post.id}';">${post.postSubject}</td>
-          <td onclick="location.href='${ctx}/post/detail.page?no=${post.id}';">${post.userId}</td>
-          <td onclick="location.href='${ctx}/post/detail.page?no=${post.id}';">${post.createdAt}</td>
+          <td>${post.userName}</td>
+          <td>${post.createdAt}</td>
         </tr>
       </c:forEach>
       </tbody>
     </table>
   </form>
-  <!-- 삭제 폼 끝 -->
 
-  <form action="${ctx}/post/list.page" method="get"
-        class="d-flex justify-content-center my-4">
-    <select class="form-select w-auto me-2" name="type">
-      <option value="subject" ${param.type=='subject'?'selected':''}>제목</option>
-      <option value="writer"  ${param.type=='writer'?'selected':''}>작성자</option>
-    </select>
-    <input type="text" name="keyword" class="form-control w-50 me-2"
-           value="${param.keyword}" placeholder="검색어를 입력하세요"/>
-    <button type="submit" class="btn btn-secondary">검색</button>
-  </form>
-
+  <!-- 페이징 -->
   <nav>
-    <ul id="paging_area" class="pagination d-flex justify-content-center">
-      <li class="page-item ${page == 1 ? 'disabled' : ''}">
-        <a class="page-link" href="${ctx}/post/list.page?page=${page-1}"><</a>
+    <ul class="pagination justify-content-center">
+      <li class="page-item ${page == 1 ? 'disabled':''}">
+        <a class="page-link"
+           href="${ctx}/post/list.page?boardId=${boardId}&page=${page-1}">&laquo;</a>
       </li>
-      <c:forEach var="p" begin="${beginPage}" end="${endPage}">
-        <li class="page-item ${p == page ? 'active' : ''}">
-          <a class="page-link" href="${ctx}/post/list.page?page=${p}">${p}</a>
+      <c:forEach begin="${beginPage}" end="${endPage}" var="i">
+        <li class="page-item ${i == page ? 'active':''}">
+          <a class="page-link"
+             href="${ctx}/post/list.page?boardId=${boardId}&page=${i}">${i}</a>
         </li>
       </c:forEach>
-      <li class="page-item ${page == totalPage ? 'disabled' : ''}">
-        <a class="page-link" href="${ctx}/post/list.page?page=${page+1}">></a>
+      <li class="page-item ${page == totalPage ? 'disabled':''}">
+        <a class="page-link"
+           href="${ctx}/post/list.page?boardId=${boardId}&page=${page+1}">&raquo;</a>
       </li>
     </ul>
   </nav>
 
-  <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-
 </div>
-</body>
-</html>
+
+<script>
+  // 전체 선택/해제
+  document.getElementById('selectAll').addEventListener('change', function(){
+    document.querySelectorAll('input[name="postIds"]')
+      .forEach(cb => cb.checked = this.checked);
+  });
+
+  // 선택 삭제
+  document.getElementById('deleteBtn').addEventListener('click', function(){
+    // ① 체크된 박스 수 세기
+    const checked = document.querySelectorAll('input[name="postIds"]:checked').length;
+    if (checked === 0) {
+      alert('삭제할 글을 하나 이상 선택해주세요.');
+      return;
+    }
+    // ② 사용자 확인
+    if (!confirm('선택된 글을 삭제하시겠습니까?')) {
+      return;
+    }
+    // ③ 제출
+    document.getElementById('deleteForm').submit();
+  });
+</script>
+
+
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
