@@ -17,24 +17,21 @@ public class PageUtil {
     public Map<String,Object> getPageInfo(int totalCount, int page, int display, int pagePerBlock){
 
         int totalPage = (int)Math.ceil((double)totalCount / display);
-
         int beginPage = (page - 1) / pagePerBlock * pagePerBlock + 1;
-
         int endPage = Math.min(beginPage + pagePerBlock - 1, totalPage);
+        int offset = (page - 1) * display;
 
-        int offset = (page - 1) * pagePerBlock;
+        Map<String, Object> map = new HashMap<>();
 
-        Map<String, Object> pageMap = new HashMap<String, Object>();
+        map.put("totalCount", totalCount);
+        map.put("page", page);
+        map.put("display", display);
+        map.put("pagePerBlock", pagePerBlock);
+        map.put("totalPage", totalPage);
+        map.put("beginPage", beginPage);
+        map.put("endPage", endPage);
+        map.put("offset", offset);
 
-        pageMap.put("totalCount", totalCount);
-        pageMap.put("page", page);
-        pageMap.put("display", display);
-        pageMap.put("pagePerBlock", pagePerBlock);
-        pageMap.put("totalPage", totalPage);
-        pageMap.put("beginPage", beginPage);
-        pageMap.put("endPage", endPage);
-        pageMap.put("offset", offset);
-
-        return pageMap;
+        return map;
     }
 }
