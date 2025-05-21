@@ -8,7 +8,7 @@
   <div class="position-sticky pt-3">
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testusers">
+        <a class="nav-link" href="${contextPath}/users/list">
           유저관리
         </a>
       </li>
