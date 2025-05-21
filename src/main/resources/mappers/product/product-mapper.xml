@@ -102,7 +102,7 @@
             optional_model_price = #{optionalModelPrice},
             modified_at = NOW()
         WHERE
-            id = #{Id}
+            id = #{id}
     </update>
 
   <select id="getAllModels" resultType="ProductModelDTO">

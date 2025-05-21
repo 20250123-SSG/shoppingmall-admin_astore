@@ -120,8 +120,7 @@ public class ProductController {
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
         int result = productService.registProduct(product);
-        if (result == 0) {
-            log.debug("다시 입력해주십시오. 등록페이지로 돌아갑니다.");
+        if (result == 0) { // 등록실패
             return "products/regist";
         }
 
@@ -137,44 +136,32 @@ public class ProductController {
         try {
             uploadFile.transferTo(saveFile);
         } catch (IOException e) {
-            log.debug("파일 저장에 실패하였습니다. ", e);
             e.printStackTrace();
         }
-        log.debug("상품등록성공하였습니다. 이미지는 upload폴더를 확인해주세요.");
+
         return "redirect:/products";
     }
 
     @GetMapping("/edit.page")
-    public String editPage(@ModelAttribute ProductModelOptionDTO product, Model model){
+    public String editPage(@RequestParam("modelId") int modelId, ProductModelOptionDTO product, Model model){
+        modelId = 1; // 임의로 id 값 설정
+        product.setModelId(modelId);
 
+        int id = productService.getModelOptionId(product);
+        product.setId(id);
 
-        log.debug("{}",product);
-
+        model.addAttribute("model", product);
 
         return "products/edit";
     }
 
     @PostMapping("/edit")
-    public String editProduct(ProductModelOptionDTO product, Model model){
-        log.debug("디티오가 으로 잘 들어오고 있는지. post {}", product);
-        int id = productService.getModelOptionId(product);
-        product.setId(id);
-        model.addAttribute("model", product);
-        return "products/edit";
-    }
-
-    @PostMapping("/edit/save")
-    public String saveProduct(ProductModelOptionDTO product){
-        log.debug("------------ {}", product);
-
+    public String editProduct(ProductModelOptionDTO product){
+        int modelId = product.getModelId();
         int result = productService.saveChangeInfo(product);
-        if (result == 1){
-            log.debug("수정성공하였습니다.");
-        }
-        return "redirect:/products/" + product.getId();
+
+        if (result == 1){ } //수정성공하였습니다.
+
+        return "redirect:/products/" + product.getModelId();
     }
-
-
-
-
 }

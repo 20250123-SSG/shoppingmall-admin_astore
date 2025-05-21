@@ -32,19 +32,17 @@ public class ProductServiceImpl implements ProductService {
     public int registProduct(ProductModelOptionDTO product) {
         ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
         Integer modelId = mapper.selectModelIdIfExists(product.getModelName());
-        //모델 등록되어있으면 가져와
 
-        if (modelId == null) {// 없으면
-            modelId = mapper.insertModel(product); //등록하고, 모델 아이디 가져와
+        if (modelId == null) {
+            modelId = mapper.insertModel(product);
         }
         product.setModelId(modelId);
 
         int existed = mapper.countExistsModel(product);
 
         if (existed == 0) {
-            return mapper.insertProduct(product);
+            return Math.toIntExact(mapper.insertProduct(product));
         } else {
-            log.debug("이미 등록된 상품입니다. ");
             return 0;
         }
     }
