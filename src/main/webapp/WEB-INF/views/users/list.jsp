@@ -5,8 +5,7 @@
 <div class="content-wrapper">
   <h2 class="mb-4 text-center">회원 관리</h2>
 
-
-  <!-- 검색 폼 추가 -->
+  <!-- 검색 폼 -->
   <form method="get" action="/main/users/search" class="row g-3 mb-3" style="width: 90%; margin: 0 auto;">
     <div class="col-md-4">
       <input type="text" name="keyword" class="form-control" placeholder="회원 ID 또는 이름 검색" value="${keyword}">
@@ -28,7 +27,7 @@
     </div>
   </form>
 
-  <!-- 테이블 가운데 정렬 -->
+
   <style>
       .user-link {
           color: var(--user-color, #333);
@@ -37,7 +36,6 @@
           position: relative;
           transition: all 0.2s ease;
       }
-
       .user-link::after {
           content: '';
           position: absolute;
@@ -45,38 +43,32 @@
           bottom: -2px;
           width: 0%;
           height: 2px;
-          background-color: var(--user-color, #007bff);
+          background-color: var(--user-color, #3b82f6);
           transition: width 0.3s ease;
       }
-
       .user-link:hover {
-          color: var(--user-color, #007bff);
+          color: var(--user-color, #3b82f6);
       }
-
       .user-link:hover::after {
           width: 100%;
       }
-
-
       .status-label {
           color: var(--status-color);
           font-weight: 500;
           font-size: 0.95rem;
           display: inline-block;
       }
-
   </style>
 
-  <!-- 상태 색상 설명 박스 -->
+  <!-- 상태 색상 설명 -->
   <div class="mb-3" style="width: 90%; margin: 0 auto;">
     <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-      <div class="status-label" style="--status-color: #28a745;">● 정상</div>
-      <div class="status-label" style="--status-color: #6c757d;">● 휴면</div>
-      <div class="status-label" style="--status-color: #dc3545;">● 정지</div>
-      <div class="status-label" style="--status-color: #6f42c1;">● 탈퇴</div>
+      <div class="status-label" style="--status-color: #22c55e;">● 정상</div>
+      <div class="status-label" style="--status-color: #9ca3af;">● 휴면</div>
+      <div class="status-label" style="--status-color: #ef4444;">● 정지</div>
+      <div class="status-label" style="--status-color: #8b5cf6;">● 탈퇴</div>
     </div>
   </div>
-
 
   <div style="display: flex; justify-content: center;">
     <div class="card" style="width: 90%;">
@@ -102,19 +94,19 @@
               <td>
                 <c:choose>
                   <c:when test="${user.userStatus == 1}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #28a745;">${user.userId}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #22c55e;">${user.userId}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 2}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6c757d;">${user.userId}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #9ca3af;">${user.userId}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 3}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #dc3545;">${user.userId}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #ef4444;">${user.userId}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 4}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6f42c1;">${user.userId}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #8b5cf6;">${user.userId}</a>
                   </c:when>
                   <c:otherwise>
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #000;">${user.userId}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link">${user.userId}</a>
                   </c:otherwise>
                 </c:choose>
               </td>
@@ -123,36 +115,37 @@
               <td>
                 <c:choose>
                   <c:when test="${user.userStatus == 1}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #28a745;">${user.userName}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #22c55e;">${user.userName}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 2}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6c757d;">${user.userName}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #9ca3af;">${user.userName}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 3}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #dc3545;">${user.userName}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #ef4444;">${user.userName}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 4}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #6f42c1;">${user.userName}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #8b5cf6;">${user.userName}</a>
                   </c:when>
                   <c:otherwise>
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #000;">${user.userName}</a>
+                    <a href="/main/users/detail?id=${user.id}" class="user-link">${user.userName}</a>
                   </c:otherwise>
                 </c:choose>
               </td>
 
+              <!-- 상태 -->
               <td>
                 <c:choose>
                   <c:when test="${user.userStatus == 1}">
-                    <span style="color: #28a745; font-weight: 500;">정상</span>
+                    <span style="color: #22c55e; font-weight: 500;">정상</span>
                   </c:when>
                   <c:when test="${user.userStatus == 2}">
-                    <span style="color: #6c757d; font-weight: 500;">휴면</span>
+                    <span style="color: #9ca3af; font-weight: 500;">휴면</span>
                   </c:when>
                   <c:when test="${user.userStatus == 3}">
-                    <span style="color: #dc3545; font-weight: 500;">정지</span>
+                    <span style="color: #ef4444; font-weight: 500;">정지</span>
                   </c:when>
                   <c:when test="${user.userStatus == 4}">
-                    <span style="color: #6f42c1; font-weight: 500;">탈퇴</span>
+                    <span style="color: #8b5cf6; font-weight: 500;">탈퇴</span>
                   </c:when>
                   <c:otherwise>
                     <span style="color: #000;">알 수 없음</span>
@@ -173,33 +166,16 @@
 <%@ include file="../common/footer.jsp" %>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const memberLink = document.querySelector('a[href$="/users/list"]');
         if (memberLink) {
             memberLink.classList.add('active');
         }
-
-        // const filter = document.getElementById("statusFilter");
-        // filter.addEventListener("change", function() {
-        //     const selected = filter.value;
-        //     const rows = document.querySelectorAll("tbody tr");
-        //
-        //     rows.forEach(row => {
-        //         const statusCell = row.querySelector(".user-status");
-        //         if (!statusCell) return;
-        //
-        //         const status = statusCell.textContent.trim();
-        //         const shouldShow = selected === "" || status === selected;
-        //         row.style.display = shouldShow ? "" : "none";
-        //     });
-        // });
     });
 </script>
 
-<%-- 삭제 후 알림 메시지 --%>
+<%--삭제 후 알림 메세지--%>
 
 <c:if test="${param.deleted eq 'true'}">
-  <script>
-      alert('회원이 성공적으로 삭제되었습니다.');
-  </script>
+  <script>alert('회원이 성공적으로 삭제되었습니다.');</script>
 </c:if>
