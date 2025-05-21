@@ -1,113 +1,72 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <mapper namespace="com.aplestore.dao.PostMapper">
-    <resultMap id="postResultMap" type="PostDTO">
-        <id column="id" property="id"/>
-      <result column="board_id" property="boardId"/>
-        <result column="post_subject" property="postSubject"/>
-        <result column="user_id" property="userId"/>
-        <result column="created_at" property="createdAt"/>
-      <result column="post_content" property="postContent"/>
-      <result column="post_status" property="postStatus"/>
-      <result column="modified_at" property="modifiedAt"/>
 
-    </resultMap>
- <select id="selectPostListCount" resultType="_int">
-     select
-         count(*)
-     from
-         posts
-     where
-         post_status = '1'
- </select>
-  <select id="selectPostList" resultMap="postResultMap">
+  <!-- resultMap 정의 -->
+  <resultMap id="PostResultMap" type="com.aplestore.dto.PostDTO">
+    <id     property="id"          column="id"/>
+    <result property="postSubject" column="post_subject"/>
+    <result property="postContent" column="post_content"/>
+    <result property="userId"      column="user_id"/>
+    <result property="postStatus"  column="post_status"/>
+    <result property="createdAt"   column="created_at"/>
+    <result property="boardId"     column="board_id"/>
+  </resultMap>
+
+  <!-- 1) 전체 글 개수 -->
+  <select id="countByBoard" parameterType="int" resultType="int">
+    SELECT COUNT(*) FROM posts
+    WHERE board_id = #{boardId}
+  </select>
+
+  <!-- 2) 페이징 리스트 -->
+  <select id="selectByBoardWithLimit" parameterType="map" resultMap="PostResultMap">
     SELECT
-      id,
-      post_subject   ,
-      user_id    ,
-      created_at
+      id, post_subject, post_content,
+      user_id, post_status, created_at, board_id
     FROM posts
-    WHERE post_status = '1'
+    WHERE board_id = #{boardId}
     ORDER BY id DESC
-    limit #{offset}, #{display}
+      LIMIT #{offset}, #{limit}
   </select>
 
-    <select id="selectPostByNo" resultMap="postResultMap">
-        select
-              id
-             ,post_subject
-             , post_content
-             , user_id
-             ,created_at
-        from
-            posts
-        where
-            post_status = '1'
-          and id = #{no}
-    </select>
-
-<!--  <insert id="insertPost" useGeneratedKeys="true" keyProperty="Id" >-->
-<!--    insert into-->
-<!--        posts-->
-<!--    (-->
-<!--      post_subject-->
-<!--    , user_id-->
-<!--    , post_content-->
-<!--    )-->
-<!--    values-->
-<!--      (-->
-<!--        #{postSubject}-->
-<!--      , #{userId}-->
-<!--      , #{postContent}-->
-<!--      )-->
-<!--  </insert>-->
-<!--  <update id="updatePost" parameterType="com.aplestore.dto.PostDTO">-->
-<!--    UPDATE posts-->
-<!--    SET post_subject = #{postSubject},-->
-<!--        post_content = #{postContent}-->
-<!--    WHERE id = #{id}-->
-<!--      AND post_status = '1'-->
-<!--  </update>-->
-
-  <select id="selectAll" resultType="com.aplestore.dto.PostDTO">
-    SELECT id, post_subject, user_id, created_at AS createdAt
+  <!-- 3) 단일 조회 -->
+  <select id="selectById" parameterType="int" resultMap="PostResultMap">
+    SELECT
+      id, post_subject, post_content,
+      user_id, post_status, created_at, board_id
     FROM posts
-    ORDER BY id DESC
+    WHERE id = #{id}
   </select>
 
+  <!-- 4) 새 글 등록 -->
+  <insert id="insertPost" parameterType="com.aplestore.dto.PostDTO"
+          useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO posts
+    (post_subject, post_content, user_id, post_status, created_at, board_id)
+    VALUES
+      (#{postSubject}, #{postContent}, #{userId}, #{postStatus}, NOW(), #{boardId})
+  </insert>
+
+  <!-- 5) 글 수정 -->
+  <update id="updatePost" parameterType="com.aplestore.dto.PostDTO">
+    UPDATE posts
+    SET post_subject = #{postSubject},
+        post_content = #{postContent},
+        board_id     = #{boardId}
+    WHERE id = #{id}
+  </update>
+
+  <!-- 6) 다중 삭제 -->
   <delete id="deleteByIds" parameterType="list">
     DELETE FROM posts
     WHERE id IN
-    <foreach item="id" collection="ids" open="(" separator="," close=")">
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
       #{id}
     </foreach>
   </delete>
 
-  <insert id="insertPost"
-          parameterType="com.aplestore.dto.PostDTO"
-          useGeneratedKeys="true"
-          keyProperty="id">
-    INSERT INTO posts
-      (post_subject, post_content, user_id, post_status, created_at)
-    VALUES
-      (#{postSubject}, #{postContent}, #{userId}, #{postStatus}, NOW())
-  </insert>
-
-  <!-- 2) 단일 조회 (수정 폼에 뿌릴 데이터) -->
-  <select id="selectById" resultMap="postResultMap" parameterType="int">
-    SELECT id, post_subject, post_content, user_id, post_status, created_at
-    FROM posts
-    WHERE id = #{id}
-  </select>
-  <!-- 5) 수정 -->
-  <update id="updatePost" parameterType="com.aplestore.dto.PostDTO">
-    UPDATE posts
-    SET post_subject = #{postSubject},
-        post_content = #{postContent}
-    WHERE id = #{id}
-  </update>
 </mapper>

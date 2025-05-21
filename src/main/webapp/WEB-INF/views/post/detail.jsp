@@ -1,88 +1,42 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
-<html>
-<head>
-    <title>Title</title>
-    <style>
-        #reply_area tbody>tr>th:nth-child(1){width:120px}
-    </style>
-</head>
-<body>
-<div class="container p-3">
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 
-    <!-- Header, Nav start -->
-    <jsp:include page="/WEB-INF/views/common/header.jsp"/>
-    <!-- Header, Nav end -->
+<div class="container py-4">
+    <div class="d-flex justify-content-between mb-4">
+        <h2>${post.postSubject}</h2>
+        <a href="${ctx}/post/list.page?boardId=${selectedBoardId}&page=${page}"
+           class="btn btn-secondary">목록</a>
+    </div>
 
-    <!-- Section start -->
-    <section class="row m-3" style="min-height: 500px">
+    <dl class="row">
+        <dt class="col-sm-2">작성자</dt>
+        <dd class="col-sm-10">${post.userId}</dd>
 
-        <div class="container border p-5 m-4 rounded">
-            <h2 class="m-4">게시글 상세</h2>
-            <br>
-            <button onclick="location.href='${contextPath}/post/modify.page?no=${post.id}';">수정</button>
-            <a class="btn btn-secondary" style="float:right" href="${contextPath}/post/list.page">목록으로</a>
-            <br><br>
+        <dt class="col-sm-2">작성일</dt>
+        <dd class="col-sm-10">
+            ${post.createdAt}
+        </dd>
 
-            <table align="center" class="table">
-                <tr>
-                    <th width="120">제목</th>
-                    <td colspan="3" ><p>${post.postSubject}</p></td>
-                </tr>
-                <tr>
-                    <th>작성자</th>
-                    <td width="400">${post.userId}</td>
-                    <th width="120">작성일</th>
-                    <td>${post.createdAt}</td>
-                </tr>
+        <dt class="col-sm-2">내용</dt>
+        <dd class="col-sm-10">${post.postContent}</dd>
+    </dl>
 
-                <tr>
-                    <th>내용</th>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td colspan="4"><p style="height:150px">${post.postContent}</p></td>
-                </tr>
-            </table>
-            <br>
-
-
-            <table id="reply_area" class="table" align="center">
-                <thead>
-                <tr>
-                    <th colspan="2" width="650">
-                        <textarea class="form-control" id="reply_content" rows="2" style="resize:none; width:100%"></textarea>
-                    </th>
-                    <th style="vertical-align: middle"><button class="btn btn-secondary" id="reply_submit">등록하기</button></th>
-                </tr>
-                <tr>
-                    <span id="rcount">${fn:length(replyList)}</span>
-
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="reply" items="${replyList}">
-                    <tr>
-                        <th>${reply.userId}</th>
-                        <td>${reply.content}</td>
-                        <td>${reply.createdAt}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-
-        </div>
-
-    </section>
-    <!-- Section end -->
-
-    <!-- Footer start -->
-    <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
-    <!-- Footer end -->
-
+    <div class="mt-3">
+        <a href="${ctx}/post/modify.page?no=${post.id}&boardId=${selectedBoardId}&page=${page}"
+           class="btn btn-primary me-2">수정</a>
+        <form action="${ctx}/post/delete" method="post" style="display:inline">
+            <input type="hidden" name="boardId" value="${selectedBoardId}"/>
+            <input type="hidden" name="postIds"  value="${post.id}"/>
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('삭제하시겠습니까?');">
+                삭제
+            </button>
+        </form>
+    </div>
 </div>
-</body>
-</html>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>

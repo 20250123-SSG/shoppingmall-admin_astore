@@ -23,36 +23,29 @@
     </div>
 
     <!-- 수정 폼 -->
-    <form id="editForm" action="${ctx}/post/edit" method="post">
-        <!-- 수정 대상 ID -->
-        <input type="hidden" name="id" value="${post.id}"/>
+    <form action="${ctx}/post/edit" method="post">
+        <input type="hidden" name="id"       value="${post.id}"/>
+        <input type="hidden" name="boardId"  value="${selectedBoardId}"/>
+        <input type="hidden" name="page"     value="${page}"/>
 
+        <!-- 제목 -->
         <div class="mb-3">
-            <label for="postSubject" class="form-label">제목</label>
-            <input type="text" class="form-control"
-                   id="postSubject" name="postSubject"
-                   required maxlength="100"
-                   value="${post.postSubject}"/>
+            <label class="form-label">제목</label>
+            <input type="text" name="postSubject" class="form-control"
+                   value="${post.postSubject}" required/>
         </div>
-
+        <!-- 내용 -->
         <div class="mb-3">
-            <label for="postContent" class="form-label">내용</label>
-            <textarea class="form-control"
-                      id="postContent" name="postContent"
-                      rows="10" required>${post.postContent}</textarea>
+            <label class="form-label">내용</label>
+            <textarea name="postContent" class="form-control" rows="10" required>
+                ${post.postContent}</textarea>
         </div>
 
-        <!-- userId, postStatus 등은 hidden 으로 그대로 전달 -->
-        <input type="hidden" name="userId"    value="${post.userId}"/>
-        <input type="hidden" name="postStatus" value="${post.postStatus}"/>
-
-        <div class="d-flex">
-            <button type="submit" class="btn btn-primary">수정</button>
-            <button type="button" class="btn btn-outline-secondary ms-2"
-                    onclick="location.href='${ctx}/post/list.page';">
-                취소
-            </button>
-        </div>
+        <button class="btn btn-primary">수정</button>
+        <button type="button" class="btn btn-outline-secondary"
+                onclick="location.href='${ctx}/post/list.page?boardId=${selectedBoardId}&page=${page}'">
+            취소
+        </button>
     </form>
 
     <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -1,28 +1,29 @@
 package com.aplestore.dao;
 
-import com.aplestore.dto.PostDTO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
-import java.util.Map;
+import org.apache.ibatis.annotations.Param;
+import com.aplestore.dto.PostDTO;
 
-@Mapper
 public interface PostMapper {
-    int selectPostListCount();
-    List<PostDTO> selectPostList(Map<String, Object> map);
+    // (1) 해당 게시판의 전체 글 개수
+    int countByBoard(@Param("boardId") Integer boardId);
 
-    PostDTO selectPostByNo(int no);
+    // (2) 페이징 적용한 리스트 조회
+    List<PostDTO> selectByBoardWithLimit(
+            @Param("boardId") Integer boardId,
+            @Param("offset")  int offset,
+            @Param("limit")   int limit
+    );
 
-
-    //int insertPost(PostDTO post);
-    //int updatePost(PostDTO post);
-
-    List<PostDTO> selectAll();
-    int deleteByIds(@Param("ids") List<Integer> ids);
-
-    // 단일 조회 (수정 폼용)
+    // (3) 단일 글 조회
     PostDTO selectById(@Param("id") Integer id);
+
+    // (4) 새 글 등록
     int insertPost(PostDTO post);
+
+    // (5) 글 수정
     int updatePost(PostDTO post);
+
+    // (6) 다중 삭제
+    int deleteByIds(@Param("ids") List<Integer> ids);
 }
