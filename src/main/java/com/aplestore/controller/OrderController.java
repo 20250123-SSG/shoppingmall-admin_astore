@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -60,4 +61,19 @@ public class OrderController {
         List<OrderDTO> sales = orderService.getSalesByDateRange(startDateTime, endDateTime);
         return ResponseEntity.ok(sales);
     }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public List<OrderDTO> getSalesList(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+
+        if ((startDate == null || startDate.isBlank()) &&
+                (endDate == null || endDate.isBlank())) {
+            return orderService.getAllOrders(); // 전체 조회
+        } else {
+            return orderService.getOrdersByPeriod(startDate, endDate); // 기간 조회
+        }
+    }
+
 }

@@ -5,9 +5,43 @@
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
 
+
 <div class="content-wrapper">
   <div class="container-fluid">
     <h2 class="mt-4">판매 매출 조회</h2>
+
+    <style>
+      #pagination {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 20px;
+      }
+
+      .page-btn {
+        padding: 5px 10px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+      }
+
+      .page-btn:hover:not(:disabled) {
+        background-color: #f0f0f0;
+      }
+
+      .page-btn.active {
+        font-weight: bold;
+        background-color: #007bff;
+        color: white;
+      }
+
+      .page-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+    </style>
 
     <script>const contextPath = '${contextPath}';</script>
 
@@ -20,11 +54,13 @@
       <button onclick="setPeriod(7)">1주일</button>
       <button onclick="setPeriod(30)">1개월</button>
       <button onclick="setPeriod(365)">1년</button>
+      <button onclick="setPeriod(1095)">3년</button>
     </div>
 
     <!-- 주문 리스트 테이블 -->
     <table class="table" id="salesTable">
       <thead>
+
       <tr>
         <th>주문 ID</th>
         <th>회원 ID</th>
@@ -37,8 +73,21 @@
       </tbody>
     </table>
 
-<!-- 행 클릭 이벤트 -->
+    <div id="pagination" class="mt-3"></div>
+
+
+
 <script>
+  window.onload = function () {
+    // 날짜 입력칸 초기화 (전체 기간으로)
+    document.getElementById('startDate').value = '';
+    document.getElementById('endDate').value = '';
+
+    // 전체 조회 실행
+    searchSales();
+  };
+
+  <!-- 행 클릭 이벤트 -->
   function setPeriod(days) {
     const end = new Date();
     const start = new Date();
@@ -53,43 +102,109 @@
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
-    if (!startDate || !endDate) {
-      alert("시작일과 종료일을 입력해주세요.");
-      return;
-    }
-
-    const url = 'http://localhost:8080/sales/list'
+    let url = 'http://localhost:8080/sales/list'
       + '?startDate='+startDate
       + '&endDate='+endDate;
 
+    if (startDate && endDate) {
+      url += '?startDate=' + startDate + '&endDate=' + endDate;
+    }
     fetch(url)
       .then(response => response.json())
       .then(data => drawSalesTable(data))
       .catch(error => console.error('매출 조회 실패:', error));
   }
 
+
+  let salesData = []; // 전체 데이터를 저장할 전역 변수
+  const itemsPerPage = 5; // 페이지당 항목 수
+
   function drawSalesTable(data) {
+    salesData = data;
+    renderPage(1); // 첫 페이지부터 렌더링
+  }
+
+  function renderPage(page) {
     const tbody = document.querySelector("#salesTable tbody");
     tbody.innerHTML = "";
 
-    if (data.length === 0) {
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageData = salesData.slice(startIndex, endIndex);
+
+    if (pageData.length === 0) {
       tbody.innerHTML = `<tr><td colspan="4">조회 결과가 없습니다.</td></tr>`;
+      document.getElementById("pagination").innerHTML = "";
       return;
     }
 
-    data.forEach(order => {
-      const dateTime = new Date(order.createdAt).toLocaleString(); // 날짜시간 표시
-      const row =`
-            <tr>
-                <td>\${order.id}</td>
-                <td>\${order.userId}</td>
-                <td>\${order.orderAmount.toLocaleString()}원</td>
-                <td>\${dateTime}</td>
-            </tr>`;
+    pageData.forEach(order => {
+      const dateTime = new Date(order.createdAt).toLocaleString();
+      const row = `
+        <tr>
+          <td>\${order.id}</td>
+          <td>\${order.userId}</td>
+          <td>\${order.orderAmount.toLocaleString()}원</td>
+          <td>\${dateTime}</td>
+        </tr>`;
       tbody.innerHTML += row;
     });
+
+    drawPagination(page);
+  }
+
+  function drawPagination(currentPage) {
+    const totalPages = Math.ceil(salesData.length / itemsPerPage);
+    const paginationDiv = document.getElementById("pagination");
+    paginationDiv.innerHTML = "";
+
+    // << 처음으로
+    const firstBtn = document.createElement("button");
+    firstBtn.textContent = "처음으로";
+    firstBtn.className = "page-btn";
+    firstBtn.disabled = currentPage === 1;
+    firstBtn.addEventListener("click", () => renderPage(1));
+    paginationDiv.appendChild(firstBtn);
+
+    // < 이전
+    const prevBtn = document.createElement("button");
+    prevBtn.textContent = "이전";
+    prevBtn.className = "page-btn";
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.addEventListener("click", () => renderPage(currentPage - 1));
+    paginationDiv.appendChild(prevBtn);
+
+    // 페이지 번호들
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      btn.className = "page-btn";
+      if (i === currentPage) {
+        btn.classList.add("active");
+      }
+      btn.addEventListener("click", () => renderPage(i));
+      paginationDiv.appendChild(btn);
+    }
+
+    // > 다음
+    const nextBtn = document.createElement("button");
+    nextBtn.textContent = "다음";
+    nextBtn.className = "page-btn";
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.addEventListener("click", () => renderPage(currentPage + 1));
+    paginationDiv.appendChild(nextBtn);
+
+    // >> 마지막으로
+    const lastBtn = document.createElement("button");
+    lastBtn.textContent = "마지막으로";
+    lastBtn.className = "page-btn";
+    lastBtn.disabled = currentPage === totalPages;
+    lastBtn.addEventListener("click", () => renderPage(totalPages));
+    paginationDiv.appendChild(lastBtn);
   }
 </script>
+
+
 
 
 <%@ include file="../common/footer.jsp" %>
