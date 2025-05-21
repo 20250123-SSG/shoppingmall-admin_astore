@@ -20,7 +20,7 @@
                 <c:forEach var="b" items="${boards}">
                     <option value="${b.id}"
                         ${b.id == boardId ? 'selected':''}>
-                            ${b.name}
+                            ${b.boardName}
                     </option>
                 </c:forEach>
             </select>

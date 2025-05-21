@@ -20,7 +20,9 @@
 
   <!-- 글쓰기, 선택 삭제 -->
   <div class="d-flex justify-content-end mb-2">
-    <a href="${ctx}/post/regist.page?boardId=${selectedBoardId}"
+    <c:if test="${not empty user}">
+      <a href="${ctx}/post/regist.page?boardId=${selectedBoardId}" class="btn btn-primary me-2">글쓰기</a>
+    </c:if>
        class="btn btn-primary me-2">글쓰기</a>
     <button id="deleteBtn" class="btn btn-danger">선택 삭제</button>
   </div>
@@ -45,7 +47,7 @@
           <td><input type="checkbox" name="postIds" value="${post.id}"/></td>
           <td>${post.id}</td>
           <td>
-            <a href="${ctx}/post/detail.page?no=${post.id}&boardId=${boardId}&page=${page}"
+            <a href="${ctx}/post/detail.page?no=${post.id}&boardId=${boardId}&page=${page}">
                class="text-decoration-none">
                 ${post.postSubject}
             </a>

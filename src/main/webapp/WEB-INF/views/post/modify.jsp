@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <html>
@@ -37,8 +37,7 @@
         <!-- 내용 -->
         <div class="mb-3">
             <label class="form-label">내용</label>
-            <textarea name="postContent" class="form-control" rows="10" required>
-                ${post.postContent}</textarea>
+            <textarea name="postContent" class="form-control" rows="10" required>${post.postContent}</textarea>
         </div>
 
         <button class="btn btn-primary">수정</button>

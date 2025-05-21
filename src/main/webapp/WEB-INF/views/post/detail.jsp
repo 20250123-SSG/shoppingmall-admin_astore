@@ -28,14 +28,13 @@
     <div class="mt-3">
         <a href="${ctx}/post/modify.page?no=${post.id}&boardId=${selectedBoardId}&page=${page}"
            class="btn btn-primary me-2">수정</a>
-        <form action="${ctx}/post/delete" method="post" style="display:inline">
-            <input type="hidden" name="boardId" value="${selectedBoardId}"/>
-            <input type="hidden" name="postIds"  value="${post.id}"/>
-            <button type="submit" class="btn btn-danger"
-                    onclick="return confirm('삭제하시겠습니까?');">
-                삭제
-            </button>
-        </form>
+        <c:if test="${user.role == 'ADMIN'}">
+            <form action="${ctx}/post/delete" method="post" style="display:inline">
+                <input type="hidden" name="boardId" value="${selectedBoardId}"/>
+                <input type="hidden" name="postIds"  value="${post.id}"/>
+                <button type="submit" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?');">삭제</button>
+            </form>
+        </c:if>
     </div>
 </div>
 
