@@ -13,6 +13,7 @@ public class ProductModelOptionDTO {
     private Integer id;
     private String productName;
     private String modelName;
+    private int modelPrice;
     private String modelDescription;
     private String modelPrice;
     private int optionalModelPrice;

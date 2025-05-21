@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../common/header.jsp" %>
 <%@ include file="../common/sidebar.jsp" %>
@@ -8,37 +9,38 @@
   <div class="product-header">
     <h1 style="text-align: center;">상품목록</h1>
 
-    <div class="product-filters" style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+    <div class="product-header-controls">
+      <form id="searchForm" method="get" action="" class="search-form">
+        <input type="text" name="keyword" id="keywordInput"
+               placeholder="제품명, 모델명 검색" value="${keyword}" autocomplete="off" />
+        <div id="autocomplete-box" class="autocomplete-box"></div>
 
-
-      <form id="searchForm" method="get" action="" style="display: flex; gap: 10px; flex-grow: 1; max-width: 250px;">
-        <div style="position: relative; flex-grow: 1;">
-          <input type="text" name="keyword" id="keywordInput"
-                 placeholder="제품명, 모델명 검색" value="${keyword}" autocomplete="off"
-                 style="width: 100%;" />
-          <div id="autocomplete-box" class="autocomplete-box"></div>
-        </div>
         <button type="submit">검색</button>
-      </form>
 
-      <!-- 드롭다운: 오른쪽에 정렬 -->
-      <div style="min-width: 150px;">
-        <select name="sort" id="sortSelect" style="width: 100%;">
+        <select id="sortSelect">
           <option value="created" ${sort == 'created' ? 'selected' : ''}>생성순</option>
           <option value="price_asc" ${sort == 'price_asc' ? 'selected' : ''}>가격 낮은순</option>
           <option value="price_desc" ${sort == 'price_desc' ? 'selected' : ''}>가격 높은순</option>
           <option value="model" ${sort == 'model' ? 'selected' : ''}>모델명순</option>
         </select>
-      </div>
 
+        <input type="hidden" name="sort" id="sortHidden" value="${sort}" />
+      </form>
+
+
+      <button type="button" onclick="location.href='${pageContext.request.contextPath}/products/regist'" class="register-button">
+        상품 등록하기
+      </button>
     </div>
   </div>
+
+</div>
 
 
 
   <div class="card">
     <div class="card-body p-0">
-      <table class="table table-hover">
+      <table class="table fixed-table-layout table-hover">
         <thead>
         <tr>
           <th>제품명</th>
@@ -50,12 +52,14 @@
         </thead>
         <tbody>
         <c:forEach var="product" items="${list}">
-          <tr class="product-row">
-            <td>${product.productName}</td>
+          <tr class="product-row"
+              onclick="location.href='${pageContext.request.contextPath}/products/${product.modelId}'"
+              style="cursor: pointer;">
+          <td>${product.productName}</td>
             <td>${product.modelName}</td>
-            <td>${product.modelPrice}</td>
-            <td>${product.createdAt}</td>
-            <td>${product.modifiedAt}</td>
+            <td><fmt:formatNumber value="${product.modelPrice}" type="number" groupingUsed="true" /></td>
+            <td>${product.createdAt.toLocalDate()}</td>
+            <td>${product.modifiedAt.toLocalDate()}</td>
           </tr>
         </c:forEach>
         <c:if test="${empty list}">
@@ -77,4 +81,3 @@
 
 
 <%@ include file="../common/footer.jsp" %>
-

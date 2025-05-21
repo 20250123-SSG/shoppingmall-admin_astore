@@ -91,6 +91,7 @@
 
   <select id="getAllModels" resultType="ProductModelDTO">
     SELECT
+    m.id AS modelId,
     p.product_name AS productName,
     m.model_name AS modelName,
     m.model_price AS modelPrice,
@@ -144,10 +145,38 @@
   <select id="findMatchingModelNames" resultType="string">
     SELECT DISTINCT model_name
     FROM models
-    WHERE model_name LIKE #{keyword}
+    WHERE model_name LIKE CONCAT('%', #{keyword}, '%')
     ORDER BY model_name DESC
     LIMIT 5;
+
   </select>
+
+
+  <select id="getProductDetail" resultType="ProductModelOptionDTO">
+    SELECT
+      mo.id AS id,
+      p.product_name AS productName,
+      m.model_name AS modelName,
+      m.model_description AS modelDescription,
+      mo.optional_model_price AS optionalModelPrice,
+      mo.color AS color,
+      mo.ram AS ram,
+      mo.size AS size,
+      mo.created_at AS createdAt,
+      mo.modified_at AS modifiedAt
+    FROM models m
+    INNER JOIN products p ON m.product_id = p.id
+    INNER JOIN model_options mo ON m.id = mo.model_id
+    WHERE m.id = #{id}
+  </select>
+
+  <delete id="removeModelOption" parameterType="ProductModelOptionDTO">
+    DELETE FROM model_options
+    WHERE color = #{color}
+      AND ram = #{ram}
+      AND size = #{size}
+  </delete>
+
 
 </mapper>
 
