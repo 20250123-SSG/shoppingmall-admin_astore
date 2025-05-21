@@ -11,15 +11,17 @@
 
 <div class="detail-container">
     <div class="left-section">
-        <img src="${pageContext.request.contextPath}/resources/images/main_logo.png"
-             alt="모델 이미지" class="model-image">
+        <img src="${pageContext.request.contextPath}/upload/${modelName}_${id}.PNG" alt="모델 이미지" class="model-image" />
+
+        <div>"${pageContext.request.contextPath}/upload/${modelName}_${id}.png"</div>
         <p class="model-description" style="font-weight: bold">${modelDescription}</p>
         <div class="left-button">
             <button onclick="location.href='${pageContext.request.contextPath}/products/list.page'">뒤로가기</button>
         </div>
     </div>
-
+    <input type="hidden" name="id" value="${id}"/>
     <input type="hidden" name="modelId" value="${modelId}"/>
+
     <div class="right-section">
         <h2 class="model-name">${modelName}</h2>
 

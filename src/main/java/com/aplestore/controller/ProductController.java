@@ -65,8 +65,10 @@ public class ProductController {
     }
 
     @GetMapping("/{model-id}")
-    public String getProductDetail(@PathVariable("model-id") Long id, Model model) {
-        List<ProductModelOptionDTO> options = productService.getProductDetail(id);
+    public String getProductDetail(@PathVariable("model-id") Long modelId, Model model) {
+        List<ProductModelOptionDTO> options = productService.getProductDetail(modelId);
+
+
 
         if (options.isEmpty()) {
             // 예외 처리 또는 기본 페이지로 리다이렉트 등
@@ -77,7 +79,14 @@ public class ProductController {
         ProductModelOptionDTO selectedOption = options.get(0);
         System.out.println(selectedOption.getModelPrice());
 
-        model.addAttribute("modelId",id);
+
+        int id = productService.getModelOptionId(selectedOption);
+        selectedOption.setId(id);
+
+        log.debug("adasdfasdfsadf {}", selectedOption);
+
+        model.addAttribute("id",selectedOption.getId());
+        model.addAttribute("modelId",selectedOption.getModelId());
         model.addAttribute("productName", selectedOption.getProductName());
         model.addAttribute("modelName", selectedOption.getModelName());
         model.addAttribute("modelDescription", selectedOption.getModelDescription());
@@ -144,11 +153,12 @@ public class ProductController {
 
     @GetMapping("/edit.page")
     public String editPage(@RequestParam("modelId") int modelId, ProductModelOptionDTO product, Model model){
+        log.debug("진짜 이거 되면 하... {}", product );
+
         modelId = 1; // 임의로 id 값 설정
         product.setModelId(modelId);
 
-        int id = productService.getModelOptionId(product);
-        product.setId(id);
+
 
         model.addAttribute("model", product);
 
