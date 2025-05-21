@@ -1,6 +1,7 @@
 package com.aplestore.dao;
 
 import com.aplestore.dto.OrderDTO;
+import com.aplestore.dto.OrderDetailDTO;
 import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
@@ -17,4 +18,11 @@ public interface OrderMapper {
     List<OrderDTO> selectAllOrders();
     List<OrderDTO> selectOrdersByPeriod(@Param("startDate") String startDate,
                                         @Param("endDate") String endDate);
+
+    List<OrderDetailDTO> selectOrderDetailsByOrderId(int orderId);
+
+    OrderDTO getOrderById(int orderId);
+
+
+    List<OrderDetailDTO> findOrderDetailsByOrderId(int orderId);
 }
