@@ -6,7 +6,7 @@
   <h2 class="mb-4 text-center">회원 관리</h2>
 
   <!-- 검색 폼 -->
-  <form method="get" action="/main/users/search" class="row g-3 mb-3" style="width: 90%; margin: 0 auto;">
+  <form method="get" action="//users/search" class="row g-3 mb-3" style="width: 90%; margin: 0 auto;">
     <div class="col-md-4">
       <input type="text" name="keyword" class="form-control" placeholder="회원 ID 또는 이름 검색" value="${keyword}">
     </div>
@@ -23,7 +23,7 @@
       <button type="submit" class="btn btn-primary w-100">검색</button>
     </div>
     <div class="col-md-2">
-      <a href="/main/users/list" class="btn btn-secondary w-100">초기화</a>
+      <a href="//users/list" class="btn btn-secondary w-100">초기화</a>
     </div>
   </form>
 
@@ -94,19 +94,19 @@
               <td>
                 <c:choose>
                   <c:when test="${user.userStatus == 1}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #22c55e;">${user.userId}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #22c55e;">${user.userId}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 2}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #9ca3af;">${user.userId}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #9ca3af;">${user.userId}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 3}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #ef4444;">${user.userId}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #ef4444;">${user.userId}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 4}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #8b5cf6;">${user.userId}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #8b5cf6;">${user.userId}</a>
                   </c:when>
                   <c:otherwise>
-                    <a href="/main/users/detail?id=${user.id}" class="user-link">${user.userId}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link">${user.userId}</a>
                   </c:otherwise>
                 </c:choose>
               </td>
@@ -115,19 +115,19 @@
               <td>
                 <c:choose>
                   <c:when test="${user.userStatus == 1}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #22c55e;">${user.userName}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #22c55e;">${user.userName}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 2}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #9ca3af;">${user.userName}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #9ca3af;">${user.userName}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 3}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #ef4444;">${user.userName}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #ef4444;">${user.userName}</a>
                   </c:when>
                   <c:when test="${user.userStatus == 4}">
-                    <a href="/main/users/detail?id=${user.id}" class="user-link" style="--user-color: #8b5cf6;">${user.userName}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link" style="--user-color: #8b5cf6;">${user.userName}</a>
                   </c:when>
                   <c:otherwise>
-                    <a href="/main/users/detail?id=${user.id}" class="user-link">${user.userName}</a>
+                    <a href="//users/detail?id=${user.id}" class="user-link">${user.userName}</a>
                   </c:otherwise>
                 </c:choose>
               </td>
