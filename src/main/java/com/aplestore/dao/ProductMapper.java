@@ -26,7 +26,7 @@ public interface ProductMapper {
     int countExistsModel(ProductModelOptionDTO product);
     int insertProduct(ProductModelOptionDTO product);
 
-    // 상품수정 (조회는 상세조회페이지에서 받아오기. 아니면 번호만 받고 조회해서 가져와도 됨)
+    // 상품수정
+//    ProductModelOptionDTO selectModelByOption(ProductModelOptionDTO product);
     int updateProduct(ProductModelOptionDTO product);
-
 }

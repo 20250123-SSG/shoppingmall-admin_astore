@@ -51,13 +51,18 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Override
-    public int modifyProduct(ProductModelOptionDTO product) {
-        return sqlSession.getMapper(ProductMapper.class).updateProduct(product);
-    }
-
     public List<String> suggestKeyword(String keyword) {
         return sqlSession.getMapper(ProductMapper.class).findMatchingModelNames("%" + keyword + "%");
+    }
+
+//    @Override
+//    public ProductModelOptionDTO getAllModelOption(ProductModelOptionDTO product) {
+//        return sqlSession.getMapper(ProductMapper.class).selectModelByOption(product);
+//    }
+
+    @Override
+    public int saveChangeInfo(ProductModelOptionDTO product) {
+        return sqlSession.getMapper(ProductMapper.class).updateProduct(product);
     }
 }
 

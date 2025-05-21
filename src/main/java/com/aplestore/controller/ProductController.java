@@ -78,6 +78,7 @@ public class ProductController {
         return "products/regist";
     }
 
+
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
         int result = productService.registProduct(product);
@@ -104,5 +105,22 @@ public class ProductController {
         log.debug("상품등록성공하였습니다. 이미지는 upload폴더를 확인해주세요.");
         return "redirect:/products";
     }
+
+    @GetMapping("/edit")
+    public String editPage(ProductModelOptionDTO product, Model model){
+        // 조회가 필요하다면 여기서 진행
+        // ProductModelOptionDTO productDetail = productService.getAllModelOption(product);
+        model.addAttribute("model", product);
+        return "products/edit";
+    }
+
+    @PostMapping("/edit")
+    public String savechangeInfo(ProductModelOptionDTO product){
+        int result = productService.saveChangeInfo(product);
+
+        return "redirect:products/edit"; // TODO: 상품상세페이지로 변경
+    }
+
+
 
 }

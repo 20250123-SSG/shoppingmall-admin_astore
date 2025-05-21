@@ -67,20 +67,27 @@
             )
     </insert>
 
-<!--    &lt;!&ndash; 상품수정 &ndash;&gt;-->
-<!--    <update id="updateProduct">-->
-<!--        UPDATE-->
-<!--            model_options-->
-<!--        SET-->
-<!--            (-->
-<!--                model_id = (SELECT id FROM models WHERE name = #{modelName}-->
-<!--                    , color = #{color}-->
-<!--                    , ram = #{ram}-->
-<!--                    , size = #{size}-->
-<!--                    , optional_model_price = #{optionalModelPrice}-->
-<!--                    , modify_date = NOW()-->
-<!--                    )-->
-<!--    </update>-->
+<!--    <select id="selectModelByOption" parameterType="ProductModelOptionDTO" resultType="ProductModelOptionDTO">-->
+<!--        SELECT-->
+<!--            -->
+<!--        FROM-->
+<!--            -->
+<!--    </select>-->
+
+    <!-- 상품수정 -->
+    <update id="updateProduct">
+        UPDATE
+            model_options
+        SET
+            (
+                model_id = (SELECT id FROM models WHERE name = #{modelName}
+                    , color = #{color}
+                    , ram = #{ram}
+                    , size = #{size}
+                    , optional_model_price = #{optionalModelPrice}
+                    , modify_date = NOW()
+                    )
+    </update>
 
   <select id="getAllModels" resultType="ProductModelDTO">
     SELECT
