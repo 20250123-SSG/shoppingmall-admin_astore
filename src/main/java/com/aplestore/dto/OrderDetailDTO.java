@@ -13,4 +13,7 @@ public class OrderDetailDTO {
     private int orderId;
     private int orderQuantity;
     private int orderPrice;
+
+    // model_options DTO 포함
+    private ProductModelOptionDTO modelOption;
 }
