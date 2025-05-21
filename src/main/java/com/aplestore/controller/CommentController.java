@@ -1,10 +1,16 @@
 package com.aplestore.controller;
 
 import com.aplestore.dto.CommentDTO;
+import com.aplestore.dto.LoginDTO;
+import com.aplestore.dto.UserDTO;
 import com.aplestore.service.CommentService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/comments")
@@ -28,10 +34,28 @@ public class CommentController {
         return commentService.getCommentById(id);
     }
 
-    // 댓글 작성
+    // 3) 댓글 작성
     @PostMapping
-    public int addComment(@RequestBody CommentDTO comment) {
-        return commentService.addComment(comment);
+    public ResponseEntity<?> addComment(
+            @RequestBody CommentDTO comment,
+            HttpSession session
+    ) {
+        // 1) 로그인 세션에서 LoginDTO 꺼내기
+        LoginDTO login = (LoginDTO) session.getAttribute("loginMember");
+        if (login == null) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "로그인이 필요합니다."));
+        }
+
+        // 2) LoginDTO 의 userId 또는 id 필드로 세팅
+        comment.setUserId(Integer.parseInt(login.getUserId()));
+        // 만약 LoginDTO 에 getId() 만 있고 getUserId()가 없다면
+        // comment.setUserId(login.getId());
+
+        // 3) 댓글 등록
+        int result = commentService.addComment(comment);
+        return ResponseEntity.ok(Map.of("success", true, "inserted", result));
     }
 
     // 댓글 수정
