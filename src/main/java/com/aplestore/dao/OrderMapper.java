@@ -19,9 +19,8 @@ public interface OrderMapper {
     List<OrderDTO> selectOrdersByPeriod(@Param("startDate") String startDate,
                                         @Param("endDate") String endDate);
 
+    OrderDTO selectOrderById(int orderId);
     List<OrderDetailDTO> selectOrderDetailsByOrderId(int orderId);
-
-    OrderDTO getOrderById(int orderId);
 
 
     List<OrderDetailDTO> findOrderDetailsByOrderId(int orderId);

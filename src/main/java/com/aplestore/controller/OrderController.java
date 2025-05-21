@@ -81,9 +81,14 @@ public class OrderController {
 
     @GetMapping("/detail")
     @ResponseBody
-    public List<OrderDetailDTO> getOrderDetails(@RequestParam("orderId") int orderId) {
-        System.out.println(orderId);
-        return orderService.getOrderDetailsByOrderId(orderId);
+    public Map<String, Object> getOrderDetail(@RequestParam("orderId") int orderId) {
+        OrderDTO order = orderService.getOrderById(orderId);
+        List<OrderDetailDTO> details = orderService.getOrderDetailsByOrderId(orderId);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("order", order);
+        result.put("details", details);
+        return result;
     }
 
 

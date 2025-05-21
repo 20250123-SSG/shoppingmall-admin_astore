@@ -48,13 +48,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDetailDTO> getOrderDetailsByOrderId(int orderId) {
-        return orderMapper.findOrderDetailsByOrderId(orderId);
+        return orderMapper.selectOrderDetailsByOrderId(orderId);
     }
 
     @Override
     public OrderDTO getOrderById(int orderId) {
-        return orderMapper.getOrderById(orderId);
+        return orderMapper.selectOrderById(orderId);
     }
+
 
 
 }

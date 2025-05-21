@@ -12,7 +12,7 @@
     <result column="created_at" property="createdAt"/>
   </resultMap>
 
-  <resultMap id="OrderDetailWithModelOptionMap" type="OrderDetailDTO">
+  <resultMap id="OrderDetailWithModelOptionResultMap" type="OrderDetailDTO">
     <id property="id" column="od_id"/>
     <result property="modelOptionId" column="model_option_id"/>
     <result property="orderId" column="order_id"/>
@@ -22,15 +22,10 @@
     <!-- 중첩된 DTO 매핑 -->
     <association property="modelOption" javaType="ProductModelOptionDTO">
       <id property="id" column="mo_id"/>
-      <result property="productName" column="product_name"/>
-      <result property="modelName" column="model_name"/>
-      <result property="modelDescription" column="model_description"/>
       <result property="optionalModelPrice" column="optional_model_price"/>
       <result property="color" column="color"/>
       <result property="ram" column="ram"/>
       <result property="size" column="size"/>
-      <result property="createdAt" column="mo_created_at"/>
-      <result property="modifiedAt" column="mo_modified_at"/>
     </association>
   </resultMap>
 
@@ -111,38 +106,27 @@
         created_at DESC
   </select>
 
-  <select id="selectOrderDetailsByOrderId" resultType="OrderDetailDTO">
-    SELECT id, model_option_id AS modelOptionId, order_id AS orderId, order_quantity AS orderQuantity, order_price AS orderPrice
-    FROM orderdetails
-    WHERE order_id = #{orderId}
-  </select>
-
-  <select id="getOrderById" parameterType="int" resultType="OrderDTO">
-    SELECT
-      id,
-      user_id AS userId,
-      order_amount AS orderAmount,
-      created_at AS createdAt
+  <!-- 주문 단건 조회 -->
+  <select id="selectOrderById" resultType="OrderDTO">
+    SELECT id, user_id AS userId, order_amount AS orderAmount, created_at AS createdAt
     FROM orders
     WHERE id = #{orderId}
   </select>
 
-  <select id="findOrderDetailsByOrderId" resultMap="OrderDetailWithModelOptionMap">
+  <!-- 주문 상세 조회 + 옵션 조인 -->
+  <select id="selectOrderDetailsByOrderId" resultMap="OrderDetailWithModelOptionResultMap">
     SELECT
-      od.id AS od_id,
-      od.order_id,
+      od.id,
       od.model_option_id,
+      od.order_id,
       od.order_quantity,
       od.order_price,
-
       mo.id AS mo_id,
-      mo.optional_model_price,
       mo.color,
       mo.ram,
       mo.size
-
     FROM orderdetails od
-           JOIN model_options mo ON od.model_option_id = mo.id
+           LEFT JOIN model_options mo ON od.model_option_id = mo.id
     WHERE od.order_id = #{orderId}
   </select>
 

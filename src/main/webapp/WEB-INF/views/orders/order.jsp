@@ -269,28 +269,12 @@
   }
 
   function fetchOrderDetail(orderId) {
-    console.log(orderId);
     fetch(`${contextPath}/sales/detail?orderId=\${orderId}`)
       .then(response => response.json())
       .then(data => {
-        let html = `<table class="table"><thead><tr><th>모델 ID</th><th>모델</th><th>수량</th><th>가격</th></tr></thead><tbody>`;
-
-        data.forEach(detail => {
-          const mo = detail.modelOption;
-          console.log(mo);
-          const modelInfo = `\${mo.color} / \${mo.ram} / \${mo.size}`;
-          html += `
-          <tr>
-            <td>\${mo.id}</td>
-            <td>\${modelInfo}</td>
-            <td>\${detail.orderQuantity}</td>
-            <td>\${detail.orderPrice.toLocaleString()}원</td>
-          </tr>
-        `;
-        });
-
-        html += '</tbody></table>';
-        document.getElementById('modalDetailContent').innerHTML = html;
+        const order = data.order;
+        const details = data.details;
+        drawOrderDetail(order, details);
       })
       .catch(error => {
         console.error('상세 조회 실패:', error);
@@ -316,6 +300,7 @@
         <thead>
           <tr>
             <th>옵션 ID</th>
+            <th>모델</th>
             <th>수량</th>
             <th>가격</th>
           </tr>
@@ -324,9 +309,12 @@
     `;
 
       details.forEach(detail => {
+        const mo = detail.modelOption;
+        const modelInfo = `\${mo.color} / \${mo.ram} / \${mo.size}`;
         html += `
         <tr>
-          <td>\${detail.modelOptionId}</td>
+          <td>\${mo.id}</td>
+          <td>\${modelInfo}</td>
           <td>\${detail.orderQuantity}</td>
           <td>\${detail.orderPrice.toLocaleString()}원</td>
         </tr>
