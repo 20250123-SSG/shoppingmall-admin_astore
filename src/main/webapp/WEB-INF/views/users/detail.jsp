@@ -18,6 +18,10 @@
           <div class="col-md-9">${user.userId}</div>
         </div>
         <div class="row mb-3">
+          <div class="col-md-3 fw-bold">유저 이름</div>
+          <div class="col-md-9">${user.userName}</div>
+        </div>
+        <div class="row mb-3">
           <div class="col-md-3 fw-bold">유저 번호</div>
           <div class="col-md-9">${user.userPhone}</div>
         </div>
