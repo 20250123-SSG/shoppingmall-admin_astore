@@ -44,7 +44,7 @@
     </select>
 
     <!-- 상품등록 -->
-    <insert id="insertProduct">
+    <insert id="insertProduct" parameterType="ProductModelOptionDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO model_options
         (
           model_id
@@ -81,22 +81,28 @@
     </select>
 
     <!-- 상품수정 -->
-    <update id="updateProduct">
+    <update id="updateModel" parameterType="ProductModelOptionDTO">
         UPDATE
-            model_options mo
-            JOIN models m ON m.id = mo.model_id
+            models
         SET
-            m.model_name = #{modelName}
-            , m.model_price = #{modelPrice}
-            , m.model_description = #{modelDescription}
-            , mo.model_id = (SELECT id FROM models WHERE model_name = #{modelName})
-            , mo.color = #{color}
-            , mo.ram = #{ram}
-            , mo.size = #{size}
-            , mo.optional_model_price = #{optionalModelPrice}
-            , mo.modified_at = NOW()
+            model_name = #{modelName},
+            model_price = #{modelPrice},
+            model_description = #{modelDescription}
         WHERE
-            m.id = #{id}
+            id = #{modelId}
+    </update>
+
+    <update id="updateModelOption" parameterType="ProductModelOptionDTO">
+        UPDATE
+            model_options
+        SET
+            color = #{color},
+            ram = #{ram},
+            size = #{size},
+            optional_model_price = #{optionalModelPrice},
+            modified_at = NOW()
+        WHERE
+            id = #{Id}
     </update>
 
   <select id="getAllModels" resultType="ProductModelDTO">

@@ -15,14 +15,9 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.aplestore.service.ProductService;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -82,8 +77,7 @@ public class ProductController {
         ProductModelOptionDTO selectedOption = options.get(0);
         System.out.println(selectedOption.getModelPrice());
 
-
-
+        model.addAttribute("modelId",id);
         model.addAttribute("productName", selectedOption.getProductName());
         model.addAttribute("modelName", selectedOption.getModelName());
         model.addAttribute("modelDescription", selectedOption.getModelDescription());
@@ -150,12 +144,20 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/edit.page")
+    public String editPage(@ModelAttribute ProductModelOptionDTO product, Model model){
 
+
+        log.debug("{}",product);
+
+
+        return "products/edit";
+    }
 
     @PostMapping("/edit")
-    public String editPage(ProductModelOptionDTO product, Model model){
+    public String editProduct(ProductModelOptionDTO product, Model model){
         log.debug("디티오가 으로 잘 들어오고 있는지. post {}", product);
-        int id = productService.getModelId(product);
+        int id = productService.getModelOptionId(product);
         product.setId(id);
         model.addAttribute("model", product);
         return "products/edit";
@@ -163,6 +165,7 @@ public class ProductController {
 
     @PostMapping("/edit/save")
     public String saveProduct(ProductModelOptionDTO product){
+        log.debug("------------ {}", product);
 
         int result = productService.saveChangeInfo(product);
         if (result == 1){

@@ -32,11 +32,12 @@ public class ProductServiceImpl implements ProductService {
     public int registProduct(ProductModelOptionDTO product) {
         ProductMapper mapper = sqlSession.getMapper(ProductMapper.class);
         Integer modelId = mapper.selectModelIdIfExists(product.getModelName());
+        //모델 등록되어있으면 가져와
 
-        if (modelId == null) {
-            modelId = mapper.insertModel(product);
+        if (modelId == null) {// 없으면
+            modelId = mapper.insertModel(product); //등록하고, 모델 아이디 가져와
         }
-        product.setId(modelId);
+        product.setModelId(modelId);
 
         int existed = mapper.countExistsModel(product);
 
@@ -53,6 +54,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public int getModelOptionId(ProductModelOptionDTO product) {
+        int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
+        return id;
+    }
+
+    @Override
     public int getModelId(ProductModelOptionDTO product) {
         int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
         return id;
@@ -60,7 +67,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int saveChangeInfo(ProductModelOptionDTO product) {
-        return sqlSession.getMapper(ProductMapper.class).updateProduct(product);
+        int resultModel = sqlSession.getMapper(ProductMapper.class).updateModel(product);
+        int resultModelOption = sqlSession.getMapper(ProductMapper.class).updateModelOption(product);
+        return resultModel * resultModelOption;
     }
 
     @Override

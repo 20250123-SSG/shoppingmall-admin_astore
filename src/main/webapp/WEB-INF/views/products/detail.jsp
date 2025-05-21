@@ -19,6 +19,7 @@
         </div>
     </div>
 
+    <input type="hidden" name="modelId" value="${modelId}"/>
     <div class="right-section">
         <h2 class="model-name">${modelName}</h2>
 

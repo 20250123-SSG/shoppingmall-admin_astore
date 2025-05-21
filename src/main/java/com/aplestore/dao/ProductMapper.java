@@ -31,5 +31,6 @@ public interface ProductMapper {
     int updateProduct(ProductModelOptionDTO product);
 
 
-
+    int updateModel(ProductModelOptionDTO product);
+    int updateModelOption(ProductModelOptionDTO product);
 }

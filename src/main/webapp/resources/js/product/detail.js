@@ -104,7 +104,7 @@ function editOption() {
   const matched = modelOptions.find(opt =>
     opt.color === selectedColor &&
     opt.ram === selectedRam &&
-    opt.size == selectedSize
+    opt.size === selectedSize
   );
 
   if (!matched) {
@@ -114,8 +114,8 @@ function editOption() {
 
   // 수정 페이지로 넘겨줄 데이터
   const form = document.createElement("form");
-  form.method = "post";
-  form.action = `${contextPath}/products/edit`; // 수정 페이지 진입 URL
+  form.method = "GET";
+  form.action = `${contextPath}/products/edit.page`; // 수정 페이지 진입 URL
   form.style.display = "none";
 
   const fields = [
