@@ -57,47 +57,6 @@
       <button type="button" class="btn btn-secondary" onclick="goToList()">목록으로</button>
     </div>
 
-<%--    <!-- 문의 내역 -->--%>
-<%--    <div class="card mt-4">--%>
-<%--      <div class="card-header">--%>
-<%--        <h5 class="mb-0">문의 내역</h5>--%>
-<%--      </div>--%>
-<%--      <div class="card-body">--%>
-<%--        <table class="table">--%>
-<%--          <thead>--%>
-<%--          <tr>--%>
-<%--            <th>번호</th>--%>
-<%--            <th>제목</th>--%>
-<%--            <th>상태</th>--%>
-<%--            <th>등록일</th>--%>
-<%--          </tr>--%>
-<%--          </thead>--%>
-<%--          <tbody>--%>
-<%--          <c:forEach var="inquiry" items="${user.inquiries}">--%>
-<%--            <tr>--%>
-<%--              <td>${inquiry.id}</td>--%>
-<%--              <td>${inquiry.title}</td>--%>
-<%--              <td>--%>
-<%--                  <span class="badge--%>
-<%--                    <c:choose>--%>
-<%--                      <c:when test="${inquiry.status == '답변대기'}">bg-warning</c:when>--%>
-<%--                      <c:when test="${inquiry.status == '답변완료'}">bg-success</c:when>--%>
-<%--                      <c:otherwise>bg-secondary</c:otherwise>--%>
-<%--                    </c:choose>--%>
-<%--                  ">--%>
-<%--                      ${inquiry.status}--%>
-<%--                  </span>--%>
-<%--              </td>--%>
-<%--              <td>${inquiry.createdDate}</td>--%>
-<%--            </tr>--%>
-<%--          </c:forEach>--%>
-<%--          </tbody>--%>
-<%--        </table>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-<%--  </div>--%>
-<%--</div>--%>
-
     <%@ include file="../common/footer.jsp" %>
 
     <c:set var="ctx" value="${pageContext.request.contextPath}" />
