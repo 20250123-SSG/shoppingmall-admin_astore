@@ -43,5 +43,51 @@
     ORDER BY o.created_at DESC
   </select>
 
+  <select id="selectBoardListCount" resultType="_int">
+    select
+      count(*)
+    from
+      orders
+  </select>
+
+  <select id="selectBoardList" resultMap="orderResultMap">
+    select
+      id,
+      user_id,
+      order_amount,
+      created_at,
+    from
+      orders
+    order by
+      board_no desc
+      limit
+      #{offset}, #{display}
+  </select>
+
+  <select id="selectAllOrders" resultType="OrderDTO">
+    SELECT
+        id, user_id AS userId
+         , order_amount AS orderAmount
+         , created_at AS createdAt
+    FROM
+        orders
+    ORDER BY
+        created_at DESC
+  </select>
+
+  <select id="selectOrdersByPeriod" resultType="OrderDTO">
+    SELECT
+        id
+         , user_id AS userId
+         , order_amount AS orderAmount
+         , created_at AS createdAt
+    FROM
+        orders
+    WHERE
+        created_at BETWEEN #{startDate} AND #{endDate}
+    ORDER BY
+        created_at DESC
+  </select>
+
 
 </mapper>
