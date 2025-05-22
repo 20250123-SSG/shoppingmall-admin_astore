@@ -21,6 +21,7 @@
 
   <select id="getAllUsers" resultMap="userResultMap">
     SELECT * FROM users
+    WHERE id NOT IN (1)
   </select>
 
   <select id="getUserById" resultMap="userResultMap" parameterType="int">

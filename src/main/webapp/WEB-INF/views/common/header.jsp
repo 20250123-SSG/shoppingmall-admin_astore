@@ -35,7 +35,7 @@
     <!-- 또는 <ul class="navbar-nav mx-auto"> 로도 가능 -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/users">유저관리</a>
+        <a class="nav-link" href="${contextPath}/users/list">유저관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/products">상품관리</a>

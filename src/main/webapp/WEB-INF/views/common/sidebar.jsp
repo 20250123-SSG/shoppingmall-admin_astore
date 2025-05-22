@@ -27,7 +27,7 @@
           문의관리
         </a>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/stores">
+        <a class="nav-link" href="${contextPath}/stores/list.page">
           매장관리
         </a>
       </li>
