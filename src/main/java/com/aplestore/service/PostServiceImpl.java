@@ -1,6 +1,7 @@
 package com.aplestore.service;
 
 import com.aplestore.common.PageUtil;
+import com.aplestore.dao.CommentMapper;
 import com.aplestore.dao.PostMapper;
 import com.aplestore.dto.PostDTO;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
-
+    private final CommentMapper commentMapper;
     private final PostMapper postMapper;
     private final PageUtil   pageUtil;
 

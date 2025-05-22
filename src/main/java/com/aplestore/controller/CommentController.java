@@ -49,7 +49,7 @@ public class CommentController {
         }
 
         // 2) LoginDTO 의 userId 또는 id 필드로 세팅
-        comment.setUserId(Integer.parseInt(login.getUserId()));
+        comment.setUserId(login.getUserId());
         // 만약 LoginDTO 에 getId() 만 있고 getUserId()가 없다면
         // comment.setUserId(login.getId());
 

@@ -55,60 +55,55 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        $(function(){
-            const postId = ${post.id};
+        const ctx    = '${ctx}';
+        const postId = '${post.id}';
 
-            function loadComments() {
-                $.getJSON(`${ctx}/comments/post/${postId}`, data => {
-                    const $list = $('#commentList').empty();
-                    if (data.length === 0) {
+        function loadComments() {
+            $.getJSON(ctx + '/comments/post/' + postId, function(data) {
+                const $list = $('#commentList').empty();
+                if (data.length === 0) {
+                    $list.append(
+                      '<li class="list-group-item text-center text-muted">'
+                      + '등록된 댓글이 없습니다.</li>'
+                    );
+                } else {
+                    data.forEach(function(c) {
                         $list.append(
-                          '<li class="list-group-item text-center text-muted">'
-                          + '등록된 댓글이 없습니다.</li>'
+                          '<li class="list-group-item">'
+                          +   '<p>' + c.commentContent + '</p>'
+                          +   '<small class="text-muted">'
+                          +     '작성자: ' + c.userId
+                          +     '   작성일 : ' + c.createdAt
+                          +   '</small>'
+                          + '</li>'
                         );
-                    } else {
-                        data.forEach(c => {
-                            $list.append(`
-            <li class="list-group-item">
-              <p>${c.commentContent}</p>
-              <small class="text-muted">
-                작성: ${c.createdAt}
-              </small>
-            </li>
-          `);
-                        });
-                    }
-                });
-            }
-
-            // 댓글 등록
-            $('#addCommentBtn').click(function(){
-                const content = $('#newCommentContent').val().trim();
-                if (!content) {
-                    alert('댓글을 입력해주세요.');
-                    return;
+                    });
                 }
-                $.ajax({
-                    url: `${ctx}/comments`,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        postId: postId,
-                        commentContent: content
-                    }),
-                    success: () => {
-                        $('#newCommentContent').val('');
-                        loadComments();
-                    },
-                    error: () => {
-                        alert('댓글 등록에 실패했습니다.');
-                    }
-                });
             });
+        }
 
-            // 초기 댓글 불러오기
-            loadComments();
+        $('#addCommentBtn').click(function(){
+            const content = $('#newCommentContent').val().trim();
+            if (!content) {
+                alert('댓글을 입력해주세요.');
+                return;
+            }
+            $.ajax({
+                url:    ctx + '/comments',
+                type:   'POST',
+                contentType: 'application/json',
+                data:   JSON.stringify({ postId: postId, commentContent: content }),
+                success: function() {
+                    $('#newCommentContent').val('');
+                    loadComments();
+                },
+                error: function() {
+                    alert('댓글 등록에 실패했습니다.');
+                }
+            });
         });
+
+        $(loadComments);
     </script>
 </div>
 
