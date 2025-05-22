@@ -21,6 +21,7 @@
 
   <select id="getAllUsers" resultMap="userResultMap">
     SELECT * FROM users
+    WHERE id NOT IN (1)
   </select>
 
   <select id="getUserById" resultMap="userResultMap" parameterType="int">
@@ -29,7 +30,7 @@
 
   <update id="updateUser" parameterType="com.aplestore.dto.UserDTO">
     UPDATE users
-    SET user_pwd = #{userPwd},
+    SET
         user_name = #{userName},
         user_phone = #{userPhone},
         user_address = #{userAddress},
@@ -40,9 +41,9 @@
     WHERE id = #{id}
   </update>
 
-  <delete id="deleteUser" parameterType="int">
-    DELETE FROM users WHERE id = #{id}
-  </delete>
+  <update id="deleteUser" parameterType="int">
+    UPDATE users SET user_status = 4 WHERE id = #{id}
+  </update>
 
 <!--  검색 기능-->
   <select id="searchUsers" resultMap="userResultMap">

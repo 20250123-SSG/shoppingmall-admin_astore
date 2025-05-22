@@ -12,6 +12,23 @@
     <result column="created_at" property="createdAt"/>
   </resultMap>
 
+  <resultMap id="OrderDetailWithModelOptionResultMap" type="OrderDetailDTO">
+    <id property="id" column="od_id"/>
+    <result property="modelOptionId" column="model_option_id"/>
+    <result property="orderId" column="order_id"/>
+    <result property="orderQuantity" column="order_quantity"/>
+    <result property="orderPrice" column="order_price"/>
+
+    <!-- 중첩된 DTO 매핑 -->
+    <association property="modelOption" javaType="ProductModelOptionDTO">
+      <id property="id" column="mo_id"/>
+      <result property="optionalModelPrice" column="optional_model_price"/>
+      <result property="color" column="color"/>
+      <result property="ram" column="ram"/>
+      <result property="size" column="size"/>
+    </association>
+  </resultMap>
+
 
   <select id="selectAvailableYears" resultType="int">
     SELECT DISTINCT YEAR (created_at)
@@ -88,6 +105,32 @@
     ORDER BY
         created_at DESC
   </select>
+
+  <!-- 주문 단건 조회 -->
+  <select id="selectOrderById" resultType="OrderDTO">
+    SELECT id, user_id AS userId, order_amount AS orderAmount, created_at AS createdAt
+    FROM orders
+    WHERE id = #{orderId}
+  </select>
+
+  <!-- 주문 상세 조회 + 옵션 조인 -->
+  <select id="selectOrderDetailsByOrderId" resultMap="OrderDetailWithModelOptionResultMap">
+    SELECT
+      od.id,
+      od.model_option_id,
+      od.order_id,
+      od.order_quantity,
+      od.order_price,
+      mo.id AS mo_id,
+      mo.color,
+      mo.ram,
+      mo.size
+    FROM orderdetails od
+           LEFT JOIN model_options mo ON od.model_option_id = mo.id
+    WHERE od.order_id = #{orderId}
+  </select>
+
+
 
 
 </mapper>

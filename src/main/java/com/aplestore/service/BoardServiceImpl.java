@@ -1,10 +1,12 @@
 package com.aplestore.service;
 
+
+import java.util.List;
 import com.aplestore.dao.BoardMapper;
 import com.aplestore.dto.BoardDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor

@@ -13,21 +13,21 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testproducts">
+        <a class="nav-link" href="${contextPath}/products">
           상품관리
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testorders">
+        <a class="nav-link" href="${contextPath}/sales/order">
           주문관리
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testinquiries">
+        <a class="nav-link" href="${contextPath}/inquiries">
           문의관리
         </a>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/stores">
+        <a class="nav-link" href="${contextPath}/stores/list.page">
           매장관리
         </a>
       </li>

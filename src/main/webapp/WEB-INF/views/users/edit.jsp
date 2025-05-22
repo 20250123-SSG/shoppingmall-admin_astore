@@ -11,11 +11,6 @@
     <input type="hidden" name="id" value="${user.id}"/>
 
     <div class="mb-3">
-      <label class="form-label">비밀번호</label>
-      <input type="text" class="form-control" name="userPwd" value="${user.userPwd}"/>
-    </div>
-
-    <div class="mb-3">
       <label class="form-label">이름</label>
       <input type="text" class="form-control" name="userName" value="${user.userName}"/>
     </div>

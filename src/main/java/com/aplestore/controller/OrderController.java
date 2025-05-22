@@ -1,6 +1,7 @@
 package com.aplestore.controller;
 
 import com.aplestore.dto.OrderDTO;
+import com.aplestore.dto.OrderDetailDTO;
 import com.aplestore.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +77,20 @@ public class OrderController {
             return orderService.getOrdersByPeriod(startDate, endDate); // 기간 조회
         }
     }
+
+
+    @GetMapping("/detail")
+    @ResponseBody
+    public Map<String, Object> getOrderDetail(@RequestParam("orderId") int orderId) {
+        OrderDTO order = orderService.getOrderById(orderId);
+        List<OrderDetailDTO> details = orderService.getOrderDetailsByOrderId(orderId);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("order", order);
+        result.put("details", details);
+        return result;
+    }
+
+
 
 }
