@@ -36,12 +36,12 @@ public class ProductServiceImpl implements ProductService {
         if (modelId == null) {
             modelId = mapper.insertModel(product);
         }
-        product.setId(modelId);
+        product.setModelId(modelId);
 
         int existed = mapper.countExistsModel(product);
 
         if (existed == 0) {
-            return mapper.insertProduct(product);
+            return Math.toIntExact(mapper.insertProduct(product));
         } else {
             log.debug("이미 등록된 상품입니다. ");
             return 0;
@@ -52,19 +52,31 @@ public class ProductServiceImpl implements ProductService {
         return sqlSession.getMapper(ProductMapper.class).findMatchingModelNames(keyword);
     }
 
-
     @Override
-    public int saveChangeInfo(ProductModelOptionDTO product) {
-        return sqlSession.getMapper(ProductMapper.class).updateProduct(product);
+    public int getModelId(ProductModelOptionDTO product) {
+        int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
+        return id;
     }
 
     @Override
-    public List<ProductModelOptionDTO> getProductDetail(Long id){
+    public int saveChangeInfo(ProductModelOptionDTO product) {
+        int resultModel = sqlSession.getMapper(ProductMapper.class).updateModel(product);
+        int resultModelOption = sqlSession.getMapper(ProductMapper.class).updateModelOption(product);
+        return resultModel * resultModelOption;
+    }
+
+    @Override
+    public List<ProductModelOptionDTO> getProductDetail(Integer id){
         return sqlSession.getMapper(ProductMapper.class).getProductDetail(id);
     }
 
     @Override
     public int removeModelOption(ProductModelOptionDTO dto){
         return sqlSession.getMapper(ProductMapper.class).removeModelOption(dto);
+    }
+    @Override
+    public int getModelOptionId(ProductModelOptionDTO product) {
+        int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
+        return id;
     }
 }

@@ -3,28 +3,23 @@ package com.aplestore.controller;
 import com.aplestore.common.PageUtil;
 import com.aplestore.dto.ProductModelDTO;
 import com.aplestore.dto.ProductModelOptionDTO;
+import com.aplestore.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.aplestore.service.ProductService;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,11 +38,11 @@ public class ProductController {
 
     @GetMapping("/list.page")
     public void productListPage(@RequestParam(defaultValue = "1") int page,
-                                  @RequestParam(defaultValue = "5") int display,
-                                  @RequestParam(defaultValue = "5") int pagePerBlock,
-                                  @RequestParam(required = false) String keyword,
-                                  @RequestParam(required = false) String sort,
-                                  Model model) {
+                                @RequestParam(defaultValue = "5") int display,
+                                @RequestParam(defaultValue = "5") int pagePerBlock,
+                                @RequestParam(required = false) String keyword,
+                                @RequestParam(required = false) String sort,
+                                Model model) {
 
         int totalCount = productService.countAllModels(keyword);
         Map<String, Object> pageInfo = pageUtil.getPageInfo(totalCount, page, display, pagePerBlock);
@@ -70,7 +65,7 @@ public class ProductController {
     }
 
     @GetMapping("/{model-id}")
-    public String getProductDetail(@PathVariable("model-id") Long id, Model model) {
+    public String getProductDetail(@PathVariable("model-id") Integer id, Model model) {
         List<ProductModelOptionDTO> options = productService.getProductDetail(id);
 
         if (options.isEmpty()) {
@@ -80,9 +75,9 @@ public class ProductController {
 
 
         ProductModelOptionDTO selectedOption = options.get(0);
+        System.out.println(selectedOption.getModelPrice());
 
-
-
+        model.addAttribute("modelId",id);
         model.addAttribute("productName", selectedOption.getProductName());
         model.addAttribute("modelName", selectedOption.getModelName());
         model.addAttribute("modelDescription", selectedOption.getModelDescription());
@@ -122,26 +117,18 @@ public class ProductController {
         return "products/regist";
     }
 
-
-
-
-
-
     @PostMapping("/regist")
     public String registProduct(ProductModelOptionDTO product, @RequestParam("uploadFile") MultipartFile uploadFile) {
-        // DB등록
         int result = productService.registProduct(product);
         if (result == 0) {
-            // 등록실패메시지 출력
             log.debug("다시 입력해주십시오. 등록페이지로 돌아갑니다.");
-            return "products/regist"; // 등록 페이지로 포워딩
+            return "products/regist";
         }
 
-        // 이미지 저장
         String imgPath = "C:/upload/";
         File dir = new File(imgPath);
         if (!dir.exists()) {
-            dir.mkdirs();  // 폴더가 없으면 생성
+            dir.mkdirs();
         }
 
         String newFilename = product.getModelName() + "_" + product.getId().toString() + ".png";
@@ -157,23 +144,25 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/edit.page")
+    public String editPage(@RequestParam Integer modelId,
+                           @ModelAttribute ProductModelOptionDTO product,
+                           Model model) {
+        product.setModelId(modelId);
+        System.out.println(product.getModelId());
+        log.debug("Product info: {}", product);
+        model.addAttribute("model", product);
 
+
+        return "products/edit";
+    }
 
     @PostMapping("/edit")
-    public String editPage(ProductModelOptionDTO product, Model model) {
-        log.debug("디티오가 으로 잘 들어오고 있는지. post {}", product);
-
+    public String editProduct(ProductModelOptionDTO product){
+        int modelId = product.getModelId();
         int result = productService.saveChangeInfo(product);
-
-        if (result == 1) {
-            log.debug("수정 성공");
-        } else {
-            log.warn("수정 실패");
-        }
-
-        return "redirect:/products/" + product.getId();
-
-
+        if (result == 1){ } //수정성공하였습니다.
+        return "redirect:/products/" + product.getModelId();
     }
 
 }

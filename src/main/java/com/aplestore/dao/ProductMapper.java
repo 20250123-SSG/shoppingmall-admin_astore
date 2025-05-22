@@ -16,7 +16,7 @@ public interface ProductMapper {
 
     int countAllModels(String keyword);
     List<String> findMatchingModelNames(@Param("keyword") String keyword);
-    List<ProductModelOptionDTO> getProductDetail(Long id);
+    List<ProductModelOptionDTO> getProductDetail(Integer id);
     int removeModelOption(ProductModelOptionDTO productModelOptionDTO);
 
     // 상품등록
@@ -30,5 +30,7 @@ public interface ProductMapper {
     int updateProduct(ProductModelOptionDTO product);
 
 
-
+    int updateModel(ProductModelOptionDTO product);
+    int updateModelOption(ProductModelOptionDTO product);
+    int selectModelId(ProductModelOptionDTO product);
 }

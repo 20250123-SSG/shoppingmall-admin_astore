@@ -14,9 +14,11 @@ public interface ProductService {
     int countAllModels(String keyword);
     List<String> suggestKeyword(String keyword);
 
-    List<ProductModelOptionDTO> getProductDetail(Long id);
+    List<ProductModelOptionDTO> getProductDetail(Integer id);
 
     int removeModelOption(ProductModelOptionDTO dto);
 
+    int getModelOptionId(ProductModelOptionDTO product);
+    int getModelId(ProductModelOptionDTO product);
     int saveChangeInfo(ProductModelOptionDTO product);
 }

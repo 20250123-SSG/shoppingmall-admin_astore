@@ -81,6 +81,8 @@
             <label for="description" class="form-label">제품 설명</label>
             <textarea class="form-control" id="description" name="modelDescription" rows="4" required>${model.modelDescription}</textarea>
           </div>
+<%--          <input type="hidden" name="id" value="${model.id}" />--%>
+          <input type="hidden" name="modelId" value="${model.modelId}" />
         </div>
       </div>
       <div class="image-box">

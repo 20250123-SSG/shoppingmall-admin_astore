@@ -44,7 +44,7 @@
     </select>
 
     <!-- 상품등록 -->
-    <insert id="insertProduct">
+    <insert id="insertProduct" parameterType="ProductModelOptionDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO model_options
         (
           model_id
@@ -70,20 +70,45 @@
 
 
     <!-- 상품수정 -->
-    <update id="updateProduct">
-      UPDATE model_options mo
-        INNER JOIN models m ON mo.model_id = m.id
-      SET
-        m.model_name = #{modelName},
-        m.model_price = #{modelPrice},
-        m.model_description = #{modelDescription},
-        mo.color = #{color},
-        mo.ram = #{ram},
-        mo.size = #{size},
-        mo.optional_model_price = #{optionalModelPrice},
-        mo.modified_at = NOW()
-      WHERE
-        m.id = #{modelId}
+
+<!--    <update id="updateProduct">-->
+<!--      UPDATE model_options mo-->
+<!--        INNER JOIN models m ON mo.model_id = m.id-->
+<!--      SET-->
+<!--        m.model_name = #{modelName},-->
+<!--        m.model_price = #{modelPrice},-->
+<!--        m.model_description = #{modelDescription},-->
+<!--        mo.color = #{color},-->
+<!--        mo.ram = #{ram},-->
+<!--        mo.size = #{size},-->
+<!--        mo.optional_model_price = #{optionalModelPrice},-->
+<!--        mo.modified_at = NOW()-->
+<!--      WHERE-->
+<!--        m.id = #{modelId}-->
+<!--    </update>-->
+    <update id="updateModel" parameterType="ProductModelOptionDTO">
+        UPDATE
+            models
+        SET
+            model_name = #{modelName},
+            model_price = #{modelPrice},
+            model_description = #{modelDescription}
+        WHERE
+            id = #{modelId}
+    </update>
+
+    <update id="updateModelOption" parameterType="ProductModelOptionDTO">
+        UPDATE
+            model_options
+        SET
+            color = #{color},
+            ram = #{ram},
+            size = #{size},
+            optional_model_price = #{optionalModelPrice},
+            modified_at = NOW()
+        WHERE
+            id = #{id}
+
     </update>
 
   <select id="getAllModels" resultType="ProductModelDTO">
@@ -132,8 +157,7 @@
 
     <where>
       <if test="keyword != null and keyword != ''">
-        (product_name LIKE CONCAT('%', #{keyword}, '%')
-        OR model_name LIKE CONCAT('%', #{keyword}, '%'))
+        model_name LIKE CONCAT('%', #{keyword}, '%')
       </if>
     </where>
   </select>
@@ -173,6 +197,28 @@
       AND ram = #{ram}
       AND size = #{size}
   </delete>
+  <select id="selectModelId" parameterType="ProductModelOptionDTO" resultType="_int">
+    SELECT
+      id
+    FROM
+      models
+    WHERE
+      model_name = #{modelName}
+  </select>
+<!--  <select id="selectModelOptionId" parameterType="ProductModelOptionDTO" resultType="_int">-->
+<!--    SELECT-->
+<!--      m.id-->
+<!--    FROM-->
+<!--      model_options o-->
+<!--        JOIN models m ON m.id = o.model_id-->
+<!--    WHERE-->
+<!--      m.model_name = #{modelName}-->
+<!--      AND o.color = #{color}-->
+<!--      AND o.ram = #{ram}-->
+<!--      AND o.size = #{size}-->
+<!--  </select>-->
+
+
 
 
 </mapper>

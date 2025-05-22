@@ -4,15 +4,15 @@
 <%@ include file="../common/sidebar.jsp" %>
 <link rel="stylesheet" href="${contextPath}/resources/css/product/detail.css">
 <script src="${contextPath}/resources/js/product/detail.js"></script>
+<meta name="context-path" content="${contextPath}">
 
 
-
-<h1 class="page-title" >상품상세조회</h1>
+<h1 class="page-title">상품상세조회</h1>
 
 <div class="detail-container">
     <div class="left-section">
-        <img src="${pageContext.request.contextPath}/resources/images/main_logo.png"
-             alt="모델 이미지" class="model-image">
+        <img src="${pageContext.request.contextPath}/upload/${modelName}_${id}.PNG" alt="모델 이미지" class="model-image" />
+
         <p class="model-description" style="font-weight: bold">${modelDescription}</p>
         <div class="left-button">
             <button onclick="location.href='${pageContext.request.contextPath}/products/list.page'">뒤로가기</button>
@@ -21,7 +21,7 @@
 
     <div class="right-section">
         <h2 class="model-name">${modelName}</h2>
-
+        <input type="hidden" id="currentModelId" value="${modelId}" />
         <div>
             <label>색상:</label>
             <select id="colorSelect"></select>
@@ -39,14 +39,9 @@
 
         <div>
             <label style="font-weight: bold;">가격:</label>
-            <span id="priceDisplay" style="font-weight: bold;">
-    <fmt:formatNumber value="${modelPrice}" type="number" groupingUsed="true" />원
-  </span>
+            <span id="priceDisplay" style="font-weight: bold;"> <fmt:formatNumber value="${modelPrice}" type="number"
+                                                                                  groupingUsed="true"/>원 </span>
         </div>
-
-
-
-
         <div class="right-buttons">
             <button type="button" onclick="deleteOption()">삭제하기</button>
             <button onclick="editOption()">수정하기</button>
@@ -55,7 +50,8 @@
 </div>
 
 <script>
-  const modelOptions = JSON.parse('${optionsJson}'); // ← Controller에서 JSON 문자열로 전달
+  const modelOptions = JSON.parse('${optionsJson}');
+  const currentModelId = ${modelId};
 </script>
 
 <%@ include file="../common/footer.jsp" %>
