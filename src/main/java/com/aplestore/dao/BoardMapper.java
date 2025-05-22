@@ -10,5 +10,4 @@ public interface BoardMapper {
 
     // 단일 게시판 조회 (선택적)
     BoardDTO selectById(@Param("id") Integer id);
-
 }

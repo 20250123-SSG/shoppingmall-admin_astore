@@ -18,8 +18,15 @@
     height: 30px;      /* 로고 높이를 30px로 고정 */
     width: auto;       /* 너비는 비율에 맞춰 자동 */
   }
-
 </style>
+
+<%--<header class="row m-3">--%>
+<%--  <div class="col-4 d-flex justify-content-center align-items-center">--%>
+<%--    <a href="${contextPath}/dashboard">--%>
+<%--      <img src="${contextPath}/resources/images/main_logo.png" width="170px" alt="Main Logo">--%>
+<%--    </a>--%>
+<%--  </div>--%>
+<%--</header>--%>
 
 <nav class="navbar m-3 navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="${contextPath}/dashboard">
@@ -35,10 +42,10 @@
     <!-- 또는 <ul class="navbar-nav mx-auto"> 로도 가능 -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/users/list">유저관리</a>
+        <a class="nav-link" href="${contextPath}/testusers">유저관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/products">상품관리</a>
+        <a class="nav-link" href="${contextPath}/testproducts">상품관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/sales/order">주문관리</a>
@@ -66,7 +73,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/stores/list.page">매장관리</a>
+        <a class="nav-link" href="${contextPath}/stores">매장관리</a>
       </li>
     </ul>
   </div>

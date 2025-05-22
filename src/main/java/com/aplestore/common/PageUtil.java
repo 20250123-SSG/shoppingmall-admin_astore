@@ -23,14 +23,14 @@ public class PageUtil {
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("totalCount", totalCount);
-        map.put("page", page);
-        map.put("display", display);
-        map.put("pagePerBlock", pagePerBlock);
-        map.put("totalPage", totalPage);
-        map.put("beginPage", beginPage);
-        map.put("endPage", endPage);
-        map.put("offset", offset);
+         map.put("totalCount", totalCount);
+         map.put("page", page);
+         map.put("display", display);
+         map.put("pagePerBlock", pagePerBlock);
+         map.put("totalPage", totalPage);
+         map.put("beginPage", beginPage);
+         map.put("endPage", endPage);
+         map.put("offset", offset);
 
         return map;
     }
