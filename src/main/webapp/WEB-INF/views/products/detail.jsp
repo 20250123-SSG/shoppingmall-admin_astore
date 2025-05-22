@@ -54,8 +54,8 @@
 <script>
   const modelOptions = JSON.parse('${optionsJson}');
   const currentModelId = ${modelId};
-  const modelName = '${modelName}';
-  <%--document.getElementById('modelImage').src = `/upload/${modelName}_${modelOptions.id}.png`;--%>
+  <%--const modelName = '${modelName}';--%>
+  <%--&lt;%&ndash;document.getElementById('modelImage').src = `/upload/${modelName}_${modelOptions.id}.png`;&ndash;%&gt;--%>
 
 </script>
 

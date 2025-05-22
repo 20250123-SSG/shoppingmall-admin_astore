@@ -42,10 +42,10 @@
     <!-- 또는 <ul class="navbar-nav mx-auto"> 로도 가능 -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testusers">유저관리</a>
+        <a class="nav-link" href="${contextPath}/users/list">유저관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testproducts">상품관리</a>
+        <a class="nav-link" href="${contextPath}/products">상품관리</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/sales/order">주문관리</a>
@@ -73,7 +73,7 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/stores">매장관리</a>
+        <a class="nav-link" href="${contextPath}/stores/list.page">매장관리</a>
       </li>
     </ul>
   </div>

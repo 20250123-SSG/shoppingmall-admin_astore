@@ -16,14 +16,21 @@
 
   <!-- 게시판 탭 -->
   <ul class="nav nav-tabs mb-3">
-    <c:forEach var="b" items="${boards}">
-      <li class="nav-item">
-        <a class="nav-link ${b.id == selectedBoardId ? 'active':''}"
-           href="${ctx}/post/list.page?boardId=${b.id}&page=1">
-            ${b.boardName}
-        </a>
-      </li>
-    </c:forEach>
+    <li class="nav-item">
+      <a class="nav-link" href="${ctx}/post/list.page?boardId=1&page=1">
+        공지사항
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="${ctx}/post/list.page?boardId=2&page=1">
+        1대1문의
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="${ctx}/post/list.page?boardId=3&page=1">
+        상품문의
+      </a>
+    </li>
   </ul>
   <!-- 검색 폼 -->
   <form class="row g-2 mb-3" method="get" action="${ctx}/post/list.page">
