@@ -7,14 +7,16 @@
 
 <div class="container py-4">
     <div class="d-flex justify-content-between mb-4">
-        <h2>${post.postSubject}</h2>
+        <h2>제목 : ${post.postSubject}</h2>
         <a href="${ctx}/post/list.page?boardId=${selectedBoardId}&page=${page}"
            class="btn btn-secondary">목록</a>
     </div>
 
     <dl class="row">
+
+
         <dt class="col-sm-2">작성자</dt>
-        <dd class="col-sm-10">${post.userId}</dd>
+        <dd class="col-sm-10">${post.userName}</dd>
 
         <dt class="col-sm-2">작성일</dt>
         <dd class="col-sm-10">
@@ -37,6 +39,72 @@
             </button>
         </form>
     </div>
+    <hr/>
+    <div class="container py-4">
+        <h5>댓글</h5>
+        <ul id="commentList" class="list-group mb-3"></ul>
+
+        <div class="input-group mb-3">
+            <input type="text"
+                   id="newCommentContent"
+                   class="form-control"
+                   placeholder="댓글을 입력하세요"/>
+            <button id="addCommentBtn" class="btn btn-primary">등록</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        const ctx    = '${ctx}';
+        const postId = '${post.id}';
+
+        function loadComments() {
+            $.getJSON(ctx + '/comments/post/' + postId, function(data) {
+                const $list = $('#commentList').empty();
+                if (data.length === 0) {
+                    $list.append(
+                      '<li class="list-group-item text-center text-muted">'
+                      + '등록된 댓글이 없습니다.</li>'
+                    );
+                } else {
+                    data.forEach(function(c) {
+                        $list.append(
+                          '<li class="list-group-item">'
+                          +   '<p>' + c.commentContent + '</p>'
+                          +   '<small class="text-muted">'
+                          +     '작성자: ' + c.userId
+                          +     '   작성일 : ' + c.createdAt
+                          +   '</small>'
+                          + '</li>'
+                        );
+                    });
+                }
+            });
+        }
+
+        $('#addCommentBtn').click(function(){
+            const content = $('#newCommentContent').val().trim();
+            if (!content) {
+                alert('댓글을 입력해주세요.');
+                return;
+            }
+            $.ajax({
+                url:    ctx + '/comments',
+                type:   'POST',
+                contentType: 'application/json',
+                data:   JSON.stringify({ postId: postId, commentContent: content }),
+                success: function() {
+                    $('#newCommentContent').val('');
+                    loadComments();
+                },
+                error: function() {
+                    alert('댓글 등록에 실패했습니다.');
+                }
+            });
+        });
+
+        $(loadComments);
+    </script>
 </div>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

@@ -9,15 +9,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-    header { height: 50px; }
-    header a { color: white; }
-    header .profile-img { width: 30px; }
+  header { height: 50px; }
+  header a { color: white; }
+  header .profile-img { width: 30px; }
 
-    /* 네비바용 로고 스타일 */
-    .navbar-brand img {
-        height: 30px;      /* 로고 높이를 30px로 고정 */
-        width: auto;       /* 너비는 비율에 맞춰 자동 */
-    }
+  /* 네비바용 로고 스타일 */
+  .navbar-brand img {
+    height: 30px;      /* 로고 높이를 30px로 고정 */
+    width: auto;       /* 너비는 비율에 맞춰 자동 */
+  }
 </style>
 
 <%--<header class="row m-3">--%>
@@ -42,16 +42,35 @@
     <!-- 또는 <ul class="navbar-nav mx-auto"> 로도 가능 -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/users/list">유저관리</a>
+        <a class="nav-link" href="${contextPath}/testusers">유저관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/products">상품관리</a>
+        <a class="nav-link" href="${contextPath}/testproducts">상품관리</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/testorders">주문관리</a>
+        <a class="nav-link" href="${contextPath}/sales/order">주문관리</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="${contextPath}/post/list.page?page=1">문의관리</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           id="inquiryDropdown"
+           role="button"
+           data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false">
+          문의관리
+        </a>
+        <div class="dropdown-menu" aria-labelledby="inquiryDropdown">
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=1&page=1">
+            공지사항
+          </a>
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=2&page=1">
+            1대1문의
+          </a>
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=3&page=1">
+            상품문의
+          </a>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="${contextPath}/stores">매장관리</a>

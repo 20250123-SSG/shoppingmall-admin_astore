@@ -24,18 +24,17 @@ public class PageUtil {
 
         int offset = (page - 1) * pagePerBlock;
 
-        Map<String, Object> pageMap = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
 
-        pageMap.put("totalCount", totalCount);
-        pageMap.put("page", page);
-        pageMap.put("display", display);
-        pageMap.put("pagePerBlock", pagePerBlock);
-        pageMap.put("totalPage", totalPage);
-        pageMap.put("beginPage", beginPage);
-        pageMap.put("endPage", endPage);
-        pageMap.put("offset", offset);
+         map.put("totalCount", totalCount);
+         map.put("page", page);
+         map.put("display", display);
+         map.put("pagePerBlock", pagePerBlock);
+         map.put("totalPage", totalPage);
+         map.put("beginPage", beginPage);
+         map.put("endPage", endPage);
+         map.put("offset", offset);
 
-
-        return pageMap;
+        return map;
     }
 }

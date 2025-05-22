@@ -1,6 +1,7 @@
 package com.aplestore.controller;
 
 import com.aplestore.dto.OrderDTO;
+import com.aplestore.dto.OrderDetailDTO;
 import com.aplestore.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,12 +9,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,4 +63,34 @@ public class OrderController {
         List<OrderDTO> sales = orderService.getSalesByDateRange(startDateTime, endDateTime);
         return ResponseEntity.ok(sales);
     }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public List<OrderDTO> getSalesList(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
+
+        if ((startDate == null || startDate.isBlank()) &&
+                (endDate == null || endDate.isBlank())) {
+            return orderService.getAllOrders(); // 전체 조회
+        } else {
+            return orderService.getOrdersByPeriod(startDate, endDate); // 기간 조회
+        }
+    }
+
+
+    @GetMapping("/detail")
+    @ResponseBody
+    public Map<String, Object> getOrderDetail(@RequestParam("orderId") int orderId) {
+        OrderDTO order = orderService.getOrderById(orderId);
+        List<OrderDetailDTO> details = orderService.getOrderDetailsByOrderId(orderId);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("order", order);
+        result.put("details", details);
+        return result;
+    }
+
+
+
 }
