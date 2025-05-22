@@ -113,6 +113,12 @@ window.editOption = function() {
     alert("선택한 옵션이 존재하지 않습니다.");
     return;
   }
+  const imagePath = "/upload/" + matched.modelName + "_" + matched.color + "_" + matched.ram + "_" + matched.size + ".png";
+
+
+  // src에 반영
+  const modelImage = document.getElementById("modelImage");
+  modelImage.src = imagePath;
 
   const form = document.createElement("form");
   form.method = "GET";

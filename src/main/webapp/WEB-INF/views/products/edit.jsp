@@ -87,7 +87,7 @@
       </div>
       <div class="image-box">
         <div class="image text-center">
-          <img id="previewImg" src="${contextPath}/upload/${model.modelName}_${model.id}.png" >
+          <img id="previewImg" src="${contextPath}/resources/images/main_logo.png" />
           <br>
           <br>
           <label for="uploadFile" class="btn btn-primary">이미지 첨부</label>
@@ -121,16 +121,17 @@
   document.getElementById('uploadFile').addEventListener('change', evt => {
     const file = evt.target.files[0];
 
-    if (file){
+    if (file) {
       const previewImg = new FileReader();
-      previewImg.onload = function(e) {
-        document.getElementById('previewImg').src = e.target.result;
+      previewImg.onload = function (e) {
+        document.getElementById('previewImg').src = "${contextPath}/resources/images/main_logo.png";
       };
+
       previewImg.readAsDataURL(file);
     }
   })
 
-  document.querySelector("form").addEventListener("submit", function() {
+  document.querySelector("form").addEventListener("submit", function () {
     const modelPrice = document.getElementById("modelPrice");
     const optionPrice = document.getElementById("optionalModelPrice");
     modelPrice.value= modelPrice.value.replace(/,/g, "");

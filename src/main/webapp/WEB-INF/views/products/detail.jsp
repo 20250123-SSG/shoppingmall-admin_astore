@@ -11,9 +11,11 @@
 
 <div class="detail-container">
     <div class="left-section">
-        <img src="${pageContext.request.contextPath}/upload/${modelName}_${id}.PNG" alt="모델 이미지" class="model-image" />
+<%--        <img src="C:/upload/${modelName}_${modelOptions.id}.PNG" alt="모델 이미지" class="model-image" />--%>
+    <img id="modelImage" src="${contextPath}/resources/images/main_logo.png" alt="모델 이미지" class="model-image" />
 
-        <p class="model-description" style="font-weight: bold">${modelDescription}</p>
+
+    <p class="model-description" style="font-weight: bold">${modelDescription}</p>
         <div class="left-button">
             <button onclick="location.href='${pageContext.request.contextPath}/products/list.page'">뒤로가기</button>
         </div>
@@ -52,6 +54,9 @@
 <script>
   const modelOptions = JSON.parse('${optionsJson}');
   const currentModelId = ${modelId};
+  const modelName = '${modelName}';
+  <%--document.getElementById('modelImage').src = `/upload/${modelName}_${modelOptions.id}.png`;--%>
+
 </script>
 
 <%@ include file="../common/footer.jsp" %>

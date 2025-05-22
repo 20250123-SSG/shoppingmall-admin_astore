@@ -131,16 +131,15 @@ public class ProductController {
             dir.mkdirs();
         }
 
-        String newFilename = product.getModelName() + "_" + product.getId().toString() + ".png";
+        String newFilename = product.getModelName() + "_" + product.getColor() + "_" + product.getRam() + "_" + product.getSize() + ".png";
         File saveFile = new File(dir, newFilename);
 
         try {
             uploadFile.transferTo(saveFile);
         } catch (IOException e) {
-            log.debug("파일 저장에 실패하였습니다. ", e);
             e.printStackTrace();
         }
-        log.debug("상품등록성공하였습니다. 이미지는 upload폴더를 확인해주세요.");
+
         return "redirect:/products";
     }
 
@@ -149,11 +148,7 @@ public class ProductController {
                            @ModelAttribute ProductModelOptionDTO product,
                            Model model) {
         product.setModelId(modelId);
-        System.out.println(product.getModelId());
-        log.debug("Product info: {}", product);
         model.addAttribute("model", product);
-
-
         return "products/edit";
     }
 
@@ -161,7 +156,7 @@ public class ProductController {
     public String editProduct(ProductModelOptionDTO product){
         int modelId = product.getModelId();
         int result = productService.saveChangeInfo(product);
-        if (result == 1){ } //수정성공하였습니다.
+        if (result == 1){ } //수정성공
         return "redirect:/products/" + product.getModelId();
     }
 
