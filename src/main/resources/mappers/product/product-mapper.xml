@@ -20,11 +20,13 @@
              product_id
            , model_name
            , model_description
+           , model_price
         )
         values(
              (Select id FROM products WHERE product_name = #{productName})
             , #{modelName}
             , #{modelDescription}
+            , #{modelPrice}
         )
     </insert>
 
@@ -42,7 +44,7 @@
     </select>
 
     <!-- 상품등록 -->
-    <insert id="insertProduct">
+    <insert id="insertProduct" parameterType="ProductModelOptionDTO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO model_options
         (
           model_id
@@ -65,23 +67,52 @@
             )
     </insert>
 
-<!--    &lt;!&ndash; 상품수정 &ndash;&gt;-->
+
+
+    <!-- 상품수정 -->
+
 <!--    <update id="updateProduct">-->
-<!--        UPDATE-->
-<!--            model_options-->
-<!--        SET-->
-<!--            (-->
-<!--                model_id = (SELECT id FROM models WHERE name = #{modelName}-->
-<!--                    , color = #{color}-->
-<!--                    , ram = #{ram}-->
-<!--                    , size = #{size}-->
-<!--                    , optional_model_price = #{optionalModelPrice}-->
-<!--                    , modify_date = NOW()-->
-<!--                    )-->
+<!--      UPDATE model_options mo-->
+<!--        INNER JOIN models m ON mo.model_id = m.id-->
+<!--      SET-->
+<!--        m.model_name = #{modelName},-->
+<!--        m.model_price = #{modelPrice},-->
+<!--        m.model_description = #{modelDescription},-->
+<!--        mo.color = #{color},-->
+<!--        mo.ram = #{ram},-->
+<!--        mo.size = #{size},-->
+<!--        mo.optional_model_price = #{optionalModelPrice},-->
+<!--        mo.modified_at = NOW()-->
+<!--      WHERE-->
+<!--        m.id = #{modelId}-->
 <!--    </update>-->
+    <update id="updateModel" parameterType="ProductModelOptionDTO">
+        UPDATE
+            models
+        SET
+            model_name = #{modelName},
+            model_price = #{modelPrice},
+            model_description = #{modelDescription}
+        WHERE
+            id = #{modelId}
+    </update>
+
+    <update id="updateModelOption" parameterType="ProductModelOptionDTO">
+        UPDATE
+            model_options
+        SET
+            color = #{color},
+            ram = #{ram},
+            size = #{size},
+            optional_model_price = #{optionalModelPrice},
+            modified_at = NOW()
+        WHERE
+            id = #{id}
+
+    </update>
 
   <select id="getAllModels" resultType="ProductModelDTO">
-    SELECT
+    SELECT distinct
     m.id AS modelId,
     p.product_name AS productName,
     m.model_name AS modelName,
@@ -122,13 +153,11 @@
   <select id="countAllModels" resultType="int">
     SELECT COUNT(*)
     FROM models m
-    INNER JOIN products p ON m.id = p.id
-    INNER JOIN model_options mo ON m.id = mo.model_id
+
 
     <where>
       <if test="keyword != null and keyword != ''">
-        (product_name LIKE CONCAT('%', #{keyword}, '%')
-        OR model_name LIKE CONCAT('%', #{keyword}, '%'))
+        model_name LIKE CONCAT('%', #{keyword}, '%')
       </if>
     </where>
   </select>
@@ -150,14 +179,15 @@
       m.model_name AS modelName,
       m.model_description AS modelDescription,
       mo.optional_model_price AS optionalModelPrice,
+      m.model_price AS modelPrice,
       mo.color AS color,
       mo.ram AS ram,
       mo.size AS size,
       mo.created_at AS createdAt,
       mo.modified_at AS modifiedAt
-    FROM models m
+    FROM model_options mo
+    INNER JOIN models m ON m.id = mo.model_id
     INNER JOIN products p ON m.product_id = p.id
-    INNER JOIN model_options mo ON m.id = mo.model_id
     WHERE m.id = #{id}
   </select>
 
@@ -167,6 +197,28 @@
       AND ram = #{ram}
       AND size = #{size}
   </delete>
+  <select id="selectModelId" parameterType="ProductModelOptionDTO" resultType="_int">
+    SELECT
+      id
+    FROM
+      models
+    WHERE
+      model_name = #{modelName}
+  </select>
+<!--  <select id="selectModelOptionId" parameterType="ProductModelOptionDTO" resultType="_int">-->
+<!--    SELECT-->
+<!--      m.id-->
+<!--    FROM-->
+<!--      model_options o-->
+<!--        JOIN models m ON m.id = o.model_id-->
+<!--    WHERE-->
+<!--      m.model_name = #{modelName}-->
+<!--      AND o.color = #{color}-->
+<!--      AND o.ram = #{ram}-->
+<!--      AND o.size = #{size}-->
+<!--  </select>-->
+
+
 
 
 </mapper>

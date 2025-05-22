@@ -16,19 +16,21 @@ public interface ProductMapper {
 
     int countAllModels(String keyword);
     List<String> findMatchingModelNames(@Param("keyword") String keyword);
-    List<ProductModelOptionDTO> getProductDetail(Long id);
+    List<ProductModelOptionDTO> getProductDetail(Integer id);
     int removeModelOption(ProductModelOptionDTO productModelOptionDTO);
 
     // 상품등록
-    int selectModelIdIfExists(String modelName);
+    Integer selectModelIdIfExists(String modelName);
     int insertModel(ProductModelOptionDTO product);
 
     int countExistsModel(ProductModelOptionDTO product);
     int insertProduct(ProductModelOptionDTO product);
 
-    // 상품수정 (조회는 상세조회페이지에서 받아오기. 아니면 번호만 받고 조회해서 가져와도 됨)
+    // 상품수정
     int updateProduct(ProductModelOptionDTO product);
 
 
-
+    int updateModel(ProductModelOptionDTO product);
+    int updateModelOption(ProductModelOptionDTO product);
+    int selectModelId(ProductModelOptionDTO product);
 }

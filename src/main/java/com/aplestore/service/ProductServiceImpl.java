@@ -36,21 +36,16 @@ public class ProductServiceImpl implements ProductService {
         if (modelId == null) {
             modelId = mapper.insertModel(product);
         }
-        product.setId(modelId);
+        product.setModelId(modelId);
 
         int existed = mapper.countExistsModel(product);
 
         if (existed == 0) {
-            return mapper.insertProduct(product);
+            return Math.toIntExact(mapper.insertProduct(product));
         } else {
             log.debug("이미 등록된 상품입니다. ");
             return 0;
         }
-    }
-
-    @Override
-    public int modifyProduct(ProductModelOptionDTO product) {
-        return sqlSession.getMapper(ProductMapper.class).updateProduct(product);
     }
 
     public List<String> suggestKeyword(String keyword) {
@@ -58,7 +53,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductModelOptionDTO> getProductDetail(Long id){
+    public int getModelId(ProductModelOptionDTO product) {
+        int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
+        return id;
+    }
+
+    @Override
+    public int saveChangeInfo(ProductModelOptionDTO product) {
+        int resultModel = sqlSession.getMapper(ProductMapper.class).updateModel(product);
+        int resultModelOption = sqlSession.getMapper(ProductMapper.class).updateModelOption(product);
+        return resultModel * resultModelOption;
+    }
+
+    @Override
+    public List<ProductModelOptionDTO> getProductDetail(Integer id){
         return sqlSession.getMapper(ProductMapper.class).getProductDetail(id);
     }
 
@@ -66,5 +74,9 @@ public class ProductServiceImpl implements ProductService {
     public int removeModelOption(ProductModelOptionDTO dto){
         return sqlSession.getMapper(ProductMapper.class).removeModelOption(dto);
     }
-
+    @Override
+    public int getModelOptionId(ProductModelOptionDTO product) {
+        int id = sqlSession.getMapper(ProductMapper.class).selectModelId(product);
+        return id;
     }
+}

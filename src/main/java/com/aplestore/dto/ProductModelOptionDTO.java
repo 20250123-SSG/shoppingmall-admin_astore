@@ -1,8 +1,8 @@
 package com.aplestore.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -10,15 +10,16 @@ import lombok.*;
 @Setter
 @ToString
 public class ProductModelOptionDTO {
-    private Integer id;
+    private Integer id; //modeloption에 있는 id
     private String productName;
     private String modelName;
     private int modelPrice;
+    private Integer modelId;
     private String modelDescription;
     private int optionalModelPrice;
     private String color;
     private String ram;
-    private BigDecimal size;
+    private String size;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }
