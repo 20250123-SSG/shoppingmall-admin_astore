@@ -1,170 +1,80 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Apple Store Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="/resources/css/admin.css" rel="stylesheet">
-  <style>
-    #sidebar {
-      position: fixed;
-      left: -250px;
-      height: 100vh;
-      width: 250px;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      background-color: #f8f9fa;
-      border-right: 1px solid #dee2e6;
-    }
-    
-    #sidebar.show {
-      left: 0;
-    }
-    
-    #sidebar-trigger {
-      position: fixed;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 30px;
-      height: 30px;
-      background: #0d6efd;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 18px;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
-    #sidebar-trigger:hover {
-      background: #0b5ed7;
-    }
+<!-- Bootstrap CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    #sidebar-trigger::after {
-      content: "›";
-      transition: transform 0.3s ease;
-    }
+<style>
+  header { height: 50px; }
+  header a { color: white; }
+  header .profile-img { width: 30px; }
 
-    #sidebar.show + #sidebar-trigger {
-      left: 260px;
-    }
+  /* 네비바용 로고 스타일 */
+  .navbar-brand img {
+    height: 30px;      /* 로고 높이를 30px로 고정 */
+    width: auto;       /* 너비는 비율에 맞춰 자동 */
+  }
+</style>
 
-    #sidebar.show + #sidebar-trigger::after {
-      transform: rotate(180deg);
-    }
-    
-    .content-wrapper {
-      margin-left: 25px;
-      transition: margin-left 0.3s ease;
-      padding: 20px;
-    }
-    
-    #sidebar.show ~ .content-wrapper {
-      margin-left: 275px;
-    }
+<%--<header class="row m-3">--%>
+<%--  <div class="col-4 d-flex justify-content-center align-items-center">--%>
+<%--    <a href="${contextPath}/dashboard">--%>
+<%--      <img src="${contextPath}/resources/images/main_logo.png" width="170px" alt="Main Logo">--%>
+<%--    </a>--%>
+<%--  </div>--%>
+<%--</header>--%>
 
-    .nav-link {
-      color: #495057;
-      padding: 0.8rem 1rem;
-      border-radius: 4px;
-      margin: 2px 8px;
-      transition: all 0.2s ease;
-    }
+<nav class="navbar m-3 navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="${contextPath}/dashboard">
+    <img src="${contextPath}/resources/images/main_logo.png" alt="Home">
+  </a>
 
-    .nav-link:hover {
-      background-color: #e9ecef;
-      transform: translateX(5px);
-    }
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    .nav-link.active {
-      background-color: #0d6efd;
-      color: white;
-    }
-  </style>
-</head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">ADMINISTRATOR</a>
-
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/testinquiries">문의내역</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/testusers">회원관리</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/testorders">주문관리</a>
-        </li>
-      </ul>
-
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
-            관리자
+  <!-- justify-content-center 추가 -->
+  <div class="collapse navbar-collapse justify-content-center" id="mainNav">
+    <!-- 또는 <ul class="navbar-nav mx-auto"> 로도 가능 -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="${contextPath}/users/list">유저관리</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${contextPath}/products">상품관리</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${contextPath}/sales/order">주문관리</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle"
+           href="#"
+           id="inquiryDropdown"
+           role="button"
+           data-toggle="dropdown"
+           aria-haspopup="true"
+           aria-expanded="false">
+          문의관리
+        </a>
+        <div class="dropdown-menu" aria-labelledby="inquiryDropdown">
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=1&page=1">
+            공지사항
           </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/testadmin/profile">관리자정보</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<nav id="sidebar">
-  <div class="position-sticky pt-3">
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a class="nav-link" href="/testinquiries">
-          문의내역
-        </a>
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=2&page=1">
+            1대1문의
+          </a>
+          <a class="dropdown-item" href="${contextPath}/post/list.page?boardId=3&page=1">
+            상품문의
+          </a>
+        </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/testusers">
-          회원관리
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/testorders">
-          주문관리
-        </a>
+        <a class="nav-link" href="${contextPath}/stores/list.page">매장관리</a>
       </li>
     </ul>
   </div>
 </nav>
-<div id="sidebar-trigger"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // 사이드바 토글 기능
-  const sidebarTrigger = document.getElementById('sidebar-trigger');
-  const sidebar = document.getElementById('sidebar');
-  
-  sidebarTrigger.addEventListener('click', () => {
-    sidebar.classList.toggle('show');
-  });
-  
-  // 현재 페이지 메뉴 활성화
-  document.addEventListener('DOMContentLoaded', () => {
-    const currentPath = window.location.pathname;
-    document.querySelectorAll('.nav-link').forEach(link => {
-      if (currentPath.includes(link.getAttribute('href'))) {
-        link.classList.add('active');
-      }
-    });
-  });
-</script>
-</body>
-</html>

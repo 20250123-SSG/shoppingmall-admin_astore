@@ -1,171 +1,106 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const ctx = document.getElementById('salesChart').getContext('2d');
-    let salesChart = null;
+// ── resources/js/dashboard.js ──
 
-    // 차트 초기화 함수
-    function initChart(labels, data) {
-        if (salesChart) {
-            salesChart.destroy();
+// contextPath 는 JSP 에서 <c:set> 으로 정의됩니다.
+const contextPath = window.contextPath || '';
+const yearSelect = document.getElementById('yearSelect');
+
+// 월별 매출 차트 초기화
+const ctx = document.getElementById('salesChart').getContext('2d');
+const salesChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [{
+            label: '월별 매출',
+            data: [],
+            backgroundColor: 'rgba(54, 162, 235, 0.6)'
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
         }
+    }
+});
 
-        salesChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '매출',
-                    data: data,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString() + '원';
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.y.toLocaleString() + '원';
-                            }
-                        }
-                    }
-                }
-            }
+// 제품 카테고리별 도넛 차트
+const productCategoryCtx = document.getElementById('productCategoryChart').getContext('2d');
+new Chart(productCategoryCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['iPhone', 'iPad', 'Mac'],
+        datasets: [{
+            data: [45, 35, 20],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } }
+    }
+});
+
+// 연도 옵션 채우기
+async function populateYearOptions() {
+    try {
+        const response = await fetch(`${contextPath}/sales/years`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const years = await response.json();
+
+        yearSelect.innerHTML = '';
+        const currentYear = new Date().getFullYear();
+
+        years.forEach(y => {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.text = y;
+            if (y === currentYear) opt.selected = true;
+            yearSelect.appendChild(opt);
         });
+
+        // 초기 차트 로드
+        await loadChartData(currentYear);
+    } catch (error) {
+        console.error('연도 데이터를 불러오는데 실패했습니다:', error);
+    }
+}
+
+// 해당 연도 데이터 로드
+async function loadChartData(year) {
+    if (!year) {
+        console.error('연도가 지정되지 않았습니다.');
+        return;
     }
 
-    // 기간 선택 UI 이벤트 처리
-    const salesPeriod = document.getElementById('salesPeriod');
-    const customDateRange = document.getElementById('customDateRange');
-    const startDate = document.getElementById('startDate');
-    const endDate = document.getElementById('endDate');
-    const updateButton = document.getElementById('updateChart');
+    try {
+        const response = await fetch(`${contextPath}/sales/data?year=${year}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
 
-    // 오늘 날짜를 기본값으로 설정
-    const today = new Date();
-    endDate.value = today.toISOString().split('T')[0];
-    
-    // 시작일을 7일 전으로 설정
-    const sevenDaysAgo = new Date(today);
-    sevenDaysAgo.setDate(today.getDate() - 6);
-    startDate.value = sevenDaysAgo.toISOString().split('T')[0];
+        salesChart.data.labels = data.labels;
+        salesChart.data.datasets[0].data = data.values;
+        salesChart.update();
+    } catch (error) {
+        console.error('매출 데이터를 불러오는데 실패했습니다:', error);
+    }
+}
 
-    // 기간 선택 변경 이벤트
-    salesPeriod.addEventListener('change', function() {
-        if (this.value === 'custom') {
-            customDateRange.style.display = 'block';
-        } else {
-            customDateRange.style.display = 'none';
-            
-            const today = new Date();
-            const end = today.toISOString().split('T')[0];
-            let start;
-            
-            switch(this.value) {
-                case 'daily':
-                    start = new Date(today);
-                    start.setDate(today.getDate() - 6);
-                    break;
-                case 'weekly':
-                    start = new Date(today);
-                    start.setDate(today.getDate() - 28);
-                    break;
-                case 'monthly':
-                    start = new Date(today);
-                    start.setMonth(today.getMonth() - 6);
-                    break;
-            }
-            
-            startDate.value = start.toISOString().split('T')[0];
-            endDate.value = end;
-            
-            updateChart();
+// 페이지 로드 시
+document.addEventListener('DOMContentLoaded', () => {
+    populateYearOptions();
+    yearSelect.addEventListener('change', e => {
+        const selectedYear = parseInt(e.target.value);
+        if (!isNaN(selectedYear)) {
+            loadChartData(selectedYear);
         }
     });
-
-    // 차트 업데이트 함수
-    function updateChart() {
-        const period = salesPeriod.value;
-        const start = startDate.value;
-        const end = endDate.value;
-
-        fetch(`/admin/api/sales?period=${period}&startDate=${start}&endDate=${end}`)
-            .then(response => response.json())
-            .then(data => {
-                initChart(data.labels, data.data);
-            })
-            .catch(error => {
-                console.error('Error fetching sales data:', error);
-                alert('매출 데이터를 불러오는 중 오류가 발생했습니다.');
-            });
-    }
-
-    // 업데이트 버튼 클릭 이벤트
-    updateButton.addEventListener('click', updateChart);
-
-    // 모델별 판매 현황 데이터 로드
-    function loadModelSales() {
-        fetch('/admin/api/model-sales')
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector('#modelSalesTable tbody');
-                tbody.innerHTML = data.map(sale => `
-                    <tr>
-                        <td>${sale.modelName}</td>
-                        <td>${sale.quantity.toLocaleString()}</td>
-                        <td>${sale.amount.toLocaleString()}원</td>
-                        <td>${sale.stock.toLocaleString()}</td>
-                    </tr>
-                `).join('');
-            })
-            .catch(error => {
-                console.error('Error fetching model sales:', error);
-            });
-    }
-
-    // 문의사항 데이터 로드
-    function loadInquiries() {
-        Promise.all([
-            fetch('/admin/api/inquiries').then(res => res.json()),
-            fetch('/admin/api/product-inquiries').then(res => res.json())
-        ]).then(([inquiries, productInquiries]) => {
-            document.getElementById('inquiriesList').innerHTML = inquiries.map(inquiry => `
-                <a href="/admin/inquiry/${inquiry.id}" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1">${inquiry.title}</h6>
-                        <small>${inquiry.createDate}</small>
-                    </div>
-                    <small class="text-muted">${inquiry.customerName}</small>
-                </a>
-            `).join('');
-
-            document.getElementById('productInquiriesList').innerHTML = productInquiries.map(inquiry => `
-                <a href="/admin/product-inquiry/${inquiry.id}" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h6 class="mb-1">${inquiry.title}</h6>
-                        <small>${inquiry.createDate}</small>
-                    </div>
-                    <small class="text-muted">${inquiry.productName}</small>
-                </a>
-            `).join('');
-        }).catch(error => {
-            console.error('Error fetching inquiries:', error);
-        });
-    }
-
-    // 초기 데이터 로드
-    updateChart();
-    loadModelSales();
-    loadInquiries();
 });

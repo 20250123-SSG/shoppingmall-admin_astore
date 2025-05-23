@@ -1,22 +1,27 @@
 package com.aplestore.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.mybatis.spring.SqlSessionTemplate;
+
+import com.aplestore.common.SHA256;
 import com.aplestore.dao.LoginMapper;
 import com.aplestore.dto.LoginDTO;
-import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
     private final SqlSessionTemplate sqlSession;
+    private final SHA256 passwordEncoder;
 
     @Override
     public LoginDTO login(String userId, String userPwd) {
-        // DTO에 입력값 세팅
-        LoginDTO param = new LoginDTO(userId, userPwd);
-        // 매퍼 호출
+
+        String hashedPwd = passwordEncoder.encode(userPwd);
+
+        LoginDTO param = new LoginDTO(userId, hashedPwd);
+
         return sqlSession.getMapper(LoginMapper.class).selectByCredentials(param);
     }
 }

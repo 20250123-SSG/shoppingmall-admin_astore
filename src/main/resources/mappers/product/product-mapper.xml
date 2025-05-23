@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aplestore.dao.ProductMapper">
+    <!-- 모델저장여부확인 및 model_id 반환-->
+    <select id="selectModelIdIfExists" parameterType="string" resultType="java.lang.Integer">
+        SELECT
+            id
+        FROM
+            models
+        WHERE
+            model_name = #{modelName}
+    </select>
+
+    <!-- 기존에 저장되지 않은 상품에 대해 insert 해주기-->
+    <insert id="insertModel" parameterType="ProductModelOptionDTO" useGeneratedKeys="true" keyProperty="id">
+        insert INTO models(
+             product_id
+           , model_name
+           , model_description
+           , model_price
+        )
+        values(
+             (Select id FROM products WHERE product_name = #{productName})
+            , #{modelName}
+            , #{modelDescription}
+            , #{modelPrice}
+        )
+    </insert>
+
+    <select id="countExistsModel" parameterType="ProductModelOptionDTO">
+        SELECT
+            COUNT(*)
+        FROM
+            model_options
+        WHERE model_id = (SELECT id FROM models WHERE model_name = #{modelName})
+            AND color = #{color}
+            AND ram = #{ram}
+            AND size = #{size}
+            AND optional_model_price = #{optionalModelPrice}
+
+    </select>
+
+    <!-- 상품등록 -->
+    <insert id="insertProduct" parameterType="ProductModelOptionDTO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO model_options
+        (
+          model_id
+        , color
+        , ram
+        , size
+        , optional_model_price
+        , created_at
+        , modified_at
+        )
+        VALUES
+            (
+            (SELECT id FROM models WHERE model_name = #{modelName})
+            , #{color}
+            , #{ram}
+            , #{size}
+            , #{optionalModelPrice}
+            , NOW()
+            , NOW()
+            )
+    </insert>
+
+
+
+    <!-- 상품수정 -->
+
+<!--    <update id="updateProduct">-->
+<!--      UPDATE model_options mo-->
+<!--        INNER JOIN models m ON mo.model_id = m.id-->
+<!--      SET-->
+<!--        m.model_name = #{modelName},-->
+<!--        m.model_price = #{modelPrice},-->
+<!--        m.model_description = #{modelDescription},-->
+<!--        mo.color = #{color},-->
+<!--        mo.ram = #{ram},-->
+<!--        mo.size = #{size},-->
+<!--        mo.optional_model_price = #{optionalModelPrice},-->
+<!--        mo.modified_at = NOW()-->
+<!--      WHERE-->
+<!--        m.id = #{modelId}-->
+<!--    </update>-->
+    <update id="updateModel" parameterType="ProductModelOptionDTO">
+        UPDATE
+            models
+        SET
+            model_name = #{modelName},
+            model_price = #{modelPrice},
+            model_description = #{modelDescription}
+        WHERE
+            id = #{modelId}
+    </update>
+
+    <update id="updateModelOption" parameterType="ProductModelOptionDTO">
+        UPDATE
+            model_options
+        SET
+            color = #{color},
+            ram = #{ram},
+            size = #{size},
+            optional_model_price = #{optionalModelPrice},
+            modified_at = NOW()
+        WHERE
+            id = #{id}
+
+    </update>
+
+  <select id="getAllModels" resultType="ProductModelDTO">
+    SELECT distinct
+    m.id AS modelId,
+    p.product_name AS productName,
+    m.model_name AS modelName,
+    m.model_price AS modelPrice,
+    mo.created_at AS createdAt,
+    mo.modified_at AS modifiedAt
+    FROM models m
+    INNER JOIN products p ON m.product_id = p.id
+    INNER JOIN model_options mo ON m.id = mo.model_id
+
+  <where>
+      <if test="keyword != null and keyword != ''">
+        (
+        product_name LIKE CONCAT('%', #{keyword}, '%')
+        OR model_name LIKE CONCAT('%', #{keyword}, '%')
+        )
+      </if>
+    </where>
+
+    <choose>
+      <when test="sort == 'model'">
+        ORDER BY model_name ASC
+      </when>
+      <when test="sort == 'price_asc'">
+        ORDER BY model_price ASC
+      </when>
+      <when test="sort == 'price_desc'">
+        ORDER BY model_price DESC
+      </when>
+      <otherwise>
+        ORDER BY mo.created_at DESC
+      </otherwise>
+    </choose>
+
+    LIMIT #{limit} OFFSET #{offset}
+  </select>
+
+  <select id="countAllModels" resultType="int">
+    SELECT COUNT(*)
+    FROM models m
+
+
+    <where>
+      <if test="keyword != null and keyword != ''">
+        model_name LIKE CONCAT('%', #{keyword}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="findMatchingModelNames" resultType="string">
+    SELECT DISTINCT model_name
+    FROM models
+    WHERE model_name LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY model_name DESC
+    LIMIT 5;
+
+  </select>
+
+
+  <select id="getProductDetail" resultType="ProductModelOptionDTO">
+    SELECT
+      mo.id AS id,
+      p.product_name AS productName,
+      m.model_name AS modelName,
+      m.model_description AS modelDescription,
+      mo.optional_model_price AS optionalModelPrice,
+      m.model_price AS modelPrice,
+      mo.color AS color,
+      mo.ram AS ram,
+      mo.size AS size,
+      mo.created_at AS createdAt,
+      mo.modified_at AS modifiedAt
+    FROM model_options mo
+    INNER JOIN models m ON m.id = mo.model_id
+    INNER JOIN products p ON m.product_id = p.id
+    WHERE m.id = #{id}
+  </select>
+
+  <delete id="removeModelOption" parameterType="ProductModelOptionDTO">
+    DELETE FROM model_options
+    WHERE color = #{color}
+      AND ram = #{ram}
+      AND size = #{size}
+  </delete>
+  <select id="selectModelId" parameterType="ProductModelOptionDTO" resultType="_int">
+    SELECT
+      id
+    FROM
+      models
+    WHERE
+      model_name = #{modelName}
+  </select>
+<!--  <select id="selectModelOptionId" parameterType="ProductModelOptionDTO" resultType="_int">-->
+<!--    SELECT-->
+<!--      m.id-->
+<!--    FROM-->
+<!--      model_options o-->
+<!--        JOIN models m ON m.id = o.model_id-->
+<!--    WHERE-->
+<!--      m.model_name = #{modelName}-->
+<!--      AND o.color = #{color}-->
+<!--      AND o.ram = #{ram}-->
+<!--      AND o.size = #{size}-->
+<!--  </select>-->
+
+
+
+
+</mapper>
+
+
+
+
+

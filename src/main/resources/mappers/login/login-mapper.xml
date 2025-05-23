@@ -5,7 +5,7 @@
 
 <mapper namespace="com.aplestore.dao.LoginMapper">
 
-  <select id="selectByCredentials" parameterType="com.aplestore.dto.LoginDTO" resultType="com.aplestore.dto.LoginDTO">
+  <select id="selectByCredentials" parameterType="LoginDTO" resultType="LoginDTO">
     SELECT
         user_id   AS userId
         , user_pwd  AS userPwd

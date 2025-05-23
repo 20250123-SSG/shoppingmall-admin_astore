@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aplestore.dao.BoardMapper">
+
+  <resultMap id="BoardResultMap" type="com.aplestore.dto.BoardDTO">
+    <id     property="id"          column="id"/>
+    <result property="board_name"        column="boardName"/>
+    <result property="board_description" column="boardDescription"/>  <!-- 수정 -->
+    <result property="createdAt"   column="created_at"/>
+  </resultMap>
+
+  <select id="selectAll" resultMap="BoardResultMap">
+    SELECT id, board_name, board_description, created_at
+    FROM boards
+    ORDER BY id
+  </select>
+
+  <select id="selectById"
+          parameterType="int"
+          resultMap="BoardResultMap">
+    SELECT id, board_name, board_description, created_at
+    FROM boards
+    WHERE id = #{id}
+  </select>
+
+</mapper>
